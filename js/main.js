@@ -26,11 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
+  }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
 
   document.querySelectorAll(
-    '.section-label, .pillar, .work-card, .news-item, .pub-item, ' +
-    '.about-content, .contact-content, .hero-text'
+    '.pillar, .work, .news-item, .pub, .contact-chip, .hero-statement, .about-body'
   ).forEach(el => {
     el.classList.add('reveal');
     observer.observe(el);
