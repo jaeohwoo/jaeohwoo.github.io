@@ -156,64 +156,32 @@ strong { font-weight: 600; }
   transform: scale(1.03);
   box-shadow: 0 12px 40px rgba(30,64,175,0.12), 0 4px 12px rgba(0,0,0,0.06);
 }
-.hero-highlights {
+.hero-updates {
+  list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 1.5rem;
-}
-.hero-highlight {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 5px 12px 5px 5px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  text-decoration: none;
+  gap: 0.35rem;
+  margin-bottom: 1.75rem;
+  font-size: 0.78rem;
   color: var(--text-2);
-  font-size: 0.73rem;
-  font-weight: 500;
-  transition: all 0.2s;
-  width: fit-content;
+  line-height: 1.5;
 }
-.hero-highlight:hover {
-  border-color: var(--accent);
-  box-shadow: var(--shadow-sm);
-  text-decoration: none;
-  color: var(--text);
-}
-.hero-hl-badge {
-  font-size: 0.58rem;
+.upd-tag {
+  display: inline-block;
+  font-size: 0.62rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  padding: 2px 8px;
-  border-radius: 100px;
-  flex-shrink: 0;
-}
-.hero-hl-badge.award {
-  color: var(--award-text);
-  background: var(--award-bg);
-}
-.hero-hl-badge.pub {
-  color: var(--pub-text);
-  background: var(--pub-bg);
-}
-.hero-hl-text {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.hero-hl-arrow {
-  color: var(--text-3);
-  flex-shrink: 0;
-  transition: transform 0.15s, color 0.15s;
-  font-size: 0.8rem;
-}
-.hero-highlight:hover .hero-hl-arrow {
-  transform: translateX(2px);
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--accent-soft);
   color: var(--accent);
+  margin-right: 0.3rem;
+  vertical-align: 1px;
+}
+.upd-tag.hot {
+  background: var(--award-bg);
+  color: var(--award-text);
 }
 .hero-eyebrow {
   font-size: 0.75rem;
@@ -569,9 +537,7 @@ strong { font-weight: 600; }
   .hero-photo { order: -1; }
   .hero-photo img { width: 160px; height: 160px; }
   .hero-actions { justify-content: center; }
-  .hero-highlights { align-items: center; }
-  .hero-highlight { max-width: 100%; }
-  .hero-hl-text { white-space: normal; text-align: left; }
+  .hero-updates { font-size: 0.72rem; }
   .section { padding: 3rem 0; }
   .pillars { grid-template-columns: 1fr; }
 
