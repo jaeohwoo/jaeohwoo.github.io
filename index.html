@@ -6,17 +6,20 @@
   <title>Jae Oh Woo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+  <!-- Cursor glow -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
   <!-- Navigation -->
   <nav class="nav" id="nav">
     <div class="nav-inner">
-      <a href="#" class="nav-logo">JW</a>
+      <a href="#" class="nav-logo">JW<span class="logo-dot"></span></a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
+        <span></span><span></span>
       </button>
       <ul class="nav-links" id="navLinks">
         <li><a href="#about">About</a></li>
@@ -31,81 +34,137 @@
 
   <!-- Hero Section -->
   <header class="hero">
-    <div class="hero-bg"></div>
+    <div class="hero-mesh"></div>
+    <div class="hero-grain"></div>
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
     <div class="hero-content">
       <div class="hero-text">
-        <p class="hero-greeting">Hello, I'm</p>
-        <h1 class="hero-name">Jae Oh Woo</h1>
-        <p class="hero-hangul">우재오</p>
-        <p class="hero-title">Sr. Applied Scientist at <strong>Amazon Web Services</strong></p>
+        <div class="hero-label">
+          <span class="hero-label-dot"></span>
+          <span>Sr. Applied Scientist</span>
+        </div>
+        <h1 class="hero-name">
+          <span class="hero-name-line">Jae Oh</span>
+          <span class="hero-name-line hero-name-italic">Woo</span>
+        </h1>
+        <p class="hero-subtitle">GenAI Innovation Center, <strong>Amazon Web Services</strong></p>
         <div class="hero-tags">
-          <span class="tag">Machine Learning</span>
+          <span class="tag">Deep Learning</span>
           <span class="tag">Information Theory</span>
-          <span class="tag">Bayesian Deep Learning</span>
+          <span class="tag">Bayesian ML</span>
           <span class="tag">Active Learning</span>
         </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-num">327</span>
+            <span class="hero-stat-label">Citations</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">10</span>
+            <span class="hero-stat-label">h-index</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">20+</span>
+            <span class="hero-stat-label">Papers</span>
+          </div>
+        </div>
         <div class="hero-cta">
-          <a href="#publications" class="btn btn-primary">Publications</a>
-          <a href="#contact" class="btn btn-outline">Contact</a>
+          <a href="#publications" class="btn btn-glow">View Research</a>
+          <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" class="btn btn-glass" target="_blank" rel="noopener">Google Scholar</a>
         </div>
       </div>
     </div>
     <div class="scroll-indicator">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
+      <div class="scroll-mouse">
+        <div class="scroll-dot"></div>
+      </div>
     </div>
   </header>
 
   <!-- About Section -->
   <section id="about" class="section">
     <div class="container">
-      <h2 class="section-title">About</h2>
+      <div class="section-header">
+        <span class="section-number">01</span>
+        <h2 class="section-title">About</h2>
+      </div>
       <div class="about-grid">
         <div class="about-text">
           <p class="about-lead">
-            I am a Sr. Applied Scientist at Amazon Web Services (AWS), working on machine learning and AI.
-            Previously, I was a Sr. Staff Research Scientist at Samsung SDS Research America,
-            and worked at Moody's Analytics in San Francisco.
+            I am a Sr. Applied Scientist at the <strong>GenAI Innovation Center</strong> at Amazon Web Services,
+            working on large language models, machine learning, and AI.
           </p>
           <p>
+            Previously, I was a Sr. Staff Research Scientist at Samsung SDS Research America,
+            and worked at Moody's Analytics in San Francisco.
             I was a Simons Postdoctoral Fellow and Lecturer at the University of Texas at Austin (2015&ndash;2017),
             affiliated with the Simons Center on Communication, Information and Network Mathematics
             and the Wireless Networking &amp; Communications Group.
           </p>
-          <div class="education">
-            <h3>Education</h3>
-            <div class="education-item">
-              <div class="education-degree">Ph.D. in Applied Mathematics</div>
-              <div class="education-school">Yale University</div>
-            </div>
-            <div class="education-item">
-              <div class="education-degree">B.S. in Mathematics</div>
-              <div class="education-school">Korea Advanced Institute of Science and Technology (KAIST)</div>
+          <div class="about-interests">
+            <h3>Research Interests</h3>
+            <div class="interest-tags">
+              <span>Data Science</span>
+              <span>Mathematical Foundations of Deep Learning</span>
+              <span>Information Theory</span>
+              <span>Stochastic Geometry</span>
             </div>
           </div>
         </div>
-        <div class="about-card">
-          <div class="about-card-inner">
-            <div class="about-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M12 14l9-5-9-5-9 5 9 5z"/>
-                <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
-                <path d="M12 14l9-5-9-5-9 5 9 5z"/>
-                <path d="M12 14v7"/>
-              </svg>
+        <div class="about-sidebar">
+          <div class="edu-card">
+            <div class="edu-card-header">Education</div>
+            <div class="edu-item">
+              <div class="edu-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14v7"/><path d="M5.5 16.5l-.002 3.002a1 1 0 00.56.895l5.5 2.75a1 1 0 00.894 0l5.5-2.75a1 1 0 00.56-.895V16.5"/></svg>
+              </div>
+              <div>
+                <div class="edu-degree">Ph.D. Applied Mathematics</div>
+                <div class="edu-school">Yale University</div>
+              </div>
             </div>
-            <div class="about-card-stats">
-              <div class="stat">
-                <span class="stat-number">19+</span>
-                <span class="stat-label">Publications</span>
+            <div class="edu-item">
+              <div class="edu-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14v7"/><path d="M5.5 16.5l-.002 3.002a1 1 0 00.56.895l5.5 2.75a1 1 0 00.894 0l5.5-2.75a1 1 0 00.56-.895V16.5"/></svg>
               </div>
-              <div class="stat">
-                <span class="stat-number">2</span>
-                <span class="stat-label">Best Paper Awards</span>
+              <div>
+                <div class="edu-degree">B.S. Mathematics</div>
+                <div class="edu-school">KAIST</div>
               </div>
-              <div class="stat">
-                <span class="stat-number">3</span>
-                <span class="stat-label">Institutions</span>
+            </div>
+          </div>
+          <div class="career-card">
+            <div class="career-card-header">Career</div>
+            <div class="career-item">
+              <div class="career-dot active"></div>
+              <div>
+                <div class="career-role">Sr. Applied Scientist</div>
+                <div class="career-company">AWS GenAI Innovation Center</div>
+              </div>
+            </div>
+            <div class="career-item">
+              <div class="career-dot"></div>
+              <div>
+                <div class="career-role">Sr. Staff Research Scientist</div>
+                <div class="career-company">Samsung SDS Research America</div>
+              </div>
+            </div>
+            <div class="career-item">
+              <div class="career-dot"></div>
+              <div>
+                <div class="career-role">Analyst</div>
+                <div class="career-company">Moody's Analytics</div>
+              </div>
+            </div>
+            <div class="career-item">
+              <div class="career-dot"></div>
+              <div>
+                <div class="career-role">Simons Fellow &amp; Lecturer</div>
+                <div class="career-company">UT Austin</div>
               </div>
             </div>
           </div>
@@ -117,36 +176,44 @@
   <!-- News Section -->
   <section id="news" class="section section-alt">
     <div class="container">
-      <h2 class="section-title">Recent News</h2>
-      <div class="news-timeline">
-        <div class="news-item">
-          <div class="news-year">2024</div>
-          <div class="news-content">
-            <p>Paper accepted to <strong>ICML 2024</strong>.</p>
+      <div class="section-header">
+        <span class="section-number">02</span>
+        <h2 class="section-title">News</h2>
+      </div>
+      <div class="news-grid">
+        <div class="news-card">
+          <div class="news-card-year">2024</div>
+          <div class="news-card-body">
+            <div class="news-badge">ICML</div>
+            <p>Paper on <strong>improving instruction following in language models</strong> accepted to ICML 2024.</p>
           </div>
         </div>
-        <div class="news-item">
-          <div class="news-year">2023</div>
-          <div class="news-content">
-            <p>Paper accepted to <strong>ICCV 2023</strong>.</p>
+        <div class="news-card">
+          <div class="news-card-year">2024</div>
+          <div class="news-card-body">
+            <div class="news-badge">Preprint</div>
+            <p>New preprint on <strong>Bayesian active learning for semantic segmentation</strong>.</p>
           </div>
         </div>
-        <div class="news-item">
-          <div class="news-year">2023</div>
-          <div class="news-content">
-            <p>Paper accepted to <strong>ICLR 2023</strong> (top 25%).</p>
+        <div class="news-card">
+          <div class="news-card-year">2023</div>
+          <div class="news-card-body">
+            <div class="news-badge">ICCV</div>
+            <p>Paper on <strong>unsupervised accuracy estimation</strong> accepted to ICCV 2023.</p>
           </div>
         </div>
-        <div class="news-item">
-          <div class="news-year">2023</div>
-          <div class="news-content">
-            <p><strong>Samsung Best Paper Award</strong> Gold Prize for Bayesian deep active learning research.</p>
+        <div class="news-card">
+          <div class="news-card-year">2023</div>
+          <div class="news-card-body">
+            <div class="news-badge">ICLR</div>
+            <p>Paper on <strong>balanced entropy learning</strong> accepted to ICLR 2023 (top 25%).</p>
           </div>
         </div>
-        <div class="news-item">
-          <div class="news-year">2023</div>
-          <div class="news-content">
-            <p>Selected as <strong>NeurIPS 2023 Top Reviewer</strong>.</p>
+        <div class="news-card">
+          <div class="news-card-year">2023</div>
+          <div class="news-card-body">
+            <div class="news-badge award">Award</div>
+            <p><strong>Samsung Best Paper Award</strong> Gold Prize &amp; <strong>NeurIPS 2023 Top Reviewer</strong>.</p>
           </div>
         </div>
       </div>
@@ -156,7 +223,11 @@
   <!-- Publications Section -->
   <section id="publications" class="section">
     <div class="container">
-      <h2 class="section-title">Publications</h2>
+      <div class="section-header">
+        <span class="section-number">03</span>
+        <h2 class="section-title">Publications</h2>
+        <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" class="section-link" target="_blank" rel="noopener">Google Scholar &rarr;</a>
+      </div>
 
       <div class="pub-filters">
         <button class="pub-filter active" data-filter="all">All</button>
@@ -166,195 +237,272 @@
 
       <div class="pub-list">
 
-        <div class="pub-item" data-type="conference">
-          <div class="pub-year">2023</div>
+        <article class="pub-item" data-type="conference">
+          <div class="pub-meta">
+            <span class="pub-year">2024</span>
+            <span class="pub-cite">5 cited</span>
+          </div>
+          <div class="pub-details">
+            <h3 class="pub-title">Improving Instruction Following in Language Models through Proxy-Based Uncertainty Estimation</h3>
+            <p class="pub-authors">J Lee, <em>JO Woo</em>, J Seok, P Hassanzadeh, W Jang</p>
+            <p class="pub-venue">ICML 2024</p>
+            <a href="https://arxiv.org/abs/2405.06424" class="pub-link" target="_blank" rel="noopener">Paper</a>
+          </div>
+        </article>
+
+        <article class="pub-item" data-type="conference">
+          <div class="pub-meta">
+            <span class="pub-year">2024</span>
+            <span class="pub-cite">4 cited</span>
+          </div>
+          <div class="pub-details">
+            <h3 class="pub-title">Bayesian Active Learning for Semantic Segmentation</h3>
+            <p class="pub-authors">S Didari, W Hu, <em>JO Woo</em>, H Hao, H Moon, S Min</p>
+            <p class="pub-venue">Preprint</p>
+            <a href="https://arxiv.org/abs/2408.01694" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+          </div>
+        </article>
+
+        <article class="pub-item" data-type="conference">
+          <div class="pub-meta">
+            <span class="pub-year">2023</span>
+            <span class="pub-cite">6 cited</span>
+          </div>
           <div class="pub-details">
             <h3 class="pub-title">Unsupervised Accuracy Estimation of Deep Visual Models using Domain-Adaptive Adversarial Perturbation without Source Samples</h3>
-            <p class="pub-authors">JoonHo Lee, Hankyu Moon, Kwonho Lee, <strong>Jae Oh Woo</strong></p>
-            <p class="pub-venue">International Conference on Computer Vision (ICCV) 2023</p>
-            <a href="https://arxiv.org/abs/2307.10062" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+            <p class="pub-authors">JH Lee, <em>JO Woo</em>, H Moon, K Lee</p>
+            <p class="pub-venue">ICCV 2023</p>
+            <a href="https://arxiv.org/abs/2307.10062" class="pub-link" target="_blank" rel="noopener">Paper</a>
           </div>
-        </div>
+        </article>
 
-        <div class="pub-item" data-type="conference">
-          <div class="pub-year">2023</div>
+        <article class="pub-item" data-type="conference">
+          <div class="pub-meta">
+            <span class="pub-year">2023</span>
+            <span class="pub-cite">23 cited</span>
+          </div>
           <div class="pub-details">
             <h3 class="pub-title">Active Learning in Bayesian Neural Networks with Balanced Entropy Learning Principle</h3>
-            <p class="pub-authors"><strong>Jae Oh Woo</strong></p>
-            <p class="pub-venue">International Conference on Learning Representations (ICLR) 2023 <span class="pub-badge">Top 25%</span></p>
-            <a href="https://openreview.net/forum?id=ZTMuZ68B1g" class="pub-link" target="_blank" rel="noopener">OpenReview</a>
+            <p class="pub-authors"><em>JO Woo</em></p>
+            <p class="pub-venue">ICLR 2023 <span class="pub-badge">Top 25%</span></p>
+            <a href="https://openreview.net/forum?id=ZTMuZ68B1g" class="pub-link" target="_blank" rel="noopener">Paper</a>
           </div>
-        </div>
+        </article>
 
-        <div class="pub-item" data-type="conference">
-          <div class="pub-year">2023</div>
+        <article class="pub-item" data-type="conference">
+          <div class="pub-meta">
+            <span class="pub-year">2023</span>
+            <span class="pub-cite">8 cited</span>
+          </div>
           <div class="pub-details">
             <h3 class="pub-title">Unsupervised Contrastive Representation Learning for 3D Mesh Segmentation</h3>
-            <p class="pub-authors">Ayaan Haque, Hankyu Moon, Heng Hao, Sima Didari, Patrick Bangert, <strong>Jae Oh Woo</strong></p>
+            <p class="pub-authors">A Haque, H Moon, H Hao, S Didari, <em>JO Woo</em>, P Bangert</p>
             <p class="pub-venue">AAAI 2023, Student Abstract</p>
             <a href="https://ojs.aaai.org/index.php/AAAI/article/view/26971/26743" class="pub-link" target="_blank" rel="noopener">Paper</a>
           </div>
-        </div>
+        </article>
 
-        <div class="pub-item" data-type="journal">
-          <div class="pub-year">2022</div>
-          <div class="pub-details">
-            <h3 class="pub-title">Verifying Measures of Quantum Entropy</h3>
-            <p class="pub-authors">Gian Carlo Pastor, <strong>Jae Oh Woo</strong></p>
-            <p class="pub-venue">Applied Mathematics</p>
-            <a href="https://www.mdpi.com/2673-9909/2/2/19" class="pub-link" target="_blank" rel="noopener">Paper</a>
+        <article class="pub-item" data-type="conference">
+          <div class="pub-meta">
+            <span class="pub-year">2022</span>
+            <span class="pub-cite">9 cited</span>
           </div>
-        </div>
+          <div class="pub-details">
+            <h3 class="pub-title">Analytic Mutual Information in Bayesian Neural Networks</h3>
+            <p class="pub-authors"><em>JO Woo</em></p>
+            <p class="pub-venue">IEEE ISIT 2022</p>
+            <a href="https://arxiv.org/abs/2201.09815" class="pub-link" target="_blank" rel="noopener">Paper</a>
+          </div>
+        </article>
 
-        <div class="pub-item" data-type="journal">
-          <div class="pub-year">2021</div>
+        <article class="pub-item" data-type="journal">
+          <div class="pub-meta">
+            <span class="pub-year">2022</span>
+            <span class="pub-cite">4 cited</span>
+          </div>
+          <div class="pub-details">
+            <h3 class="pub-title">Medical Image Labeling via Active Learning is 90% Effective</h3>
+            <p class="pub-authors">P Bangert, H Moon, <em>JO Woo</em>, S Didari, H Hao</p>
+            <p class="pub-venue">Future of Information and Communication Conference 2022</p>
+          </div>
+        </article>
+
+        <article class="pub-item" data-type="journal">
+          <div class="pub-meta">
+            <span class="pub-year">2021</span>
+            <span class="pub-cite">20 cited</span>
+          </div>
           <div class="pub-details">
             <h3 class="pub-title">Active Learning Performance in Labeling Radiology Images is 90% Effective</h3>
-            <p class="pub-authors">Patrick Bangert, Hankyu Moon, Sima Didari, Heng Hao, <strong>Jae Oh Woo</strong></p>
+            <p class="pub-authors">P Bangert, H Moon, <em>JO Woo</em>, S Didari, H Hao</p>
             <p class="pub-venue">Frontiers in Radiology</p>
             <a href="https://www.frontiersin.org/articles/10.3389/fradi.2021.748968/abstract" class="pub-link" target="_blank" rel="noopener">Paper</a>
           </div>
-        </div>
+        </article>
 
-        <div class="pub-item" data-type="conference">
-          <div class="pub-year">2022</div>
-          <div class="pub-details">
-            <h3 class="pub-title">Analytic Mutual Information in Bayesian Neural Networks</h3>
-            <p class="pub-authors"><strong>Jae Oh Woo</strong></p>
-            <p class="pub-venue">IEEE International Symposium on Information Theory 2015</p>
-            <a href="https://arxiv.org/abs/2201.09815" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+        <article class="pub-item" data-type="conference">
+          <div class="pub-meta">
+            <span class="pub-year">2021</span>
+            <span class="pub-cite">20 cited</span>
           </div>
-        </div>
+          <div class="pub-details">
+            <h3 class="pub-title">Highly Efficient Representation and Active Learning Framework and Its Application to Imbalanced Medical Image Classification</h3>
+            <p class="pub-authors">H Hao, H Moon, S Didari, <em>JO Woo</em>, P Bangert</p>
+            <p class="pub-venue">NeurIPS Data-Centric AI Workshop 2021</p>
+            <a href="https://arxiv.org/abs/2103.05109" class="pub-link" target="_blank" rel="noopener">Paper</a>
+          </div>
+        </article>
 
-        <div class="pub-item" data-type="conference">
-          <div class="pub-year">2021</div>
+        <article class="pub-item" data-type="conference">
+          <div class="pub-meta">
+            <span class="pub-year">2021</span>
+            <span class="pub-cite">3 cited</span>
+          </div>
           <div class="pub-details">
             <h3 class="pub-title">PatchNet: Unsupervised Object Discovery Based on Patch Embedding</h3>
-            <p class="pub-authors">Hankyu Moon, Heng Hao, Sima Didari, Patrick Bangert, <strong>Jae Oh Woo</strong></p>
+            <p class="pub-authors">H Moon, H Hao, S Didari, <em>JO Woo</em>, P Bangert</p>
             <p class="pub-venue">Preprint</p>
             <a href="https://arxiv.org/abs/2106.08599" class="pub-link" target="_blank" rel="noopener">arXiv</a>
           </div>
-        </div>
+        </article>
 
-        <div class="pub-item" data-type="conference">
-          <div class="pub-year">2021</div>
-          <div class="pub-details">
-            <h3 class="pub-title">Highly Efficient Representation and Active Learning Framework for Imbalanced Data and Its Application to COVID-19 X-Ray Classification</h3>
-            <p class="pub-authors">Heng Hao, Sima Didari, Hankyu Moon, Patrick Bangert, <strong>Jae Oh Woo</strong></p>
-            <p class="pub-venue">NeurIPS Data-Centric AI Workshop 2021</p>
-            <a href="https://arxiv.org/abs/2103.05109" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+        <article class="pub-item" data-type="journal">
+          <div class="pub-meta">
+            <span class="pub-year">2019</span>
+            <span class="pub-cite">31 cited</span>
           </div>
-        </div>
-
-        <div class="pub-item" data-type="journal">
-          <div class="pub-year">2019</div>
           <div class="pub-details">
             <h3 class="pub-title">Majorization and R&eacute;nyi Entropy Inequalities via Sperner Theory</h3>
-            <p class="pub-authors">Mokshay Madiman, Liyao Wang, <strong>Jae Oh Woo</strong></p>
-            <p class="pub-venue">Discrete Mathematics</p>
-            <a href="https://arxiv.org/abs/1712.00913" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+            <p class="pub-authors">M Madiman, L Wang, <em>JO Woo</em></p>
+            <p class="pub-venue">Discrete Mathematics 342(10):2911&ndash;2923</p>
+            <a href="https://arxiv.org/abs/1712.00913" class="pub-link" target="_blank" rel="noopener">Paper</a>
           </div>
-        </div>
+        </article>
 
-        <div class="pub-item" data-type="journal">
-          <div class="pub-year">2018</div>
+        <article class="pub-item" data-type="journal">
+          <div class="pub-meta">
+            <span class="pub-year">2018</span>
+            <span class="pub-cite">19 cited</span>
+          </div>
           <div class="pub-details">
-            <h3 class="pub-title">On the Steady State of Continuous Time Stochastic Opinion Dynamics</h3>
-            <p class="pub-authors">Fran&ccedil;ois Baccelli, Sriram Vishwanath, <strong>Jae Oh Woo</strong></p>
-            <p class="pub-venue">Journal of Applied Probability</p>
-            <a href="https://arxiv.org/abs/1711.00881" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+            <h3 class="pub-title">An Analytical Framework for Modeling a Spatially Repulsive Cellular Network</h3>
+            <p class="pub-authors">CS Choi, <em>JO Woo</em>, JG Andrews</p>
+            <p class="pub-venue">IEEE Transactions on Communications</p>
+            <a href="https://arxiv.org/abs/1701.02261" class="pub-link" target="_blank" rel="noopener">Paper</a>
           </div>
-        </div>
+        </article>
 
-        <div class="pub-item" data-type="journal">
-          <div class="pub-year">2018</div>
+        <article class="pub-item" data-type="journal">
+          <div class="pub-meta">
+            <span class="pub-year">2018</span>
+            <span class="pub-cite">28 cited</span>
+          </div>
           <div class="pub-details">
             <h3 class="pub-title">Entropy Inequalities for Sums in Prime Cyclic Groups</h3>
-            <p class="pub-authors">Mokshay Madiman, Liyao Wang, <strong>Jae Oh Woo</strong></p>
+            <p class="pub-authors">M Madiman, L Wang, <em>JO Woo</em></p>
             <p class="pub-venue">SIAM Journal on Discrete Mathematics</p>
-            <a href="https://arxiv.org/abs/1710.00812" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+            <a href="https://arxiv.org/abs/1710.00812" class="pub-link" target="_blank" rel="noopener">Paper</a>
           </div>
-        </div>
+        </article>
 
-        <div class="pub-item" data-type="journal">
-          <div class="pub-year">2017</div>
+        <article class="pub-item" data-type="journal">
+          <div class="pub-meta">
+            <span class="pub-year">2017</span>
+          </div>
           <div class="pub-details">
-            <h3 class="pub-title">An Analytical Framework for Modeling a Spatially Correlated Cellular Network with Strong Repulsion</h3>
-            <p class="pub-authors">Chang-sik Choi, Jeffrey Andrews, <strong>Jae Oh Woo</strong></p>
-            <p class="pub-venue">IEEE Transactions on Communications</p>
-            <a href="https://arxiv.org/abs/1701.02261" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+            <h3 class="pub-title">On the Steady State of Continuous Time Stochastic Opinion Dynamics</h3>
+            <p class="pub-authors">F Baccelli, S Vishwanath, <em>JO Woo</em></p>
+            <p class="pub-venue">Journal of Applied Probability</p>
+            <a href="https://arxiv.org/abs/1711.00881" class="pub-link" target="_blank" rel="noopener">Paper</a>
           </div>
-        </div>
+        </article>
 
-        <div class="pub-item" data-type="conference">
-          <div class="pub-year">2017</div>
+        <article class="pub-item" data-type="conference">
+          <div class="pub-meta">
+            <span class="pub-year">2017</span>
+            <span class="pub-cite">3 cited</span>
+          </div>
           <div class="pub-details">
             <h3 class="pub-title">On the Coverage Probability of a Spatially Correlated Network</h3>
-            <p class="pub-authors">Chang-sik Choi, Jeffrey Andrews, <strong>Jae Oh Woo</strong></p>
-            <p class="pub-venue">IEEE International Symposium on Information Theory 2017</p>
-            <a href="http://ieeexplore.ieee.org/abstract/document/8006571/" class="pub-link" target="_blank" rel="noopener">IEEE</a>
+            <p class="pub-authors">CS Choi, <em>JO Woo</em>, JG Andrews</p>
+            <p class="pub-venue">IEEE ISIT 2017</p>
           </div>
-        </div>
+        </article>
 
-        <div class="pub-item" data-type="conference">
-          <div class="pub-year">2016</div>
+        <article class="pub-item" data-type="conference">
+          <div class="pub-meta">
+            <span class="pub-year">2016</span>
+            <span class="pub-cite">19 cited</span>
+          </div>
           <div class="pub-details">
             <h3 class="pub-title">On the Entropy and Mutual Information of Point Processes</h3>
-            <p class="pub-authors">Fran&ccedil;ois Baccelli, <strong>Jae Oh Woo</strong></p>
-            <p class="pub-venue">IEEE International Symposium on Information Theory 2016</p>
-            <a href="http://dx.doi.org/10.1109/ISIT.2016.7541388" class="pub-link" target="_blank" rel="noopener">IEEE</a>
+            <p class="pub-authors">F Baccelli, <em>JO Woo</em></p>
+            <p class="pub-venue">IEEE ISIT 2016</p>
           </div>
-        </div>
+        </article>
 
-        <div class="pub-item" data-type="conference">
-          <div class="pub-year">2015</div>
+        <article class="pub-item" data-type="conference">
+          <div class="pub-meta">
+            <span class="pub-year">2015</span>
+            <span class="pub-cite">22 cited</span>
+          </div>
           <div class="pub-details">
             <h3 class="pub-title">A Discrete Entropy Power Inequality for Uniform Distributions</h3>
-            <p class="pub-authors">Mokshay Madiman, <strong>Jae Oh Woo</strong></p>
-            <p class="pub-venue">IEEE International Symposium on Information Theory 2015</p>
-            <a href="http://dx.doi.org/10.1109/ISIT.2015.7282731" class="pub-link" target="_blank" rel="noopener">IEEE</a>
+            <p class="pub-authors"><em>JO Woo</em>, M Madiman</p>
+            <p class="pub-venue">IEEE ISIT 2015</p>
           </div>
-        </div>
+        </article>
 
-        <div class="pub-item" data-type="conference">
-          <div class="pub-year">2015</div>
+        <article class="pub-item" data-type="conference">
+          <div class="pub-meta">
+            <span class="pub-year">2015</span>
+            <span class="pub-cite">2 cited</span>
+          </div>
           <div class="pub-details">
             <h3 class="pub-title">Information Theoretic Inequalities, Limit Theorems, and Universal Compression over Unknown Alphabets</h3>
-            <p class="pub-authors"><strong>Jae Oh Woo</strong></p>
+            <p class="pub-authors"><em>JO Woo</em></p>
             <p class="pub-venue">Ph.D. Dissertation, Yale University</p>
             <a href="https://drive.google.com/file/d/0B0i3Lfs2R1XsU0RZTno3QnBZazg/view" class="pub-link" target="_blank" rel="noopener">PDF</a>
           </div>
-        </div>
+        </article>
 
-        <div class="pub-item" data-type="conference">
-          <div class="pub-year">2014</div>
-          <div class="pub-details">
-            <h3 class="pub-title">A Lower Bound on the R&eacute;nyi Entropy of Convolutions in Integers</h3>
-            <p class="pub-authors">Liyao Wang, Mokshay Madiman, <strong>Jae Oh Woo</strong></p>
-            <p class="pub-venue">IEEE International Symposium on Information Theory 2014</p>
-            <a href="http://dx.doi.org/10.1109/ISIT.2014.6875350" class="pub-link" target="_blank" rel="noopener">IEEE</a>
+        <article class="pub-item" data-type="conference">
+          <div class="pub-meta">
+            <span class="pub-year">2014</span>
+            <span class="pub-cite">28 cited</span>
           </div>
-        </div>
+          <div class="pub-details">
+            <h3 class="pub-title">A Lower Bound on the R&eacute;nyi Entropy of Convolutions in the Integers</h3>
+            <p class="pub-authors">L Wang, <em>JO Woo</em>, M Madiman</p>
+            <p class="pub-venue">IEEE ISIT 2014</p>
+          </div>
+        </article>
 
-        <div class="pub-item" data-type="journal">
-          <div class="pub-year">2014</div>
+        <article class="pub-item" data-type="journal">
+          <div class="pub-meta">
+            <span class="pub-year">2014</span>
+            <span class="pub-cite">3 cited</span>
+          </div>
           <div class="pub-details">
             <h3 class="pub-title">Redundancy of Exchangeable Estimators</h3>
-            <p class="pub-authors">Narayana P. Santhanam, Anand D. Sarwate, <strong>Jae Oh Woo</strong></p>
-            <p class="pub-venue">Entropy</p>
-            <a href="https://arxiv.org/abs/1407.5383" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+            <p class="pub-authors">NP Santhanam, AD Sarwate, <em>JO Woo</em></p>
+            <p class="pub-venue">Entropy 16(10):5339&ndash;5357</p>
+            <a href="https://arxiv.org/abs/1407.5383" class="pub-link" target="_blank" rel="noopener">Paper</a>
           </div>
-        </div>
+        </article>
 
-        <div class="pub-item" data-type="journal">
-          <div class="pub-year">2009</div>
+        <article class="pub-item" data-type="journal">
+          <div class="pub-meta">
+            <span class="pub-year">2009</span>
+            <span class="pub-cite">66 cited</span>
+          </div>
           <div class="pub-details">
             <h3 class="pub-title">A Note on Preconditioning by Low-Stretch Spanning Trees</h3>
-            <p class="pub-authors">Daniel A. Spielman, <strong>Jae Oh Woo</strong></p>
+            <p class="pub-authors">DA Spielman, <em>JO Woo</em></p>
             <p class="pub-venue">Preprint</p>
             <a href="https://arxiv.org/abs/0903.2816" class="pub-link" target="_blank" rel="noopener">arXiv</a>
           </div>
-        </div>
+        </article>
 
       </div>
     </div>
@@ -363,52 +511,57 @@
   <!-- Teaching Section -->
   <section id="teaching" class="section section-alt">
     <div class="container">
-      <h2 class="section-title">Teaching</h2>
+      <div class="section-header">
+        <span class="section-number">04</span>
+        <h2 class="section-title">Teaching</h2>
+      </div>
       <div class="teaching-grid">
-
         <div class="teaching-group">
-          <h3 class="teaching-institution">University of Texas at Austin</h3>
-          <p class="teaching-role">Lecturer</p>
+          <div class="teaching-group-header">
+            <h3>UT Austin</h3>
+            <span class="teaching-role-badge">Lecturer</span>
+          </div>
           <div class="teaching-item">
             <span class="teaching-course">Multivariable Calculus (M408M)</span>
             <span class="teaching-semester">Fall 2016</span>
           </div>
         </div>
-
         <div class="teaching-group">
-          <h3 class="teaching-institution">Yale University</h3>
-          <p class="teaching-role">Teaching Fellow</p>
+          <div class="teaching-group-header">
+            <h3>Yale University</h3>
+            <span class="teaching-role-badge">Teaching Fellow</span>
+          </div>
           <div class="teaching-item">
-            <span class="teaching-course">Design and Analysis of Algorithms (CPSC 365b)</span>
+            <span class="teaching-course">Design and Analysis of Algorithms</span>
             <span class="teaching-semester">Spring 2014</span>
           </div>
           <div class="teaching-item">
-            <span class="teaching-course">Neural Networks for Computing (CPSC 477/577)</span>
+            <span class="teaching-course">Neural Networks for Computing</span>
             <span class="teaching-semester">Fall 2008</span>
           </div>
           <div class="teaching-item">
-            <span class="teaching-course">Data Mining and Machine Learning (STAT 365/665)</span>
+            <span class="teaching-course">Data Mining and Machine Learning</span>
             <span class="teaching-semester">Spring 2008</span>
           </div>
           <div class="teaching-item">
-            <span class="teaching-course">Graphs and Networks (CPSC 462/562)</span>
+            <span class="teaching-course">Graphs and Networks</span>
             <span class="teaching-semester">Fall 2007</span>
           </div>
         </div>
-
         <div class="teaching-group">
-          <h3 class="teaching-institution">KAIST</h3>
-          <p class="teaching-role">Teaching Assistant</p>
+          <div class="teaching-group-header">
+            <h3>KAIST</h3>
+            <span class="teaching-role-badge">Teaching Assistant</span>
+          </div>
           <div class="teaching-item">
-            <span class="teaching-course">Calculus I (MAS 101)</span>
+            <span class="teaching-course">Calculus I</span>
             <span class="teaching-semester">Spring 2006</span>
           </div>
           <div class="teaching-item">
-            <span class="teaching-course">Introduction to Linear Algebra (MAS 109)</span>
+            <span class="teaching-course">Introduction to Linear Algebra</span>
             <span class="teaching-semester">Fall 2005</span>
           </div>
         </div>
-
       </div>
     </div>
   </section>
@@ -416,113 +569,80 @@
   <!-- Honors Section -->
   <section id="honors" class="section">
     <div class="container">
-      <h2 class="section-title">Honors &amp; Awards</h2>
-      <div class="honors-grid">
-
-        <div class="honors-category">
-          <h3>Awards</h3>
-          <div class="honor-item">
-            <div class="honor-year">2023</div>
-            <div class="honor-text">Samsung Best Paper Award, Gold Prize</div>
+      <div class="section-header">
+        <span class="section-number">05</span>
+        <h2 class="section-title">Honors &amp; Awards</h2>
+      </div>
+      <div class="honors-masonry">
+        <div class="honors-col">
+          <div class="honors-card honors-card-accent">
+            <h3>Awards</h3>
+            <div class="honor-item"><span class="honor-year">2023</span><span>Samsung Best Paper Award, Gold Prize</span></div>
+            <div class="honor-item"><span class="honor-year">2023</span><span>NeurIPS Top Reviewer</span></div>
+            <div class="honor-item"><span class="honor-year">2018</span><span>Moody's VHK Innovation Award, 1st Place</span></div>
           </div>
-          <div class="honor-item">
-            <div class="honor-year">2023</div>
-            <div class="honor-text">NeurIPS 2023 Top Reviewer</div>
-          </div>
-          <div class="honor-item">
-            <div class="honor-year">2018</div>
-            <div class="honor-text">Moody's VHK Innovation Award, 1st Place</div>
-          </div>
-        </div>
-
-        <div class="honors-category">
-          <h3>Fellowships &amp; Scholarships</h3>
-          <div class="honor-item">
-            <div class="honor-year">2015&ndash;17</div>
-            <div class="honor-text">Simons Postdoctoral Fellowship</div>
-          </div>
-          <div class="honor-item">
-            <div class="honor-year">2006&ndash;15</div>
-            <div class="honor-text">Yale University Teaching / Research Fellowship</div>
-          </div>
-          <div class="honor-item">
-            <div class="honor-year">2006&ndash;14</div>
-            <div class="honor-text">Samsung Scholarship</div>
-          </div>
-          <div class="honor-item">
-            <div class="honor-year">2005&ndash;06</div>
-            <div class="honor-text">Korea Foundation for Advanced Studies Scholarship</div>
-          </div>
-          <div class="honor-item">
-            <div class="honor-year">2003&ndash;04</div>
-            <div class="honor-text">KAIST Top GPA Student Scholarship</div>
+          <div class="honors-card">
+            <h3>Travel Awards</h3>
+            <div class="honor-item"><span class="honor-year">2015</span><span>Croucher Summer Course, Hong Kong</span></div>
+            <div class="honor-item"><span class="honor-year">2015</span><span>IEEE ISIT Travel Support</span></div>
+            <div class="honor-item"><span class="honor-year">2015</span><span>IMA Workshop, Minneapolis</span></div>
+            <div class="honor-item"><span class="honor-year">2014</span><span>KIAS Fellowship, ICM Seoul</span></div>
+            <div class="honor-item"><span class="honor-year">2013</span><span>ICERM VI-MSS, IISc Bangalore</span></div>
           </div>
         </div>
-
-        <div class="honors-category">
-          <h3>Travel Awards</h3>
-          <div class="honor-item">
-            <div class="honor-year">2015</div>
-            <div class="honor-text">Informal Analysis Seminar, Kent, OH</div>
-          </div>
-          <div class="honor-item">
-            <div class="honor-year">2015</div>
-            <div class="honor-text">Croucher Summer Course in Information Theory, Hong Kong</div>
-          </div>
-          <div class="honor-item">
-            <div class="honor-year">2015</div>
-            <div class="honor-text">IEEE ISIT Travel Support, Hong Kong</div>
-          </div>
-          <div class="honor-item">
-            <div class="honor-year">2015</div>
-            <div class="honor-text">IMA Information Theory Workshop, Minneapolis, MN</div>
-          </div>
-          <div class="honor-item">
-            <div class="honor-year">2015</div>
-            <div class="honor-text">Seminar on Stochastic Processes, Newark, DE</div>
-          </div>
-          <div class="honor-item">
-            <div class="honor-year">2014</div>
-            <div class="honor-text">KIAS Travel Fellowship, ICM 2014, Seoul</div>
-          </div>
-          <div class="honor-item">
-            <div class="honor-year">2013</div>
-            <div class="honor-text">ICERM VI-MSS Travel Award, IISc Bangalore</div>
+        <div class="honors-col">
+          <div class="honors-card">
+            <h3>Fellowships &amp; Scholarships</h3>
+            <div class="honor-item"><span class="honor-year">2015&ndash;17</span><span>Simons Postdoctoral Fellowship</span></div>
+            <div class="honor-item"><span class="honor-year">2006&ndash;15</span><span>Yale Teaching / Research Fellowship</span></div>
+            <div class="honor-item"><span class="honor-year">2006&ndash;14</span><span>Samsung Scholarship</span></div>
+            <div class="honor-item"><span class="honor-year">2005&ndash;06</span><span>Korea Foundation for Advanced Studies</span></div>
+            <div class="honor-item"><span class="honor-year">2003&ndash;04</span><span>KAIST Top GPA Scholarship</span></div>
           </div>
         </div>
-
       </div>
     </div>
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="section section-dark">
+  <section id="contact" class="section section-contact">
     <div class="container">
-      <h2 class="section-title section-title-light">Contact</h2>
-      <div class="contact-content">
-        <p class="contact-lead">Feel free to reach out for research collaborations or questions.</p>
-        <div class="contact-links">
-          <a href="mailto:jaeoh.woo@aya.yale.edu" class="contact-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-            </svg>
-            <span>jaeoh.woo@aya.yale.edu</span>
+      <div class="contact-inner">
+        <div class="section-header">
+          <span class="section-number section-number-light">06</span>
+          <h2 class="section-title section-title-light">Get in Touch</h2>
+        </div>
+        <p class="contact-lead">Open to research collaborations, speaking invitations, and interesting conversations.</p>
+        <div class="contact-grid">
+          <a href="mailto:jaeoh.woo@aya.yale.edu" class="contact-card">
+            <div class="contact-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <span class="contact-card-label">Email</span>
+            <span class="contact-card-value">jaeoh.woo@aya.yale.edu</span>
           </a>
-          <a href="https://github.com/jaeohwoo" class="contact-item" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-            </svg>
-            <span>github.com/jaeohwoo</span>
+          <a href="https://github.com/jaeohwoo" class="contact-card" target="_blank" rel="noopener">
+            <div class="contact-card-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </div>
+            <span class="contact-card-label">GitHub</span>
+            <span class="contact-card-value">jaeohwoo</span>
+          </a>
+          <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" class="contact-card" target="_blank" rel="noopener">
+            <div class="contact-card-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 100 14 7 7 0 000-14z"/></svg>
+            </div>
+            <span class="contact-card-label">Scholar</span>
+            <span class="contact-card-value">327 citations</span>
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="container">
-      <p>&copy; 2024 Jae Oh Woo. All rights reserved.</p>
+      <p>&copy; 2024 Jae Oh Woo</p>
     </div>
   </footer>
 

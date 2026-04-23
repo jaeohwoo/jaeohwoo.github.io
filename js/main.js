@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const nav = document.getElementById('nav');
   const navToggle = document.getElementById('navToggle');
   const navLinks = document.getElementById('navLinks');
+  const cursorGlow = document.getElementById('cursorGlow');
 
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 50);
@@ -9,13 +10,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   navToggle.addEventListener('click', () => {
     navLinks.classList.toggle('open');
+    navToggle.classList.toggle('active');
   });
 
   navLinks.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       navLinks.classList.remove('open');
+      navToggle.classList.remove('active');
     });
   });
+
+  if (window.matchMedia('(pointer: fine)').matches) {
+    document.addEventListener('mousemove', (e) => {
+      cursorGlow.style.left = e.clientX + 'px';
+      cursorGlow.style.top = e.clientY + 'px';
+      cursorGlow.classList.add('active');
+    });
+  }
 
   const filters = document.querySelectorAll('.pub-filter');
   const pubItems = document.querySelectorAll('.pub-item');
@@ -24,22 +35,12 @@ document.addEventListener('DOMContentLoaded', () => {
     filter.addEventListener('click', () => {
       filters.forEach(f => f.classList.remove('active'));
       filter.classList.add('active');
-
       const type = filter.dataset.filter;
       pubItems.forEach(item => {
-        if (type === 'all' || item.dataset.type === type) {
-          item.classList.remove('hidden');
-        } else {
-          item.classList.add('hidden');
-        }
+        item.classList.toggle('hidden', type !== 'all' && item.dataset.type !== type);
       });
     });
   });
-
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -40px 0px'
-  };
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -48,10 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.unobserve(entry.target);
       }
     });
-  }, observerOptions);
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
 
-  document.querySelectorAll('.section-title, .pub-item, .news-item, .teaching-group, .honors-category, .about-text, .about-card, .contact-content').forEach(el => {
-    el.classList.add('fade-in');
+  document.querySelectorAll(
+    '.section-header, .pub-item, .news-card, .teaching-group, ' +
+    '.honors-card, .about-text, .about-sidebar, .contact-card, ' +
+    '.edu-card, .career-card, .hero-stats'
+  ).forEach(el => {
+    el.classList.add('reveal');
     observer.observe(el);
   });
 });
