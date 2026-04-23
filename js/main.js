@@ -19,6 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Duplicate ticker content for seamless loop
+  const inner = document.querySelector('.ticker-inner');
+  if (inner) inner.innerHTML += inner.innerHTML;
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -28,9 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
 
-  document.querySelectorAll(
-    '.pillar, .work, .news-item, .pub, .contact-chip, .hero-statement, .about-body'
-  ).forEach(el => {
+  document.querySelectorAll('.area, .card, .pubs li, .prose, .contact-row').forEach(el => {
     el.classList.add('reveal');
     observer.observe(el);
   });
