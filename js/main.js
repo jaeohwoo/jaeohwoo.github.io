@@ -19,10 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Duplicate ticker content for seamless loop
-  const inner = document.querySelector('.ticker-inner');
-  if (inner) inner.innerHTML += inner.innerHTML;
-
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
