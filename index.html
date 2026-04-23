@@ -6,19 +6,19 @@
   <title>Jae Oh Woo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
   <nav class="nav" id="nav">
-    <div class="wrap">
-      <a href="#" class="nav-name">Jae Oh Woo</a>
-      <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span></button>
+    <div class="container">
+      <a href="#" class="logo">JW</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
       <ul class="nav-links" id="navLinks">
         <li><a href="#about">About</a></li>
         <li><a href="#research">Research</a></li>
-        <li><a href="#work">Selected Work</a></li>
+        <li><a href="#work">Work</a></li>
         <li><a href="#publications">Publications</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
@@ -26,192 +26,191 @@
   </nav>
 
   <header class="hero">
-    <div class="wrap">
-      <div class="hero-layout">
-        <div class="hero-main">
-          <p class="hero-role">Senior Applied Scientist &middot; GenAI Innovation Center, AWS</p>
-          <h1>Jae Oh Woo</h1>
-          <p class="hero-statement">
-            I research reliable reasoning, uncertainty quantification, and mathematical foundations for modern AI &mdash;
-            building methods to evaluate, calibrate, and improve intelligent systems.
-          </p>
-          <div class="hero-links">
-            <a href="#work" class="hl-btn">Research</a>
-            <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" class="hl-link" target="_blank" rel="noopener">Google Scholar</a>
-            <a href="mailto:jaeoh.woo@aya.yale.edu" class="hl-link">Email</a>
-          </div>
+    <div class="container hero-grid">
+      <div class="hero-left">
+        <div class="hero-news">
+          <span class="dot-pulse"></span>
+          <span>Best Paper Award &mdash; ICLR 2026 Workshop</span>
         </div>
-        <div class="hero-photo">
-          <img src="https://avatars.githubusercontent.com/u/1177142?v=4" alt="Jae Oh Woo" width="200" height="200">
+        <h1><span class="line1">Jae Oh</span> <span class="line2">Woo</span></h1>
+        <p class="hero-tagline">Senior Applied Scientist, AWS</p>
+        <p class="hero-desc">
+          Researching reliable reasoning, principled uncertainty, and mathematical
+          foundations for modern AI systems.
+        </p>
+        <div class="hero-btns">
+          <a href="#work" class="btn-solid">View Research</a>
+          <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" class="btn-outline" target="_blank" rel="noopener">Google Scholar</a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="avatar-wrap">
+          <img src="https://avatars.githubusercontent.com/u/1177142?v=4" alt="Jae Oh Woo">
         </div>
       </div>
     </div>
   </header>
 
   <section id="about" class="section">
-    <div class="wrap narrow">
-      <h2 class="sh">About</h2>
-      <div class="prose">
-        <p>
-          I work at the <strong>GenAI Innovation Center at Amazon Web Services</strong>,
-          focusing on making large language models more reliable, better calibrated,
-          and grounded in principled mathematical foundations.
+    <div class="container narrow">
+      <p class="section-num">01</p>
+      <h2>About</h2>
+      <div class="about-body">
+        <p class="lead">
+          I am a Senior Applied Scientist at the <strong>GenAI Innovation Center, Amazon Web Services</strong>,
+          where I work on making large language models more reliable, better calibrated, and grounded in principled foundations.
         </p>
         <p>
-          My research connects deep learning theory with practice &mdash; developing information-theoretic
-          and Bayesian methods to understand how AI systems reason, handle uncertainty,
-          and learn efficiently from limited data.
+          My research sits at the intersection of deep learning theory and practice &mdash; developing
+          information-theoretic and Bayesian approaches to understand how AI systems reason,
+          quantify uncertainty, and learn efficiently from limited data.
         </p>
         <p>
-          Previously I was a Sr. Staff Research Scientist at Samsung SDS Research America
-          and worked at Moody&rsquo;s Analytics. I hold a Ph.D. in Applied Mathematics from
-          Yale University and a B.S. from KAIST. I was a Simons Postdoctoral Fellow at UT Austin.
+          Previously Sr. Staff Research Scientist at Samsung SDS Research America and Moody&rsquo;s Analytics.
+          Ph.D. Applied Mathematics from Yale, B.S. Mathematics from KAIST. Simons Postdoctoral Fellow at UT Austin.
         </p>
       </div>
     </div>
   </section>
 
-  <section id="research" class="section alt">
-    <div class="wrap narrow">
-      <h2 class="sh">Research Areas</h2>
-      <div class="areas">
-        <div class="area">
+  <section id="research" class="section section-dark">
+    <div class="container narrow">
+      <p class="section-num light">02</p>
+      <h2 class="light">Research Areas</h2>
+      <div class="research-grid">
+        <div class="r-card">
+          <span class="r-num">01</span>
           <h3>LLM Reasoning &amp; Self-Evaluation</h3>
-          <p>Methods for evaluating logical consistency, improving instruction-following, and enabling reliable self-assessment in large language models.</p>
+          <p>Evaluating logical consistency, improving instruction-following, and enabling reliable self-assessment in large language models.</p>
         </div>
-        <div class="area">
+        <div class="r-card">
+          <span class="r-num">02</span>
           <h3>Uncertainty &amp; Calibration</h3>
-          <p>Principled Bayesian and information-theoretic approaches for quantifying uncertainty, calibrating predictions, and guiding efficient data acquisition.</p>
+          <p>Bayesian and information-theoretic approaches for quantifying uncertainty, calibrating predictions, and efficient data acquisition.</p>
         </div>
-        <div class="area">
-          <h3>Mathematical Foundations of ML</h3>
-          <p>Entropy inequalities, information theory, and combinatorics to establish rigorous mathematical foundations for learning and inference.</p>
+        <div class="r-card">
+          <span class="r-num">03</span>
+          <h3>Mathematical Foundations</h3>
+          <p>Entropy inequalities, information theory, and combinatorics establishing rigorous foundations for learning and inference.</p>
         </div>
       </div>
     </div>
   </section>
 
   <section id="work" class="section">
-    <div class="wrap narrow">
-      <h2 class="sh">Selected Work</h2>
-      <div class="cards">
+    <div class="container narrow">
+      <p class="section-num">03</p>
+      <h2>Selected Work</h2>
+      <div class="work-list">
 
-        <article class="card">
-          <div class="card-head">
-            <span class="card-venue">ICLR 2026 Workshop</span>
-            <span class="card-award">Best Paper</span>
+        <article class="w-card">
+          <div class="w-meta">
+            <span class="w-venue">ICLR 2026 Workshop</span>
+            <span class="w-badge award">Best Paper</span>
           </div>
           <h3>Quantifying Consistency in LLM Logical Reasoning via Structural Uncertainty</h3>
           <p>A structural uncertainty framework to measure when and why language models fail at logical consistency.</p>
-          <span class="card-authors">B Chaudhury, MF Wang, HH Park, R Ghosh, S Hong, JO Woo</span>
+          <span class="w-authors">B Chaudhury, MF Wang, HH Park, R Ghosh, S Hong, JO Woo</span>
         </article>
 
-        <article class="card">
-          <div class="card-head">
-            <span class="card-venue">EACL 2026 Findings</span>
-          </div>
+        <article class="w-card">
+          <div class="w-meta"><span class="w-venue">EACL 2026 Findings</span></div>
           <h3>Reflect, Rewrite, Repeat: How Simple Arithmetic Enables Advanced Reasoning in Small Language Models</h3>
           <p>Iterative self-reflection on arithmetic bootstraps advanced reasoning in small LMs without large-scale pretraining.</p>
-          <span class="card-authors">MF Wang, H Xie, MY Kim, B Chaudhury, M Ashok, S Gunturu, S Hong, ...</span>
+          <span class="w-authors">MF Wang, H Xie, MY Kim, B Chaudhury, M Ashok, S Gunturu, S Hong, ...</span>
         </article>
 
-        <article class="card">
-          <div class="card-head">
-            <span class="card-venue">NeurIPS 2025 Workshop</span>
-          </div>
+        <article class="w-card">
+          <div class="w-meta"><span class="w-venue">NeurIPS 2025 Workshop</span></div>
           <h3>Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</h3>
-          <p>Applies VC-theoretic tools to rigorously characterize when and to what extent LLMs can reliably self-evaluate.</p>
-          <span class="card-authors">JO Woo, MF Wang, R Ghosh, B Chaudhury, MY Kim</span>
+          <p>VC-theoretic tools to rigorously characterize when large language models can reliably self-evaluate.</p>
+          <span class="w-authors">JO Woo, MF Wang, R Ghosh, B Chaudhury, MY Kim</span>
         </article>
 
-        <article class="card">
-          <div class="card-head">
-            <span class="card-venue">ICML 2024</span>
-          </div>
+        <article class="w-card">
+          <div class="w-meta"><span class="w-venue">ICML 2024</span></div>
           <h3>Improving Instruction Following in Language Models through Proxy-Based Uncertainty Estimation</h3>
           <p>Uncertainty estimation improves LLM instruction following without retraining the base model.</p>
-          <span class="card-authors">J Lee, JO Woo, J Seok, P Hassanzadeh, W Jang</span>
+          <span class="w-authors">J Lee, JO Woo, J Seok, P Hassanzadeh, W Jang</span>
         </article>
 
-        <article class="card">
-          <div class="card-head">
-            <span class="card-venue">ICLR 2023</span>
-            <span class="card-note">Top 25%</span>
+        <article class="w-card">
+          <div class="w-meta">
+            <span class="w-venue">ICLR 2023</span>
+            <span class="w-badge note">Top 25%</span>
           </div>
           <h3>Active Learning in Bayesian Neural Networks with Balanced Entropy Learning Principle</h3>
           <p>A new principle for leveraging uncertainty in active learning through Bayesian neural networks.</p>
-          <span class="card-authors">JO Woo</span>
+          <span class="w-authors">JO Woo</span>
         </article>
 
-        <article class="card">
-          <div class="card-head">
-            <span class="card-venue">IEEE ISIT 2022</span>
-          </div>
+        <article class="w-card">
+          <div class="w-meta"><span class="w-venue">IEEE ISIT 2022</span></div>
           <h3>Analytic Mutual Information in Bayesian Neural Networks</h3>
-          <p>Closed-form mutual information in Bayesian neural networks, bridging information theory and deep learning.</p>
-          <span class="card-authors">JO Woo</span>
+          <p>Closed-form mutual information bridging information-theoretic foundations with practical deep learning.</p>
+          <span class="w-authors">JO Woo</span>
         </article>
 
       </div>
-      <p class="more"><a href="#publications">All publications &darr;</a></p>
+      <p class="all-link"><a href="#publications">See all publications &darr;</a></p>
     </div>
   </section>
 
-  <section id="publications" class="section alt">
-    <div class="wrap narrow">
-      <h2 class="sh">Publications</h2>
-      <p class="sh-sub">Full list on <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" target="_blank" rel="noopener">Google Scholar</a>.</p>
-      <ol class="pubs" reversed>
-        <li><span>2026</span><div><strong>From Debate to Decision: Conformal Social Choice for Safe Multi-Agent Deliberation</strong><br><span class="au">MF Wang, H Xie, G Wang, A Gao, G Yang, Z Li, ... &middot; Preprint</span></div></li>
-        <li><span>2026</span><div><strong>Quantifying Consistency in LLM Logical Reasoning via Structural Uncertainty</strong><br><span class="au">B Chaudhury, MF Wang, HH Park, R Ghosh, S Hong, <em>JO Woo</em> &middot; ICLR 2026 Workshop</span></div></li>
-        <li><span>2026</span><div><strong>Reflect, Rewrite, Repeat: How Simple Arithmetic Enables Advanced Reasoning in Small Language Models</strong><br><span class="au">MF Wang, H Xie, MY Kim, B Chaudhury, ... &middot; EACL 2026 Findings</span></div></li>
-        <li><span>2025</span><div><strong>Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</strong><br><span class="au"><em>JO Woo</em>, MF Wang, R Ghosh, B Chaudhury, MY Kim &middot; NeurIPS 2025 Workshop</span></div></li>
-        <li><span>2024</span><div><strong>Improving Instruction Following in Language Models through Proxy-Based Uncertainty Estimation</strong><br><span class="au">J Lee, <em>JO Woo</em>, J Seok, P Hassanzadeh, W Jang &middot; ICML 2024</span></div></li>
-        <li><span>2024</span><div><strong>Bayesian Active Learning for Semantic Segmentation</strong><br><span class="au">S Didari, W Hu, <em>JO Woo</em>, H Hao, H Moon, S Min &middot; Preprint</span></div></li>
-        <li><span>2023</span><div><strong>Unsupervised Accuracy Estimation of Deep Visual Models using Domain-Adaptive Adversarial Perturbation without Source Samples</strong><br><span class="au">JH Lee, <em>JO Woo</em>, H Moon, K Lee &middot; ICCV 2023</span></div></li>
-        <li><span>2023</span><div><strong>Active Learning in Bayesian Neural Networks with Balanced Entropy Learning Principle</strong><br><span class="au"><em>JO Woo</em> &middot; ICLR 2023</span></div></li>
-        <li><span>2023</span><div><strong>Unsupervised Contrastive Representation Learning for 3D Mesh Segmentation</strong><br><span class="au">A Haque, H Moon, H Hao, S Didari, <em>JO Woo</em>, P Bangert &middot; AAAI 2023</span></div></li>
-        <li><span>2022</span><div><strong>Analytic Mutual Information in Bayesian Neural Networks</strong><br><span class="au"><em>JO Woo</em> &middot; IEEE ISIT 2022</span></div></li>
-        <li><span>2022</span><div><strong>Medical Image Labeling via Active Learning is 90% Effective</strong><br><span class="au">P Bangert, H Moon, <em>JO Woo</em>, S Didari, H Hao &middot; FICC 2022</span></div></li>
-        <li><span>2022</span><div><strong>Verifying Measures of Quantum Entropy</strong><br><span class="au">GC Pastor, <em>JO Woo</em> &middot; Applied Mathematics</span></div></li>
-        <li><span>2021</span><div><strong>Active Learning Performance in Labeling Radiology Images is 90% Effective</strong><br><span class="au">P Bangert, H Moon, <em>JO Woo</em>, S Didari, H Hao &middot; Frontiers in Radiology</span></div></li>
-        <li><span>2021</span><div><strong>Highly Efficient Representation and Active Learning Framework for Imbalanced Medical Image Classification</strong><br><span class="au">H Hao, H Moon, S Didari, <em>JO Woo</em>, P Bangert &middot; NeurIPS Workshop 2021</span></div></li>
-        <li><span>2021</span><div><strong>PatchNet: Unsupervised Object Discovery Based on Patch Embedding</strong><br><span class="au">H Moon, H Hao, S Didari, <em>JO Woo</em>, P Bangert &middot; Preprint</span></div></li>
-        <li><span>2019</span><div><strong>Majorization and R&eacute;nyi Entropy Inequalities via Sperner Theory</strong><br><span class="au">M Madiman, L Wang, <em>JO Woo</em> &middot; Discrete Mathematics</span></div></li>
-        <li><span>2018</span><div><strong>On the Steady State of Continuous Time Stochastic Opinion Dynamics</strong><br><span class="au">F Baccelli, S Vishwanath, <em>JO Woo</em> &middot; J. Applied Probability</span></div></li>
-        <li><span>2018</span><div><strong>Entropy Inequalities for Sums in Prime Cyclic Groups</strong><br><span class="au">M Madiman, L Wang, <em>JO Woo</em> &middot; SIAM J. Discrete Mathematics</span></div></li>
-        <li><span>2017</span><div><strong>An Analytical Framework for Modeling a Spatially Repulsive Cellular Network</strong><br><span class="au">CS Choi, <em>JO Woo</em>, JG Andrews &middot; IEEE Trans. Communications</span></div></li>
-        <li><span>2017</span><div><strong>On the Coverage Probability of a Spatially Correlated Network</strong><br><span class="au">CS Choi, <em>JO Woo</em>, JG Andrews &middot; IEEE ISIT 2017</span></div></li>
-        <li><span>2016</span><div><strong>On the Entropy and Mutual Information of Point Processes</strong><br><span class="au">F Baccelli, <em>JO Woo</em> &middot; IEEE ISIT 2016</span></div></li>
-        <li><span>2015</span><div><strong>A Discrete Entropy Power Inequality for Uniform Distributions</strong><br><span class="au"><em>JO Woo</em>, M Madiman &middot; IEEE ISIT 2015</span></div></li>
-        <li><span>2015</span><div><strong>Information Theoretic Inequalities, Limit Theorems, and Universal Compression over Unknown Alphabets</strong><br><span class="au"><em>JO Woo</em> &middot; Ph.D. Dissertation, Yale University</span></div></li>
-        <li><span>2014</span><div><strong>A Lower Bound on the R&eacute;nyi Entropy of Convolutions in the Integers</strong><br><span class="au">L Wang, <em>JO Woo</em>, M Madiman &middot; IEEE ISIT 2014</span></div></li>
-        <li><span>2014</span><div><strong>Redundancy of Exchangeable Estimators</strong><br><span class="au">NP Santhanam, AD Sarwate, <em>JO Woo</em> &middot; Entropy</span></div></li>
-        <li><span>2009</span><div><strong>A Note on Preconditioning by Low-Stretch Spanning Trees</strong><br><span class="au">DA Spielman, <em>JO Woo</em> &middot; Preprint</span></div></li>
-      </ol>
+  <section id="publications" class="section section-muted">
+    <div class="container narrow">
+      <p class="section-num">04</p>
+      <h2>All Publications</h2>
+      <p class="sub-note">Also on <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" target="_blank" rel="noopener">Google Scholar</a>.</p>
+      <div class="pub-list">
+        <div class="pub"><span>2026</span><div><strong>From Debate to Decision: Conformal Social Choice for Safe Multi-Agent Deliberation</strong><br><span class="pub-au">MF Wang, H Xie, G Wang, ... &middot; Preprint</span></div></div>
+        <div class="pub"><span>2026</span><div><strong>Quantifying Consistency in LLM Logical Reasoning via Structural Uncertainty</strong><br><span class="pub-au">B Chaudhury, MF Wang, HH Park, R Ghosh, S Hong, <em>JO Woo</em> &middot; ICLR 2026 Workshop</span></div></div>
+        <div class="pub"><span>2026</span><div><strong>Reflect, Rewrite, Repeat: How Simple Arithmetic Enables Advanced Reasoning in Small Language Models</strong><br><span class="pub-au">MF Wang, H Xie, MY Kim, ... &middot; EACL 2026 Findings</span></div></div>
+        <div class="pub"><span>2025</span><div><strong>Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</strong><br><span class="pub-au"><em>JO Woo</em>, MF Wang, R Ghosh, B Chaudhury, MY Kim &middot; NeurIPS 2025 Workshop</span></div></div>
+        <div class="pub"><span>2024</span><div><strong>Improving Instruction Following in Language Models through Proxy-Based Uncertainty Estimation</strong><br><span class="pub-au">J Lee, <em>JO Woo</em>, J Seok, P Hassanzadeh, W Jang &middot; ICML 2024</span></div></div>
+        <div class="pub"><span>2024</span><div><strong>Bayesian Active Learning for Semantic Segmentation</strong><br><span class="pub-au">S Didari, W Hu, <em>JO Woo</em>, H Hao, H Moon, S Min &middot; Preprint</span></div></div>
+        <div class="pub"><span>2023</span><div><strong>Unsupervised Accuracy Estimation of Deep Visual Models using Domain-Adaptive Adversarial Perturbation without Source Samples</strong><br><span class="pub-au">JH Lee, <em>JO Woo</em>, H Moon, K Lee &middot; ICCV 2023</span></div></div>
+        <div class="pub"><span>2023</span><div><strong>Active Learning in Bayesian Neural Networks with Balanced Entropy Learning Principle</strong><br><span class="pub-au"><em>JO Woo</em> &middot; ICLR 2023</span></div></div>
+        <div class="pub"><span>2023</span><div><strong>Unsupervised Contrastive Representation Learning for 3D Mesh Segmentation</strong><br><span class="pub-au">A Haque, H Moon, H Hao, S Didari, <em>JO Woo</em>, P Bangert &middot; AAAI 2023</span></div></div>
+        <div class="pub"><span>2022</span><div><strong>Analytic Mutual Information in Bayesian Neural Networks</strong><br><span class="pub-au"><em>JO Woo</em> &middot; IEEE ISIT 2022</span></div></div>
+        <div class="pub"><span>2022</span><div><strong>Medical Image Labeling via Active Learning is 90% Effective</strong><br><span class="pub-au">P Bangert, H Moon, <em>JO Woo</em>, S Didari, H Hao &middot; FICC 2022</span></div></div>
+        <div class="pub"><span>2022</span><div><strong>Verifying Measures of Quantum Entropy</strong><br><span class="pub-au">GC Pastor, <em>JO Woo</em> &middot; Applied Mathematics</span></div></div>
+        <div class="pub"><span>2021</span><div><strong>Active Learning Performance in Labeling Radiology Images is 90% Effective</strong><br><span class="pub-au">P Bangert, H Moon, <em>JO Woo</em>, S Didari, H Hao &middot; Frontiers in Radiology</span></div></div>
+        <div class="pub"><span>2021</span><div><strong>Highly Efficient Representation and Active Learning Framework for Imbalanced Medical Image Classification</strong><br><span class="pub-au">H Hao, H Moon, S Didari, <em>JO Woo</em>, P Bangert &middot; NeurIPS Workshop 2021</span></div></div>
+        <div class="pub"><span>2021</span><div><strong>PatchNet: Unsupervised Object Discovery Based on Patch Embedding</strong><br><span class="pub-au">H Moon, H Hao, S Didari, <em>JO Woo</em>, P Bangert &middot; Preprint</span></div></div>
+        <div class="pub"><span>2019</span><div><strong>Majorization and R&eacute;nyi Entropy Inequalities via Sperner Theory</strong><br><span class="pub-au">M Madiman, L Wang, <em>JO Woo</em> &middot; Discrete Mathematics</span></div></div>
+        <div class="pub"><span>2018</span><div><strong>On the Steady State of Continuous Time Stochastic Opinion Dynamics</strong><br><span class="pub-au">F Baccelli, S Vishwanath, <em>JO Woo</em> &middot; J. Applied Probability</span></div></div>
+        <div class="pub"><span>2018</span><div><strong>Entropy Inequalities for Sums in Prime Cyclic Groups</strong><br><span class="pub-au">M Madiman, L Wang, <em>JO Woo</em> &middot; SIAM J. Discrete Mathematics</span></div></div>
+        <div class="pub"><span>2017</span><div><strong>An Analytical Framework for Modeling a Spatially Repulsive Cellular Network</strong><br><span class="pub-au">CS Choi, <em>JO Woo</em>, JG Andrews &middot; IEEE Trans. Communications</span></div></div>
+        <div class="pub"><span>2017</span><div><strong>On the Coverage Probability of a Spatially Correlated Network</strong><br><span class="pub-au">CS Choi, <em>JO Woo</em>, JG Andrews &middot; IEEE ISIT 2017</span></div></div>
+        <div class="pub"><span>2016</span><div><strong>On the Entropy and Mutual Information of Point Processes</strong><br><span class="pub-au">F Baccelli, <em>JO Woo</em> &middot; IEEE ISIT 2016</span></div></div>
+        <div class="pub"><span>2015</span><div><strong>A Discrete Entropy Power Inequality for Uniform Distributions</strong><br><span class="pub-au"><em>JO Woo</em>, M Madiman &middot; IEEE ISIT 2015</span></div></div>
+        <div class="pub"><span>2015</span><div><strong>Information Theoretic Inequalities, Limit Theorems, and Universal Compression over Unknown Alphabets</strong><br><span class="pub-au"><em>JO Woo</em> &middot; Ph.D. Dissertation, Yale University</span></div></div>
+        <div class="pub"><span>2014</span><div><strong>A Lower Bound on the R&eacute;nyi Entropy of Convolutions in the Integers</strong><br><span class="pub-au">L Wang, <em>JO Woo</em>, M Madiman &middot; IEEE ISIT 2014</span></div></div>
+        <div class="pub"><span>2014</span><div><strong>Redundancy of Exchangeable Estimators</strong><br><span class="pub-au">NP Santhanam, AD Sarwate, <em>JO Woo</em> &middot; Entropy</span></div></div>
+        <div class="pub"><span>2009</span><div><strong>A Note on Preconditioning by Low-Stretch Spanning Trees</strong><br><span class="pub-au">DA Spielman, <em>JO Woo</em> &middot; Preprint</span></div></div>
+      </div>
     </div>
   </section>
 
   <section id="contact" class="section">
-    <div class="wrap narrow">
-      <h2 class="sh">Contact</h2>
-      <p class="prose-single">
-        For research collaboration on LLM reasoning, uncertainty, or evaluation &mdash;
-        or for invited talks &mdash; reach out via email.
+    <div class="container narrow">
+      <p class="section-num">05</p>
+      <h2>Contact</h2>
+      <p class="contact-desc">
+        Interested in collaborations on LLM reasoning, uncertainty, or evaluation?
+        Reach out for research discussions or invited talks.
       </p>
-      <div class="contact-row">
+      <div class="contact-links">
         <a href="mailto:jaeoh.woo@aya.yale.edu">jaeoh.woo@aya.yale.edu</a>
+        <span class="contact-sep">&middot;</span>
         <a href="https://github.com/jaeohwoo" target="_blank" rel="noopener">GitHub</a>
+        <span class="contact-sep">&middot;</span>
         <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
       </div>
     </div>
   </section>
 
-  <footer class="footer">
-    <div class="wrap narrow">
-      <p>&copy; 2026 Jae Oh Woo &middot; Updated April 2026</p>
-    </div>
-  </footer>
+  <footer><div class="container narrow"><p>&copy; 2026 Jae Oh Woo &middot; Updated April 2026</p></div></footer>
 
   <script src="js/main.js"></script>
 </body>
