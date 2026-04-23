@@ -211,10 +211,11 @@ strong { font-weight: 600; }
 }
 .hero-statement {
   font-family: var(--serif);
-  font-size: 1.35rem;
-  line-height: 1.45;
+  font-size: 1.5rem;
+  line-height: 1.35;
   color: var(--text);
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
+  letter-spacing: -0.01em;
 }
 .hero-sub {
   font-size: 0.88rem;
@@ -299,6 +300,10 @@ strong { font-weight: 600; }
   font-size: 0.95rem;
   color: var(--text);
 }
+.about-philosophy {
+  font-style: italic;
+  color: var(--accent-muted);
+}
 
 /* ===== Pillars ===== */
 .pillars {
@@ -348,6 +353,20 @@ strong { font-weight: 600; }
   padding: 2px 8px;
   border-radius: 3px;
   letter-spacing: 0.01em;
+}
+.pillar-featured {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-top: 0.85rem;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.pillar-featured:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 /* ===== Selected Work ===== */
@@ -435,6 +454,13 @@ strong { font-weight: 600; }
   font-size: 0.84rem;
   color: var(--text-2);
   line-height: 1.7;
+  margin-bottom: 0.3rem;
+}
+.work-impact {
+  font-size: 0.8rem;
+  color: var(--accent-muted);
+  font-style: italic;
+  line-height: 1.6;
   margin-bottom: 0.75rem;
 }
 .work-foot {
@@ -503,6 +529,13 @@ strong { font-weight: 600; }
   height: 4px;
   border-radius: 50%;
   background: var(--border-hover);
+}
+.news-list time {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-3);
+  margin-right: 0.3rem;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ===== Pubs ===== */
