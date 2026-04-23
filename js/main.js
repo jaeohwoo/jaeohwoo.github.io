@@ -19,6 +19,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  const showMoreBtn = document.getElementById('showMorePubs');
+  const pubsList = document.getElementById('pubsList');
+  if (showMoreBtn && pubsList) {
+    showMoreBtn.addEventListener('click', () => {
+      pubsList.classList.remove('pubs--collapsed');
+      pubsList.classList.add('pubs--expanded');
+      showMoreBtn.parentElement.style.display = 'none';
+    });
+  }
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -29,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
 
   document.querySelectorAll(
-    '.pillar, .work, .news-item, .pub, .contact-chip, .hero-statement, .about-body'
+    '.pillar, .work, .news-group, .pub, .contact-chip, .hero-statement, .about-body'
   ).forEach(el => {
     el.classList.add('reveal');
     observer.observe(el);

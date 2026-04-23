@@ -20,7 +20,7 @@
       <ul class="nav-links" id="navLinks">
         <li><a href="#about">About</a></li>
         <li><a href="#research">Research</a></li>
-        <li><a href="#selected-work">Work</a></li>
+        <li><a href="#selected-work">Selected Work</a></li>
         <li><a href="#publications">Publications</a></li>
         <li><a href="#news">News</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -34,23 +34,28 @@
     <div class="container-wide">
       <div class="hero-grid">
         <div class="hero-text">
-          <ul class="hero-updates">
-            <li><a href="https://openreview.net/forum?id=YMwow5RQgP" target="_blank" rel="noopener"><span class="upd-tag hot">Best Paper</span> ICLR 2026 Workshop on Logical Reasoning of LLMs</a></li>
-            <li><a href="https://aclanthology.org/2026.findings-eacl.69/" target="_blank" rel="noopener"><span class="upd-tag">EACL 2026</span> Reflect, Rewrite, Repeat &mdash; reasoning in small LMs</a></li>
-            <li><a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener"><span class="upd-tag">NeurIPS &rsquo;25 Workshop</span> Can LLMs Reliably Evaluate Themselves?</a></li>
-          </ul>
+          <div class="hero-badges">
+            <a href="https://openreview.net/forum?id=YMwow5RQgP" target="_blank" rel="noopener" class="h-badge h-badge--gold">
+              <strong>Best Paper</strong> &mdash; ICLR 2026 Workshop
+            </a>
+            <a href="https://aclanthology.org/2026.findings-eacl.69/" target="_blank" rel="noopener" class="h-badge">
+              EACL 2026 Findings
+            </a>
+            <a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener" class="h-badge">
+              NeurIPS 2025 Workshop
+            </a>
+          </div>
           <p class="hero-eyebrow">Senior Applied Scientist &middot; GenAI Innovation Center, AWS</p>
           <h1 class="hero-name">Jae Oh Woo</h1>
           <p class="hero-statement">
             Building reliable reasoning, principled uncertainty, and mathematical foundations for modern AI systems.
           </p>
           <p class="hero-sub">
-            I develop methods and theory for evaluating, calibrating, and improving intelligent systems &mdash;
-            from LLM self-evaluation and logical consistency to information-theoretic machine learning.
-            My work bridges rigorous mathematical perspectives and practical AI systems.
+            I develop theory and methods for reliable AI systems &mdash; spanning LLM reasoning, self-evaluation, uncertainty, and information-theoretic learning.
           </p>
           <div class="hero-actions">
-            <a href="#selected-work" class="btn btn-primary">View Research</a>
+            <a href="#selected-work" class="btn btn-primary">Selected Work</a>
+            <a href="cv.pdf" class="btn btn-ghost" target="_blank">CV</a>
             <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" class="btn btn-ghost" target="_blank" rel="noopener">Google Scholar</a>
           </div>
         </div>
@@ -71,14 +76,12 @@
           where I work on making large language models more reliable, better calibrated, and grounded in principled foundations.
         </p>
         <p>
-          My research sits at the intersection of deep learning theory and practice. I develop information-theoretic
-          and Bayesian approaches to understand and improve how AI systems reason, quantify uncertainty, and learn
-          efficiently from limited supervision.
+          My research combines mathematical rigor with practical AI systems, with a focus on reasoning, uncertainty, and efficient learning.
         </p>
         <p>
-          Before AWS, I was a Sr. Staff Research Scientist at Samsung SDS Research America and worked at Moody's Analytics.
-          I hold a Ph.D. in Applied Mathematics from Yale University and a B.S. in Mathematics from KAIST.
-          I was a Simons Postdoctoral Fellow at the University of Texas at Austin.
+          Before AWS, I worked at Samsung SDS Research America and Moody&rsquo;s Analytics.
+          I received my Ph.D. in Applied Mathematics from Yale University,
+          a B.S. in Mathematics from KAIST, and was a Simons Postdoctoral Fellow at UT Austin.
         </p>
       </div>
     </div>
@@ -94,21 +97,36 @@
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
           </div>
           <h3>LLM Reasoning &amp; Self-Evaluation</h3>
-          <p>Methods for evaluating logical consistency, improving instruction-following, and enabling reliable self-assessment in large language models.</p>
+          <p>Methods for evaluating logical consistency, improving instruction following, and enabling reliable self-assessment in language models.</p>
+          <div class="pillar-tags">
+            <span>self-correction</span>
+            <span>logical consistency</span>
+            <span>verification</span>
+          </div>
         </div>
         <div class="pillar">
           <div class="pillar-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
           </div>
           <h3>Uncertainty &amp; Calibration</h3>
-          <p>Principled Bayesian and information-theoretic approaches for quantifying uncertainty, calibrating predictions, and guiding efficient data acquisition.</p>
+          <p>Bayesian and information-theoretic approaches for confidence estimation, calibration, and efficient data acquisition.</p>
+          <div class="pillar-tags">
+            <span>uncertainty</span>
+            <span>active learning</span>
+            <span>reliability</span>
+          </div>
         </div>
         <div class="pillar">
           <div class="pillar-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
           </div>
           <h3>Mathematical Foundations</h3>
-          <p>Information theory, entropy inequalities, and combinatorics to establish rigorous mathematical foundations for learning and inference.</p>
+          <p>Rigorous foundations for learning and inference through information theory, entropy, and combinatorics.</p>
+          <div class="pillar-tags">
+            <span>information theory</span>
+            <span>entropy</span>
+            <span>learning theory</span>
+          </div>
         </div>
       </div>
     </div>
@@ -123,69 +141,87 @@
 
         <article class="work">
           <div class="work-top">
-            <span class="work-venue">ICLR 2026 Workshop</span>
-            <span class="work-award">Best Paper Award</span>
+            <span class="venue-badge venue-iclr">ICLR 2026 Workshop</span>
+            <span class="work-award">Best Paper</span>
           </div>
           <h3 class="work-title">Quantifying Consistency in LLM Logical Reasoning via Structural Uncertainty</h3>
-          <p class="work-desc">Proposes a structural uncertainty framework to measure logical consistency in LLM reasoning, offering a new lens on when and why language models fail at logic.</p>
+          <p class="work-desc">A structural uncertainty framework for measuring logical consistency in LLM reasoning &mdash; revealing when and why language models appear correct but reason unreliably.</p>
           <div class="work-foot">
             <span class="work-authors">B Chaudhury, MF Wang, HH Park, R Ghosh, S Hong, JO Woo</span>
+            <div class="work-links">
+              <a href="https://openreview.net/forum?id=YMwow5RQgP" target="_blank" rel="noopener">Paper</a>
+            </div>
           </div>
         </article>
 
         <article class="work">
           <div class="work-top">
-            <span class="work-venue">EACL 2026 Findings</span>
+            <span class="venue-badge venue-eacl">EACL 2026 Findings</span>
           </div>
           <h3 class="work-title">Reflect, Rewrite, Repeat: How Simple Arithmetic Enables Advanced Reasoning in Small Language Models</h3>
-          <p class="work-desc">Shows that iterative self-reflection on simple arithmetic tasks can bootstrap advanced reasoning abilities in small language models without large-scale pretraining.</p>
+          <p class="work-desc">A method for bootstrapping advanced reasoning in small language models through iterative self-reflection on simple arithmetic &mdash; without large-scale pretraining.</p>
           <div class="work-foot">
             <span class="work-authors">MF Wang, H Xie, MY Kim, B Chaudhury, M Ashok, S Gunturu, S Hong, ...</span>
+            <div class="work-links">
+              <a href="https://aclanthology.org/2026.findings-eacl.69/" target="_blank" rel="noopener">Paper</a>
+            </div>
           </div>
         </article>
 
         <article class="work">
           <div class="work-top">
-            <span class="work-venue">NeurIPS 2025 Workshop</span>
+            <span class="venue-badge venue-neurips">NeurIPS 2025 Workshop</span>
           </div>
           <h3 class="work-title">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</h3>
-          <p class="work-desc">Applies VC-theoretic tools to rigorously characterize when and to what extent large language models can reliably self-evaluate.</p>
+          <p class="work-desc">A VC-theoretic perspective on LLM self-evaluation &mdash; rigorously characterizing when and to what extent language models can reliably assess their own outputs.</p>
           <div class="work-foot">
             <span class="work-authors">JO Woo, MF Wang, R Ghosh, B Chaudhury, MY Kim</span>
+            <div class="work-links">
+              <a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener">Paper</a>
+            </div>
           </div>
         </article>
 
         <article class="work">
           <div class="work-top">
-            <span class="work-venue">ICML 2024</span>
+            <span class="venue-badge venue-icml">ICML 2024</span>
           </div>
           <h3 class="work-title">Improving Instruction Following in Language Models through Proxy-Based Uncertainty Estimation</h3>
-          <p class="work-desc">Connects uncertainty estimation to instruction following in LLMs, using proxy-based methods to improve reliability without retraining the base model.</p>
+          <p class="work-desc">A proxy-based approach to improving instruction following through uncertainty estimation &mdash; enhancing LLM reliability without retraining.</p>
           <div class="work-foot">
             <span class="work-authors">J Lee, JO Woo, J Seok, P Hassanzadeh, W Jang</span>
+            <div class="work-links">
+              <a href="https://arxiv.org/abs/2405.06424" target="_blank" rel="noopener">arXiv</a>
+            </div>
           </div>
         </article>
 
         <article class="work">
           <div class="work-top">
-            <span class="work-venue">ICLR 2023</span>
+            <span class="venue-badge venue-iclr">ICLR 2023</span>
             <span class="work-note">Top 25%</span>
           </div>
           <h3 class="work-title">Active Learning in Bayesian Neural Networks with Balanced Entropy Learning Principle</h3>
-          <p class="work-desc">Introduces a new principle for leveraging uncertainty in active learning, enabling more balanced and effective data acquisition through Bayesian neural networks.</p>
+          <p class="work-desc">A balanced entropy principle for active learning in Bayesian neural networks &mdash; enabling more effective and targeted data acquisition under limited supervision.</p>
           <div class="work-foot">
             <span class="work-authors">JO Woo</span>
+            <div class="work-links">
+              <a href="https://arxiv.org/abs/2105.14559" target="_blank" rel="noopener">arXiv</a>
+            </div>
           </div>
         </article>
 
         <article class="work">
           <div class="work-top">
-            <span class="work-venue">IEEE ISIT 2022</span>
+            <span class="venue-badge venue-ieee">IEEE ISIT 2022</span>
           </div>
           <h3 class="work-title">Analytic Mutual Information in Bayesian Neural Networks</h3>
-          <p class="work-desc">Derives a closed-form expression for mutual information in Bayesian neural networks, bridging information-theoretic foundations with practical deep learning.</p>
+          <p class="work-desc">A closed-form expression for mutual information in Bayesian neural networks &mdash; bridging information-theoretic foundations with practical deep learning.</p>
           <div class="work-foot">
             <span class="work-authors">JO Woo</span>
+            <div class="work-links">
+              <a href="https://arxiv.org/abs/2201.09815" target="_blank" rel="noopener">arXiv</a>
+            </div>
           </div>
         </article>
 
@@ -200,33 +236,32 @@
     <div class="container-narrow">
       <h2 class="section-label">News</h2>
       <div class="news">
-        <div class="news-item">
-          <time>2026</time>
-          <p><strong>Best Paper Award</strong> at ICLR 2026 Workshop on Logical Reasoning of LLMs.</p>
+        <div class="news-group">
+          <h3 class="news-year-label">2026</h3>
+          <ul class="news-list">
+            <li><strong>Best Paper Award</strong> at ICLR 2026 Workshop on Logical Reasoning of LLMs.</li>
+            <li>Paper on structural uncertainty in LLM reasoning accepted to ICLR 2026 Workshop.</li>
+            <li>Paper on arithmetic-enabled reasoning in small LMs accepted to EACL 2026 Findings.</li>
+            <li>New preprint: Conformal Social Choice for Safe Multi-Agent Deliberation.</li>
+          </ul>
         </div>
-        <div class="news-item">
-          <time>2026</time>
-          <p>Paper on <strong>structural uncertainty in LLM reasoning</strong> accepted to ICLR 2026 Workshop.</p>
+        <div class="news-group">
+          <h3 class="news-year-label">2025</h3>
+          <ul class="news-list">
+            <li>Paper on LLM self-evaluation via VC framework accepted to NeurIPS 2025 Workshop.</li>
+          </ul>
         </div>
-        <div class="news-item">
-          <time>2026</time>
-          <p>Paper on <strong>arithmetic-enabled reasoning in small LMs</strong> accepted to EACL 2026 Findings.</p>
+        <div class="news-group">
+          <h3 class="news-year-label">2024</h3>
+          <ul class="news-list">
+            <li>Paper on improving instruction following in LLMs accepted to ICML 2024.</li>
+          </ul>
         </div>
-        <div class="news-item">
-          <time>2026</time>
-          <p>New preprint: <strong>Conformal Social Choice for Safe Multi-Agent Deliberation</strong>.</p>
-        </div>
-        <div class="news-item">
-          <time>2025</time>
-          <p>Paper on <strong>LLM self-evaluation via VC framework</strong> accepted to NeurIPS 2025 Workshop.</p>
-        </div>
-        <div class="news-item">
-          <time>2024</time>
-          <p>Paper on <strong>improving instruction following in LLMs</strong> accepted to ICML 2024.</p>
-        </div>
-        <div class="news-item">
-          <time>2023</time>
-          <p><strong>Samsung Best Paper Award</strong>, Gold Prize. Selected as <strong>NeurIPS 2023 Top Reviewer</strong>.</p>
+        <div class="news-group">
+          <h3 class="news-year-label">2023</h3>
+          <ul class="news-list">
+            <li><strong>Samsung Best Paper Award</strong>, Gold Prize. Selected as <strong>NeurIPS 2023 Top Reviewer</strong>.</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -240,13 +275,15 @@
         Also on <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" target="_blank" rel="noopener">Google Scholar</a>.
       </p>
 
-      <ol class="pubs" reversed>
+      <ol class="pubs pubs--collapsed" id="pubsList" reversed>
 
         <li class="pub">
           <span class="pub-year">2026</span>
           <div>
             <p class="pub-title">From Debate to Decision: Conformal Social Choice for Safe Multi-Agent Deliberation</p>
-            <p class="pub-meta">MF Wang, H Xie, G Wang, A Gao, G Yang, Z Li, QW Qiu, F Han, H Qiu, ... &middot; Preprint</p>
+            <p class="pub-meta">MF Wang, H Xie, G Wang, A Gao, G Yang, Z Li, QW Qiu, F Han, H Qiu, ... &middot; Preprint
+              <a href="https://arxiv.org/abs/2604.07667" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+            </p>
           </div>
         </li>
 
@@ -254,7 +291,9 @@
           <span class="pub-year">2026</span>
           <div>
             <p class="pub-title">Quantifying Consistency in LLM Logical Reasoning via Structural Uncertainty</p>
-            <p class="pub-meta">B Chaudhury, MF Wang, HH Park, R Ghosh, S Hong, <strong>JO Woo</strong> &middot; ICLR 2026 Workshop</p>
+            <p class="pub-meta">B Chaudhury, MF Wang, HH Park, R Ghosh, S Hong, <strong>JO Woo</strong> &middot; <strong>ICLR 2026 Workshop</strong>
+              <a href="https://openreview.net/forum?id=YMwow5RQgP" class="pub-link" target="_blank" rel="noopener">paper</a>
+            </p>
           </div>
         </li>
 
@@ -262,7 +301,9 @@
           <span class="pub-year">2026</span>
           <div>
             <p class="pub-title">Reflect, Rewrite, Repeat: How Simple Arithmetic Enables Advanced Reasoning in Small Language Models</p>
-            <p class="pub-meta">MF Wang, H Xie, MY Kim, B Chaudhury, M Ashok, S Gunturu, S Hong, ... &middot; EACL 2026 Findings</p>
+            <p class="pub-meta">MF Wang, H Xie, MY Kim, B Chaudhury, M Ashok, S Gunturu, S Hong, ... &middot; <strong>EACL 2026 Findings</strong>
+              <a href="https://aclanthology.org/2026.findings-eacl.69/" class="pub-link" target="_blank" rel="noopener">paper</a>
+            </p>
           </div>
         </li>
 
@@ -270,7 +311,9 @@
           <span class="pub-year">2025</span>
           <div>
             <p class="pub-title">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</p>
-            <p class="pub-meta"><strong>JO Woo</strong>, MF Wang, R Ghosh, B Chaudhury, MY Kim &middot; NeurIPS 2025 Workshop</p>
+            <p class="pub-meta"><strong>JO Woo</strong>, MF Wang, R Ghosh, B Chaudhury, MY Kim &middot; <strong>NeurIPS 2025 Workshop</strong>
+              <a href="https://openreview.net/forum?id=CdxeuFBAUD" class="pub-link" target="_blank" rel="noopener">paper</a>
+            </p>
           </div>
         </li>
 
@@ -278,7 +321,9 @@
           <span class="pub-year">2024</span>
           <div>
             <p class="pub-title">Improving Instruction Following in Language Models through Proxy-Based Uncertainty Estimation</p>
-            <p class="pub-meta">J Lee, <strong>JO Woo</strong>, J Seok, P Hassanzadeh, W Jang &middot; ICML 2024</p>
+            <p class="pub-meta">J Lee, <strong>JO Woo</strong>, J Seok, P Hassanzadeh, W Jang &middot; <strong>ICML 2024</strong>
+              <a href="https://arxiv.org/abs/2405.06424" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+            </p>
           </div>
         </li>
 
@@ -286,7 +331,9 @@
           <span class="pub-year">2024</span>
           <div>
             <p class="pub-title">Bayesian Active Learning for Semantic Segmentation</p>
-            <p class="pub-meta">S Didari, W Hu, <strong>JO Woo</strong>, H Hao, H Moon, S Min &middot; Preprint</p>
+            <p class="pub-meta">S Didari, W Hu, <strong>JO Woo</strong>, H Hao, H Moon, S Min &middot; Preprint
+              <a href="https://arxiv.org/abs/2408.01694" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+            </p>
           </div>
         </li>
 
@@ -294,7 +341,9 @@
           <span class="pub-year">2023</span>
           <div>
             <p class="pub-title">Unsupervised Accuracy Estimation of Deep Visual Models using Domain-Adaptive Adversarial Perturbation without Source Samples</p>
-            <p class="pub-meta">JH Lee, <strong>JO Woo</strong>, H Moon, K Lee &middot; ICCV 2023</p>
+            <p class="pub-meta">JH Lee, <strong>JO Woo</strong>, H Moon, K Lee &middot; <strong>ICCV 2023</strong>
+              <a href="https://arxiv.org/abs/2307.10062" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+            </p>
           </div>
         </li>
 
@@ -302,7 +351,9 @@
           <span class="pub-year">2023</span>
           <div>
             <p class="pub-title">Active Learning in Bayesian Neural Networks with Balanced Entropy Learning Principle</p>
-            <p class="pub-meta"><strong>JO Woo</strong> &middot; ICLR 2023</p>
+            <p class="pub-meta"><strong>JO Woo</strong> &middot; <strong>ICLR 2023</strong>
+              <a href="https://arxiv.org/abs/2105.14559" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+            </p>
           </div>
         </li>
 
@@ -310,7 +361,7 @@
           <span class="pub-year">2023</span>
           <div>
             <p class="pub-title">Unsupervised Contrastive Representation Learning for 3D Mesh Segmentation</p>
-            <p class="pub-meta">A Haque, H Moon, H Hao, S Didari, <strong>JO Woo</strong>, P Bangert &middot; AAAI 2023</p>
+            <p class="pub-meta">A Haque, H Moon, H Hao, S Didari, <strong>JO Woo</strong>, P Bangert &middot; <strong>AAAI 2023</strong></p>
           </div>
         </li>
 
@@ -318,7 +369,9 @@
           <span class="pub-year">2022</span>
           <div>
             <p class="pub-title">Analytic Mutual Information in Bayesian Neural Networks</p>
-            <p class="pub-meta"><strong>JO Woo</strong> &middot; IEEE ISIT 2022</p>
+            <p class="pub-meta"><strong>JO Woo</strong> &middot; <strong>IEEE ISIT 2022</strong>
+              <a href="https://arxiv.org/abs/2201.09815" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+            </p>
           </div>
         </li>
 
@@ -451,6 +504,10 @@
         </li>
 
       </ol>
+
+      <div class="pubs-toggle" id="pubsToggle">
+        <button id="showMorePubs" class="btn btn-ghost">Show all publications</button>
+      </div>
     </div>
   </section>
 
@@ -462,18 +519,19 @@
         For research collaboration on LLM reasoning, uncertainty, or evaluation &mdash;
         or for invited talks and consulting &mdash; feel free to reach out.
       </p>
+      <a href="mailto:jaeoh.woo@aya.yale.edu" class="contact-email">jaeoh.woo@aya.yale.edu</a>
       <div class="contact-row">
-        <a href="mailto:jaeoh.woo@aya.yale.edu" class="contact-chip">
-          <span class="chip-label">Email</span>
-          <span class="chip-value">jaeoh.woo@aya.yale.edu</span>
+        <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" class="contact-chip" target="_blank" rel="noopener">
+          <span class="chip-label">Scholar</span>
+          <span class="chip-value">Google Scholar</span>
         </a>
         <a href="https://github.com/jaeohwoo" class="contact-chip" target="_blank" rel="noopener">
           <span class="chip-label">GitHub</span>
           <span class="chip-value">jaeohwoo</span>
         </a>
-        <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" class="contact-chip" target="_blank" rel="noopener">
-          <span class="chip-label">Scholar</span>
-          <span class="chip-value">Google Scholar</span>
+        <a href="cv.pdf" class="contact-chip" target="_blank">
+          <span class="chip-label">Download</span>
+          <span class="chip-value">CV (PDF)</span>
         </a>
       </div>
     </div>
