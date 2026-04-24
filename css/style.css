@@ -304,10 +304,10 @@ strong { font-weight: 600; }
 .section-tinted { background: var(--bg-tint); }
 
 .section-label {
-  font-size: 0.62rem;
+  font-size: 0.85rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   color: var(--accent);
   margin-bottom: 2.5rem;
   position: relative;
@@ -318,7 +318,7 @@ strong { font-weight: 600; }
   position: absolute;
   bottom: -6px;
   left: 0;
-  width: 24px;
+  width: 28px;
   height: 2px;
   background: var(--accent);
   border-radius: 1px;
