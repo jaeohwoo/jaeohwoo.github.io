@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reliable Reasoning Requires More Than Accuracy — Jae Oh Woo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/essay.css">
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-name">Jae Oh Woo</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../#essays">&larr; Essays</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="essay-page">
+    <div class="essay-container">
+      <header class="essay-header">
+        <time class="essay-meta">April 2026</time>
+        <h1 class="essay-page-title">Reliable Reasoning Requires More Than Accuracy</h1>
+        <p class="essay-subtitle">Accuracy tells us whether a model got the answer right. Reliability asks whether we know when to trust it.</p>
+      </header>
+
+      <div class="essay-body">
+        <p>The default way to evaluate a language model is accuracy: what fraction of the time does it produce the correct answer? This metric is useful, but it is also dangerously incomplete. A model that is right 90% of the time but gives no signal about which 10% it gets wrong is, in many contexts, less useful than a model that is right 80% of the time but reliably knows when it is uncertain.</p>
+
+        <p>This distinction — between accuracy and reliability — is at the heart of making AI systems trustworthy enough for real deployment.</p>
+
+        <h2>The Calibration Gap</h2>
+
+        <p>A well-calibrated model is one whose confidence scores correspond to actual probabilities. When it says it is 90% confident, it should be correct roughly 90% of the time. Most modern LLMs are poorly calibrated. They express high confidence even when they are wrong, and their uncertainty estimates — when available at all — are unreliable.</p>
+
+        <p>This is not merely an aesthetic problem. In any system where a human or downstream process must decide whether to act on a model's output, calibration is essential. Without it, the user has no basis for distinguishing reliable outputs from unreliable ones.</p>
+
+        <h2>Why Accuracy Benchmarks Miss the Point</h2>
+
+        <p>Standard benchmarks report aggregate accuracy across a test set. But aggregate performance hides distributional structure. A model might achieve 95% accuracy overall while systematically failing on a specific category of inputs — logical negation, multi-step arithmetic, causal reasoning under confounders. If we only look at the aggregate number, we miss the failure modes that matter most.</p>
+
+        <p>Worse, optimizing for benchmark accuracy can actively harm reliability. Models learn to exploit surface patterns in benchmark datasets, producing correct answers for the wrong reasons. This inflates accuracy scores while making the model more brittle on out-of-distribution inputs — exactly the inputs that matter in real-world deployment.</p>
+
+        <h2>From Prediction to Uncertainty Estimation</h2>
+
+        <p>The path toward reliable reasoning requires treating uncertainty as a first-class output. This means moving beyond point predictions to methods that quantify how much the model knows and does not know about a given input.</p>
+
+        <p>Several frameworks make this possible. Bayesian approaches model uncertainty through posterior distributions over parameters or predictions. Conformal prediction provides distribution-free coverage guarantees. VC-theoretic analysis bounds the gap between observed and true performance. Each framework offers different trade-offs between computational cost, theoretical guarantees, and practical applicability.</p>
+
+        <p>The common thread is that all of these approaches take uncertainty seriously — not as a nice-to-have addition, but as a core component of the system's output.</p>
+
+        <h2>Reliability as a Design Principle</h2>
+
+        <p>Reliability should not be bolted on after the fact. It should be a design principle from the beginning. This means choosing architectures that support uncertainty estimation, training procedures that preserve calibration, and evaluation protocols that test not just what the model knows, but whether it knows what it does not know.</p>
+
+        <p>For language models specifically, this is challenging because the dominant training paradigm — next-token prediction at scale — produces models that are fluent but not necessarily calibrated. Bridging this gap is one of the central challenges of making LLMs ready for high-stakes applications.</p>
+
+        <h2>The Practical Stakes</h2>
+
+        <p>None of this is abstract. When a language model assists in medical diagnosis, legal analysis, or scientific reasoning, the cost of a confident but wrong answer can be severe. The goal is not to make models that never make mistakes — that is unrealistic — but to make models that communicate their uncertainty honestly, so that humans and systems downstream can make informed decisions about when to trust and when to verify.</p>
+
+        <p>Accuracy is necessary but not sufficient. Reliability is the harder, more important goal.</p>
+      </div>
+
+      <footer class="essay-footer">
+        <div class="essay-related">
+          <h3>Related Work</h3>
+          <ul>
+            <li><a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</a> — NeurIPS 2025 Workshop</li>
+            <li><a href="https://icml.cc/virtual/2024/poster/33513" target="_blank" rel="noopener">Improving Instruction Following through Proxy-Based Uncertainty Estimation</a> — ICML 2024</li>
+            <li><a href="https://ieeexplore.ieee.org/document/9834883" target="_blank" rel="noopener">Analytic Mutual Information in Bayesian Neural Networks</a> — IEEE ISIT 2022</li>
+          </ul>
+        </div>
+        <a href="../#essays" class="essay-back">&larr; Back to Essays</a>
+      </footer>
+    </div>
+  </article>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

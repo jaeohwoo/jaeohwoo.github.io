@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
 
   document.querySelectorAll(
-    '.pillar, .work, .news-group, .pub, .contact-chip, .hero-statement, .about-body'
+    '.pillar, .work, .news-group, .pub, .contact-chip, .hero-statement, .about-body, .essay-card'
   ).forEach(el => {
     el.classList.add('reveal');
     observer.observe(el);

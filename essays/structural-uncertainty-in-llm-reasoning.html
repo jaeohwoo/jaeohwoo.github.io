@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Structural Uncertainty in LLM Reasoning — Jae Oh Woo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/essay.css">
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-name">Jae Oh Woo</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../#essays">&larr; Essays</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="essay-page">
+    <div class="essay-container">
+      <header class="essay-header">
+        <time class="essay-meta">April 2026</time>
+        <h1 class="essay-page-title">Structural Uncertainty in LLM Reasoning</h1>
+        <p class="essay-subtitle">Why reasoning failures often appear not as random errors, but as instability in the structure of generated reasoning paths.</p>
+      </header>
+
+      <div class="essay-body">
+        <p>When a large language model fails at a reasoning task, the failure is rarely random. Ask the same model the same question multiple times, and the errors tend to cluster. The model does not flip coins — it has systematic weaknesses, patterns of failure that reflect something deeper than surface-level noise.</p>
+
+        <p>Understanding this structure is key to building more reliable reasoning systems.</p>
+
+        <h2>Beyond Token-Level Uncertainty</h2>
+
+        <p>Most approaches to uncertainty in language models operate at the token level. At each generation step, the model produces a probability distribution over the next token. High entropy in this distribution signals local uncertainty. But local uncertainty and reasoning reliability are different things.</p>
+
+        <p>A model can be locally confident at every step — assigning high probability to each successive token — while producing a reasoning chain that is globally incoherent. Each individual step looks plausible, but the overall argument does not hold. This is the hallmark of structural uncertainty: the instability lives not in individual tokens but in the topology of the reasoning path.</p>
+
+        <h2>What Structural Instability Looks Like</h2>
+
+        <p>Consider a multi-step logical reasoning problem. A reliable model should produce reasoning paths that are stable under small perturbations: rephrasing the question slightly, changing the order of premises, or adding irrelevant context should not fundamentally alter the logical structure of the response.</p>
+
+        <p>In practice, LLMs often fail this test. Small perturbations to the input produce dramatically different reasoning chains — not just different wording, but different logical structures, different intermediate conclusions, and sometimes different final answers. The model appears correct on any single sample, but the instability across samples reveals that the reasoning is not grounded in genuine understanding.</p>
+
+        <h2>Measuring Structural Uncertainty</h2>
+
+        <p>If structural uncertainty is the problem, we need methods that can detect it. Token-level entropy is insufficient because it measures the wrong thing. What we need are metrics that capture the stability of reasoning structure across multiple generations.</p>
+
+        <p>One approach is to sample multiple reasoning paths for the same input and analyze not just whether they reach the same conclusion, but whether they follow logically consistent intermediate steps. High variance in reasoning structure — even when final answers agree — is a signal that the model's reasoning is fragile.</p>
+
+        <p>Another approach draws on information-theoretic tools. Rather than measuring uncertainty in output tokens, we can measure uncertainty in the logical relationships between reasoning steps. This requires moving from a sequence-level view of generation to a structure-level view — treating the reasoning chain as a graph or tree rather than a flat sequence of tokens.</p>
+
+        <h2>Implications for Evaluation</h2>
+
+        <p>Standard evaluation compares the model's final answer to the ground truth. If the answer is correct, the sample is counted as a success. But this misses the distinction between robust correctness and fragile correctness.</p>
+
+        <p>A model that reaches the right answer through a stable, logically sound reasoning path is fundamentally different from a model that reaches the right answer through an unstable path that happens to land correctly on this particular sample. The first model is reliable; the second is lucky. Evaluation methods that cannot distinguish between these two cases are incomplete.</p>
+
+        <h2>From Detection to Mitigation</h2>
+
+        <p>Detecting structural uncertainty is the first step. The harder question is what to do about it. Several directions are promising.</p>
+
+        <p>First, uncertainty-aware decoding strategies that explicitly optimize for reasoning stability rather than just token likelihood. Second, training methods that penalize structural inconsistency across reasoning paths. Third, inference-time methods that sample multiple paths, detect structural disagreement, and either abstain or flag the output as uncertain.</p>
+
+        <p>None of these approaches eliminate reasoning failures entirely. But they shift the system from one that fails silently — producing confident but unstable reasoning — to one that fails informatively, providing actionable uncertainty signals to downstream users and systems.</p>
+      </div>
+
+      <footer class="essay-footer">
+        <div class="essay-related">
+          <h3>Related Work</h3>
+          <ul>
+            <li><a href="https://openreview.net/forum?id=YMwow5RQgP" target="_blank" rel="noopener">Structural Uncertainty in LLM Logical Reasoning</a> — ICLR 2026 Workshop (Best Paper)</li>
+            <li><a href="https://aclanthology.org/2026.findings-eacl.69/" target="_blank" rel="noopener">Reflect, Rewrite, Repeat: How Simple Arithmetic Enables Advanced Reasoning in Small Language Models</a> — EACL 2026 Findings</li>
+          </ul>
+        </div>
+        <a href="../#essays" class="essay-back">&larr; Back to Essays</a>
+      </footer>
+    </div>
+  </article>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why Consensus Is Not Correctness in Multi-Agent AI — Jae Oh Woo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/essay.css">
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-name">Jae Oh Woo</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../#essays">&larr; Essays</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="essay-page">
+    <div class="essay-container">
+      <header class="essay-header">
+        <time class="essay-meta">April 2026</time>
+        <h1 class="essay-page-title">Why Consensus Is Not Correctness in Multi-Agent AI</h1>
+        <p class="essay-subtitle">Multi-agent systems can agree on the wrong answer. Uncertainty control matters more than surface-level agreement.</p>
+      </header>
+
+      <div class="essay-body">
+        <p>There is a natural intuition that if multiple agents agree, the answer is probably right. This is the logic behind ensemble methods, committee voting, and more recently, multi-agent debate in large language models. But agreement is not the same as correctness, and conflating the two can produce confidently wrong systems.</p>
+
+        <p>Consider a panel of LLMs debating a factual question. After several rounds, they converge on a single answer. Does convergence mean they found the truth? Not necessarily. If the models share similar training distributions, similar biases, and similar failure modes, they can easily converge on the same error. Consensus amplifies shared knowledge, but it also amplifies shared blind spots.</p>
+
+        <h2>The Problem with Majority Rules</h2>
+
+        <p>Majority voting is appealing because it is simple. But simplicity comes at a cost. When agents share correlated errors — which is almost always the case for models from similar training paradigms — majority voting provides weaker guarantees than we might hope. The effective diversity of the ensemble is lower than the number of agents suggests.</p>
+
+        <p>This is not a hypothetical concern. In practice, LLM-based multi-agent systems routinely exhibit correlated failures on tasks that require reasoning outside the distribution of common training data. The agents agree, but they agree on something wrong.</p>
+
+        <h2>From Agreement to Calibrated Uncertainty</h2>
+
+        <p>The alternative is to move from asking "what do most agents think?" to asking "how uncertain is the system, and can we control the risk of being wrong?" This is where conformal prediction becomes valuable.</p>
+
+        <p>Conformal methods do not try to pick a single answer. Instead, they produce prediction sets — collections of possible answers that are guaranteed to contain the true answer with a user-specified probability. The guarantee is distribution-free: it holds regardless of the underlying model or data distribution, requiring only the mild assumption of exchangeability.</p>
+
+        <p>Applied to multi-agent deliberation, this means we can let agents debate and aggregate their views, but instead of forcing a single consensus answer, we produce a set of answers with formal coverage guarantees. If the set is small, the system is genuinely confident. If the set is large, the system is honestly uncertain — and this uncertainty signal is itself valuable for downstream decision-making.</p>
+
+        <h2>Why This Matters for Safety</h2>
+
+        <p>In safety-critical applications — medical diagnosis, legal reasoning, scientific discovery — a confidently wrong answer is far more dangerous than an honestly uncertain one. Multi-agent systems that optimize for consensus without uncertainty control are optimizing for the wrong objective.</p>
+
+        <p>The right question is not "do the agents agree?" but "can we bound the probability that the system's output is wrong?" These are fundamentally different questions, and they lead to fundamentally different system designs.</p>
+
+        <h2>Looking Forward</h2>
+
+        <p>As multi-agent AI systems become more prevalent — in code generation, research assistance, autonomous decision-making — the need for principled uncertainty control will only grow. Consensus is a useful signal, but it is not a substitute for statistical guarantees. The systems we trust with important decisions should be the ones that know what they don't know.</p>
+      </div>
+
+      <footer class="essay-footer">
+        <div class="essay-related">
+          <h3>Related Work</h3>
+          <ul>
+            <li><a href="https://arxiv.org/abs/2604.07667" target="_blank" rel="noopener">From Debate to Decision: Conformal Social Choice for Safe Multi-Agent Deliberation</a> — arXiv 2026</li>
+            <li><a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</a> — NeurIPS 2025 Workshop</li>
+          </ul>
+        </div>
+        <a href="../#essays" class="essay-back">&larr; Back to Essays</a>
+      </footer>
+    </div>
+  </article>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
