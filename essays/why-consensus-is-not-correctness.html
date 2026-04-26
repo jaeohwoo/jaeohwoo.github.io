@@ -26,48 +26,131 @@
       <header class="essay-header">
         <time class="essay-meta">April 2026</time>
         <h1 class="essay-page-title">Why Consensus Is Not Correctness in Multi-Agent AI</h1>
-        <p class="essay-subtitle">Multi-agent systems can agree on the wrong answer. Uncertainty control matters more than surface-level agreement.</p>
+        <p class="essay-subtitle">Multi-agent systems can agree on the wrong answer. Why uncertainty control matters more than surface-level agreement.</p>
+        <div class="essay-author">
+          <img src="https://avatars.githubusercontent.com/u/5765039" alt="Jae Oh Woo" class="essay-author-img">
+          <div class="essay-author-info">
+            <span class="essay-author-name"><a href="../">Jae Oh Woo</a></span>
+            <span class="essay-author-role">Applied Scientist, AWS AI &middot; Yale University</span>
+          </div>
+        </div>
       </header>
 
       <div class="essay-body">
-        <p>There is a natural intuition that if multiple agents agree, the answer is probably right. This is the logic behind ensemble methods, committee voting, and more recently, multi-agent debate in large language models. But agreement is not the same as correctness, and conflating the two can produce confidently wrong systems.</p>
+        <p>There is a natural intuition that if multiple agents agree, the answer is probably right. This is the logic behind ensemble methods, committee voting, and more recently, <strong>multi-agent debate</strong> in large language models. But agreement is not the same as correctness, and conflating the two can produce confidently wrong systems.</p>
 
-        <p>Consider a panel of LLMs debating a factual question. After several rounds, they converge on a single answer. Does convergence mean they found the truth? Not necessarily. If the models share similar training distributions, similar biases, and similar failure modes, they can easily converge on the same error. Consensus amplifies shared knowledge, but it also amplifies shared blind spots.</p>
+        <p>Consider a panel of LLMs debating a factual question. After several rounds, they converge on a single answer. Does convergence mean they found the truth? Not necessarily. If the models share similar training distributions, similar biases, and similar failure modes, they can easily converge on the same error. <strong>Consensus amplifies shared knowledge, but it also amplifies shared blind spots.</strong></p>
+
+        <div class="essay-diagram">
+          <div class="diagram-flow">
+            <div class="diagram-node diagram-node--muted">Agent A</div>
+            <div class="diagram-arrow">&plus;</div>
+            <div class="diagram-node diagram-node--muted">Agent B</div>
+            <div class="diagram-arrow">&plus;</div>
+            <div class="diagram-node diagram-node--muted">Agent C</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--danger">Consensus<br>(may be wrong)</div>
+          </div>
+          <p class="essay-diagram-caption">Correlated agents converge on shared errors, not truth</p>
+        </div>
 
         <h2>The Problem with Majority Rules</h2>
 
-        <p>Majority voting is appealing because it is simple. But simplicity comes at a cost. When agents share correlated errors — which is almost always the case for models from similar training paradigms — majority voting provides weaker guarantees than we might hope. The effective diversity of the ensemble is lower than the number of agents suggests.</p>
+        <p>Majority voting is appealing because it is simple. But simplicity comes at a cost. When agents share <strong>correlated errors</strong> — which is almost always the case for models from similar training paradigms — majority voting provides weaker guarantees than we might hope. The effective diversity of the ensemble is lower than the number of agents suggests.</p>
 
-        <p>This is not a hypothetical concern. In practice, LLM-based multi-agent systems routinely exhibit correlated failures on tasks that require reasoning outside the distribution of common training data. The agents agree, but they agree on something wrong.</p>
+        <div class="essay-pullquote">
+          <p>A room full of people trained on the same textbook will agree confidently on whatever that textbook got wrong.</p>
+        </div>
+
+        <p>This is not a hypothetical concern. In practice, LLM-based multi-agent systems routinely exhibit correlated failures on tasks requiring reasoning outside the distribution of common training data. The agents agree, but they agree on something wrong.</p>
 
         <h2>From Agreement to Calibrated Uncertainty</h2>
 
-        <p>The alternative is to move from asking "what do most agents think?" to asking "how uncertain is the system, and can we control the risk of being wrong?" This is where conformal prediction becomes valuable.</p>
+        <p>The alternative is to move from asking <em>"what do most agents think?"</em> to asking <em>"how uncertain is the system, and can we control the risk of being wrong?"</em> This is where <a href="https://arxiv.org/abs/2604.07667" target="_blank" rel="noopener">conformal prediction</a> becomes valuable.</p>
 
-        <p>Conformal methods do not try to pick a single answer. Instead, they produce prediction sets — collections of possible answers that are guaranteed to contain the true answer with a user-specified probability. The guarantee is distribution-free: it holds regardless of the underlying model or data distribution, requiring only the mild assumption of exchangeability.</p>
+        <p>Conformal methods do not try to pick a single answer. Instead, they produce <strong>prediction sets</strong> — collections of possible answers that are guaranteed to contain the true answer with a user-specified probability. The guarantee is distribution-free: it holds regardless of the underlying model or data distribution.</p>
 
-        <p>Applied to multi-agent deliberation, this means we can let agents debate and aggregate their views, but instead of forcing a single consensus answer, we produce a set of answers with formal coverage guarantees. If the set is small, the system is genuinely confident. If the set is large, the system is honestly uncertain — and this uncertainty signal is itself valuable for downstream decision-making.</p>
+        <div class="essay-diagram">
+          <div class="diagram-compare">
+            <div class="diagram-compare-col diagram-compare-col--left">
+              <span class="diagram-compare-title">Naive Consensus</span>
+              <div class="diagram-compare-item">Picks single answer by vote</div>
+              <div class="diagram-compare-item">No formal error guarantee</div>
+              <div class="diagram-compare-item">Hides disagreement</div>
+              <div class="diagram-compare-item">Fails silently</div>
+            </div>
+            <div class="diagram-compare-col diagram-compare-col--right">
+              <span class="diagram-compare-title">Conformal Aggregation</span>
+              <div class="diagram-compare-item">Returns calibrated prediction set</div>
+              <div class="diagram-compare-item">Formal coverage guarantee</div>
+              <div class="diagram-compare-item">Uncertainty is explicit</div>
+              <div class="diagram-compare-item">Fails informatively</div>
+            </div>
+          </div>
+          <p class="essay-diagram-caption">Two approaches to multi-agent aggregation</p>
+        </div>
+
+        <p>Applied to multi-agent deliberation, this means we can let agents debate and aggregate their views, but instead of forcing a single consensus answer, we produce a set of answers with <strong>formal coverage guarantees</strong>. If the set is small, the system is genuinely confident. If the set is large, the system is honestly uncertain — and this uncertainty signal is itself valuable for downstream decision-making.</p>
 
         <h2>Why This Matters for Safety</h2>
 
-        <p>In safety-critical applications — medical diagnosis, legal reasoning, scientific discovery — a confidently wrong answer is far more dangerous than an honestly uncertain one. Multi-agent systems that optimize for consensus without uncertainty control are optimizing for the wrong objective.</p>
+        <p>In safety-critical applications — medical diagnosis, legal reasoning, scientific discovery — a confidently wrong answer is far more dangerous than an honestly uncertain one.</p>
 
-        <p>The right question is not "do the agents agree?" but "can we bound the probability that the system's output is wrong?" These are fundamentally different questions, and they lead to fundamentally different system designs.</p>
+        <div class="essay-insight">
+          <div class="essay-insight-label">Key Insight</div>
+          <p>The right question is not "do the agents agree?" but <strong>"can we bound the probability that the system's output is wrong?"</strong> These are fundamentally different questions, and they lead to fundamentally different system designs.</p>
+        </div>
+
+        <h2>The Conformal Social Choice Framework</h2>
+
+        <p>In our recent work, we formalize this idea through <strong>conformal social choice</strong> — a framework that combines social choice theory (how to aggregate preferences) with conformal prediction (how to provide statistical guarantees). The key innovation is treating multi-agent deliberation not as a voting problem, but as an uncertainty quantification problem.</p>
+
+        <div class="essay-diagram">
+          <div class="diagram-flow">
+            <div class="diagram-node diagram-node--muted">Multi-Agent<br>Debate</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--secondary">Social Choice<br>Aggregation</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--primary">Conformal<br>Prediction Set</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--success">Guaranteed<br>Coverage</div>
+          </div>
+          <p class="essay-diagram-caption">Conformal Social Choice pipeline</p>
+        </div>
 
         <h2>Looking Forward</h2>
 
-        <p>As multi-agent AI systems become more prevalent — in code generation, research assistance, autonomous decision-making — the need for principled uncertainty control will only grow. Consensus is a useful signal, but it is not a substitute for statistical guarantees. The systems we trust with important decisions should be the ones that know what they don't know.</p>
+        <p>As multi-agent AI systems become more prevalent — in code generation, research assistance, autonomous decision-making — the need for principled uncertainty control will only grow. Consensus is a useful signal, but it is not a substitute for statistical guarantees. The systems we trust with important decisions should be the ones that <strong>know what they don't know</strong>.</p>
       </div>
 
       <footer class="essay-footer">
         <div class="essay-related">
-          <h3>Related Work</h3>
-          <ul>
-            <li><a href="https://arxiv.org/abs/2604.07667" target="_blank" rel="noopener">From Debate to Decision: Conformal Social Choice for Safe Multi-Agent Deliberation</a> — arXiv 2026</li>
-            <li><a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</a> — NeurIPS 2025 Workshop</li>
-          </ul>
+          <h3>Related Papers</h3>
+          <div class="essay-papers">
+            <a href="https://arxiv.org/abs/2604.07667" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--arxiv">arXiv</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">From Debate to Decision: Conformal Social Choice for Safe Multi-Agent Deliberation</span>
+                <span class="essay-paper-venue">Preprint, March 2026</span>
+              </div>
+            </a>
+            <a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">NeurIPS</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</span>
+                <span class="essay-paper-venue">NeurIPS 2025 Workshop</span>
+              </div>
+            </a>
+          </div>
         </div>
-        <a href="../#essays" class="essay-back">&larr; Back to Essays</a>
+
+        <div class="essay-actions">
+          <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" target="_blank" rel="noopener" class="essay-action-btn">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/jae-oh-woo-45666829" target="_blank" rel="noopener" class="essay-action-btn">LinkedIn</a>
+          <a href="../#contact" class="essay-action-btn">Contact</a>
+        </div>
+
+        <a href="../#essays" class="essay-back">&larr; Back to all essays</a>
       </footer>
     </div>
   </article>

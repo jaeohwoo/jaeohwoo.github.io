@@ -27,57 +27,147 @@
         <time class="essay-meta">April 2026</time>
         <h1 class="essay-page-title">Structural Uncertainty in LLM Reasoning</h1>
         <p class="essay-subtitle">Why reasoning failures often appear not as random errors, but as instability in the structure of generated reasoning paths.</p>
+        <div class="essay-author">
+          <img src="https://avatars.githubusercontent.com/u/5765039" alt="Jae Oh Woo" class="essay-author-img">
+          <div class="essay-author-info">
+            <span class="essay-author-name"><a href="../">Jae Oh Woo</a></span>
+            <span class="essay-author-role">Applied Scientist, AWS AI &middot; Yale University</span>
+          </div>
+        </div>
       </header>
 
       <div class="essay-body">
-        <p>When a large language model fails at a reasoning task, the failure is rarely random. Ask the same model the same question multiple times, and the errors tend to cluster. The model does not flip coins — it has systematic weaknesses, patterns of failure that reflect something deeper than surface-level noise.</p>
+        <p>When a large language model fails at a reasoning task, the failure is rarely random. Ask the same model the same question multiple times, and the errors tend to cluster. The model does not flip coins — it has <strong>systematic weaknesses</strong>, patterns of failure that reflect something deeper than surface-level noise.</p>
 
         <p>Understanding this structure is key to building more reliable reasoning systems.</p>
 
         <h2>Beyond Token-Level Uncertainty</h2>
 
-        <p>Most approaches to uncertainty in language models operate at the token level. At each generation step, the model produces a probability distribution over the next token. High entropy in this distribution signals local uncertainty. But local uncertainty and reasoning reliability are different things.</p>
+        <p>Most approaches to uncertainty in language models operate at the <strong>token level</strong>. At each generation step, the model produces a probability distribution over the next token. High entropy signals local uncertainty. But local uncertainty and reasoning reliability are different things.</p>
 
-        <p>A model can be locally confident at every step — assigning high probability to each successive token — while producing a reasoning chain that is globally incoherent. Each individual step looks plausible, but the overall argument does not hold. This is the hallmark of structural uncertainty: the instability lives not in individual tokens but in the topology of the reasoning path.</p>
+        <div class="essay-diagram">
+          <div class="diagram-flow">
+            <div class="diagram-node diagram-node--success">Step 1<br>p = 0.95</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--success">Step 2<br>p = 0.92</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--success">Step 3<br>p = 0.97</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--danger">Conclusion<br>WRONG</div>
+          </div>
+          <p class="essay-diagram-caption">High local confidence at every step, but globally incoherent reasoning</p>
+        </div>
+
+        <p>A model can be locally confident at every step — assigning high probability to each successive token — while producing a reasoning chain that is <strong>globally incoherent</strong>. Each individual step looks plausible, but the overall argument does not hold. This is the hallmark of structural uncertainty: the instability lives not in individual tokens but in the <strong>topology of the reasoning path</strong>.</p>
 
         <h2>What Structural Instability Looks Like</h2>
 
-        <p>Consider a multi-step logical reasoning problem. A reliable model should produce reasoning paths that are stable under small perturbations: rephrasing the question slightly, changing the order of premises, or adding irrelevant context should not fundamentally alter the logical structure of the response.</p>
+        <p>Consider a multi-step logical reasoning problem. A reliable model should produce reasoning paths that are <strong>stable under small perturbations</strong>: rephrasing the question slightly, changing the order of premises, or adding irrelevant context should not fundamentally alter the logical structure of the response.</p>
 
-        <p>In practice, LLMs often fail this test. Small perturbations to the input produce dramatically different reasoning chains — not just different wording, but different logical structures, different intermediate conclusions, and sometimes different final answers. The model appears correct on any single sample, but the instability across samples reveals that the reasoning is not grounded in genuine understanding.</p>
+        <div class="essay-pullquote">
+          <p>The model appears correct on any single sample, but the instability across samples reveals that the reasoning is not grounded in genuine understanding.</p>
+        </div>
+
+        <p>In practice, LLMs often fail this test. Small perturbations to the input produce dramatically different reasoning chains — not just different wording, but different logical structures, different intermediate conclusions, and sometimes different final answers.</p>
+
+        <div class="essay-diagram">
+          <div class="diagram-compare">
+            <div class="diagram-compare-col diagram-compare-col--left">
+              <span class="diagram-compare-title">Fragile Reasoning</span>
+              <div class="diagram-compare-item">Same question, different phrasings</div>
+              <div class="diagram-compare-item">Contradictory intermediate steps</div>
+              <div class="diagram-compare-item">Answers change with irrelevant context</div>
+              <div class="diagram-compare-item">Correct by luck, not understanding</div>
+            </div>
+            <div class="diagram-compare-col diagram-compare-col--right">
+              <span class="diagram-compare-title">Robust Reasoning</span>
+              <div class="diagram-compare-item">Stable across rephrasings</div>
+              <div class="diagram-compare-item">Consistent logical structure</div>
+              <div class="diagram-compare-item">Invariant to irrelevant additions</div>
+              <div class="diagram-compare-item">Correct because the reasoning is sound</div>
+            </div>
+          </div>
+          <p class="essay-diagram-caption">Fragile vs. robust reasoning under perturbation</p>
+        </div>
 
         <h2>Measuring Structural Uncertainty</h2>
 
-        <p>If structural uncertainty is the problem, we need methods that can detect it. Token-level entropy is insufficient because it measures the wrong thing. What we need are metrics that capture the stability of reasoning structure across multiple generations.</p>
+        <p>If structural uncertainty is the problem, we need methods that can detect it. Token-level entropy is insufficient because it <strong>measures the wrong thing</strong>. What we need are metrics that capture the stability of reasoning structure across multiple generations.</p>
 
-        <p>One approach is to sample multiple reasoning paths for the same input and analyze not just whether they reach the same conclusion, but whether they follow logically consistent intermediate steps. High variance in reasoning structure — even when final answers agree — is a signal that the model's reasoning is fragile.</p>
+        <p>One approach is to sample multiple reasoning paths for the same input and analyze not just whether they reach the same conclusion, but whether they follow <strong>logically consistent intermediate steps</strong>. High variance in reasoning structure — even when final answers agree — is a signal that the model's reasoning is fragile.</p>
 
-        <p>Another approach draws on information-theoretic tools. Rather than measuring uncertainty in output tokens, we can measure uncertainty in the logical relationships between reasoning steps. This requires moving from a sequence-level view of generation to a structure-level view — treating the reasoning chain as a graph or tree rather than a flat sequence of tokens.</p>
+        <div class="essay-diagram">
+          <div class="diagram-stack">
+            <div class="diagram-stack-layer diagram-node--primary" style="padding:14px;">Structural Stability Analysis</div>
+            <div class="diagram-stack-layer diagram-node--secondary" style="padding:12px;">Cross-path logical consistency</div>
+            <div class="diagram-stack-layer diagram-node--muted" style="padding:12px;">Multi-sample reasoning divergence</div>
+            <div class="diagram-stack-layer diagram-node--warn" style="padding:12px;">Token-level entropy</div>
+          </div>
+          <p class="essay-diagram-caption">Levels of reasoning uncertainty measurement — from shallow to deep</p>
+        </div>
+
+        <p>Another approach draws on <strong>information-theoretic tools</strong>. Rather than measuring uncertainty in output tokens, we can measure uncertainty in the logical relationships between reasoning steps — treating the reasoning chain as a graph or tree rather than a flat sequence of tokens.</p>
 
         <h2>Implications for Evaluation</h2>
 
-        <p>Standard evaluation compares the model's final answer to the ground truth. If the answer is correct, the sample is counted as a success. But this misses the distinction between robust correctness and fragile correctness.</p>
+        <p>Standard evaluation compares the model's final answer to the ground truth. But this misses the distinction between <strong>robust correctness</strong> and <strong>fragile correctness</strong>.</p>
 
-        <p>A model that reaches the right answer through a stable, logically sound reasoning path is fundamentally different from a model that reaches the right answer through an unstable path that happens to land correctly on this particular sample. The first model is reliable; the second is lucky. Evaluation methods that cannot distinguish between these two cases are incomplete.</p>
+        <div class="essay-insight">
+          <div class="essay-insight-label">Key Insight</div>
+          <p>A model that reaches the right answer through a stable, logically sound reasoning path is fundamentally different from a model that reaches the right answer through an unstable path that happens to land correctly. The first is reliable; the second is lucky.</p>
+        </div>
 
         <h2>From Detection to Mitigation</h2>
 
-        <p>Detecting structural uncertainty is the first step. The harder question is what to do about it. Several directions are promising.</p>
+        <p>Detecting structural uncertainty is the first step. The harder question is what to do about it. Several directions are promising:</p>
 
-        <p>First, uncertainty-aware decoding strategies that explicitly optimize for reasoning stability rather than just token likelihood. Second, training methods that penalize structural inconsistency across reasoning paths. Third, inference-time methods that sample multiple paths, detect structural disagreement, and either abstain or flag the output as uncertain.</p>
+        <p><strong>Uncertainty-aware decoding</strong> that explicitly optimizes for reasoning stability rather than just token likelihood. <strong>Training methods</strong> that penalize structural inconsistency across reasoning paths. And <strong>inference-time methods</strong> — like the iterative self-reflection approach in our <a href="https://aclanthology.org/2026.findings-eacl.69/" target="_blank" rel="noopener">EACL 2026 work</a> — that sample multiple paths, detect structural disagreement, and refine the reasoning iteratively.</p>
 
-        <p>None of these approaches eliminate reasoning failures entirely. But they shift the system from one that fails silently — producing confident but unstable reasoning — to one that fails informatively, providing actionable uncertainty signals to downstream users and systems.</p>
+        <p>None of these eliminate reasoning failures entirely. But they shift the system from one that <strong>fails silently</strong> — producing confident but unstable reasoning — to one that <strong>fails informatively</strong>, providing actionable uncertainty signals to downstream users and systems.</p>
       </div>
 
       <footer class="essay-footer">
         <div class="essay-related">
-          <h3>Related Work</h3>
-          <ul>
-            <li><a href="https://openreview.net/forum?id=YMwow5RQgP" target="_blank" rel="noopener">Structural Uncertainty in LLM Logical Reasoning</a> — ICLR 2026 Workshop (Best Paper)</li>
-            <li><a href="https://aclanthology.org/2026.findings-eacl.69/" target="_blank" rel="noopener">Reflect, Rewrite, Repeat: How Simple Arithmetic Enables Advanced Reasoning in Small Language Models</a> — EACL 2026 Findings</li>
-          </ul>
+          <h3>Related Papers</h3>
+          <div class="essay-papers">
+            <a href="https://openreview.net/forum?id=YMwow5RQgP" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">ICLR</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Structural Uncertainty in LLM Logical Reasoning</span>
+                <span class="essay-paper-venue">ICLR 2026 Workshop &middot; Best Paper</span>
+              </div>
+            </a>
+            <a href="https://aclanthology.org/2026.findings-eacl.69/" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">EACL</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Reflect, Rewrite, Repeat: How Simple Arithmetic Enables Advanced Reasoning in Small Language Models</span>
+                <span class="essay-paper-venue">EACL 2026 Findings</span>
+              </div>
+            </a>
+            <a href="https://github.com/aws-samples/sample-for-reflect-rewrite-repeat" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--code">Code</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">sample-for-reflect-rewrite-repeat</span>
+                <span class="essay-paper-venue">GitHub &middot; Source code for EACL 2026 paper</span>
+              </div>
+            </a>
+            <a href="https://iclr.cc/virtual/2023/poster/11983" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">ICLR</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Active Learning in Bayesian Neural Networks with Balanced Entropy Learning Principle</span>
+                <span class="essay-paper-venue">ICLR 2023 &middot; Top 25%</span>
+              </div>
+            </a>
+          </div>
         </div>
-        <a href="../#essays" class="essay-back">&larr; Back to Essays</a>
+
+        <div class="essay-actions">
+          <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" target="_blank" rel="noopener" class="essay-action-btn">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/jae-oh-woo-45666829" target="_blank" rel="noopener" class="essay-action-btn">LinkedIn</a>
+          <a href="../#contact" class="essay-action-btn">Contact</a>
+        </div>
+
+        <a href="../#essays" class="essay-back">&larr; Back to all essays</a>
       </footer>
     </div>
   </article>

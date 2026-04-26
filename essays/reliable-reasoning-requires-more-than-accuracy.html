@@ -27,56 +27,133 @@
         <time class="essay-meta">April 2026</time>
         <h1 class="essay-page-title">Reliable Reasoning Requires More Than Accuracy</h1>
         <p class="essay-subtitle">Accuracy tells us whether a model got the answer right. Reliability asks whether we know when to trust it.</p>
+        <div class="essay-author">
+          <img src="https://avatars.githubusercontent.com/u/5765039" alt="Jae Oh Woo" class="essay-author-img">
+          <div class="essay-author-info">
+            <span class="essay-author-name"><a href="../">Jae Oh Woo</a></span>
+            <span class="essay-author-role">Applied Scientist, AWS AI &middot; Yale University</span>
+          </div>
+        </div>
       </header>
 
       <div class="essay-body">
-        <p>The default way to evaluate a language model is accuracy: what fraction of the time does it produce the correct answer? This metric is useful, but it is also dangerously incomplete. A model that is right 90% of the time but gives no signal about which 10% it gets wrong is, in many contexts, less useful than a model that is right 80% of the time but reliably knows when it is uncertain.</p>
+        <p>The default way to evaluate a language model is accuracy: what fraction of the time does it produce the correct answer? This metric is useful, but it is dangerously incomplete. A model that is right 90% of the time but gives no signal about which 10% it gets wrong is, in many contexts, <strong>less useful</strong> than a model that is right 80% of the time but reliably knows when it is uncertain.</p>
 
-        <p>This distinction — between accuracy and reliability — is at the heart of making AI systems trustworthy enough for real deployment.</p>
+        <div class="essay-diagram">
+          <div class="diagram-compare">
+            <div class="diagram-compare-col diagram-compare-col--left">
+              <span class="diagram-compare-title">Accuracy-Only View</span>
+              <div class="diagram-compare-item">90% correct overall</div>
+              <div class="diagram-compare-item">No uncertainty signal</div>
+              <div class="diagram-compare-item">Silent failures</div>
+              <div class="diagram-compare-item">Users can't distinguish good from bad outputs</div>
+            </div>
+            <div class="diagram-compare-col diagram-compare-col--right">
+              <span class="diagram-compare-title">Reliability View</span>
+              <div class="diagram-compare-item">80% correct with calibrated confidence</div>
+              <div class="diagram-compare-item">Flags uncertain outputs</div>
+              <div class="diagram-compare-item">Fails informatively</div>
+              <div class="diagram-compare-item">Users know when to trust and when to verify</div>
+            </div>
+          </div>
+          <p class="essay-diagram-caption">Why 80% with calibration can outperform 90% without</p>
+        </div>
 
         <h2>The Calibration Gap</h2>
 
-        <p>A well-calibrated model is one whose confidence scores correspond to actual probabilities. When it says it is 90% confident, it should be correct roughly 90% of the time. Most modern LLMs are poorly calibrated. They express high confidence even when they are wrong, and their uncertainty estimates — when available at all — are unreliable.</p>
+        <p>A <strong>well-calibrated</strong> model is one whose confidence scores correspond to actual probabilities. When it says it is 90% confident, it should be correct roughly 90% of the time. Most modern LLMs are poorly calibrated — they express high confidence even when wrong, and their uncertainty estimates are unreliable.</p>
 
         <p>This is not merely an aesthetic problem. In any system where a human or downstream process must decide whether to act on a model's output, calibration is essential. Without it, the user has no basis for distinguishing reliable outputs from unreliable ones.</p>
 
+        <div class="essay-pullquote">
+          <p>A confident wrong answer is not just useless — it is actively harmful, because it erodes the trust needed for AI systems to be useful at all.</p>
+        </div>
+
         <h2>Why Accuracy Benchmarks Miss the Point</h2>
 
-        <p>Standard benchmarks report aggregate accuracy across a test set. But aggregate performance hides distributional structure. A model might achieve 95% accuracy overall while systematically failing on a specific category of inputs — logical negation, multi-step arithmetic, causal reasoning under confounders. If we only look at the aggregate number, we miss the failure modes that matter most.</p>
+        <p>Standard benchmarks report aggregate accuracy across a test set. But <strong>aggregate performance hides distributional structure</strong>. A model might achieve 95% accuracy overall while systematically failing on logical negation, multi-step arithmetic, or causal reasoning under confounders.</p>
 
-        <p>Worse, optimizing for benchmark accuracy can actively harm reliability. Models learn to exploit surface patterns in benchmark datasets, producing correct answers for the wrong reasons. This inflates accuracy scores while making the model more brittle on out-of-distribution inputs — exactly the inputs that matter in real-world deployment.</p>
+        <p>Worse, optimizing for benchmark accuracy can actively harm reliability. Models learn to exploit surface patterns in benchmark datasets, producing correct answers for the wrong reasons. This inflates accuracy while making the model <strong>more brittle</strong> on out-of-distribution inputs.</p>
+
+        <h2>A Hierarchy of Trustworthiness</h2>
+
+        <div class="essay-diagram">
+          <div class="diagram-stack">
+            <div class="diagram-stack-layer diagram-node--primary" style="padding:14px;">Formal Guarantees (Conformal, VC bounds)</div>
+            <div class="diagram-stack-layer diagram-node--secondary" style="padding:12px;">Calibrated Uncertainty</div>
+            <div class="diagram-stack-layer diagram-node--muted" style="padding:12px;">Selective Prediction (abstain when uncertain)</div>
+            <div class="diagram-stack-layer diagram-node--warn" style="padding:12px;">Soft Confidence Scores</div>
+            <div class="diagram-stack-layer diagram-node--danger" style="padding:12px;">Accuracy Only</div>
+          </div>
+          <p class="essay-diagram-caption">Levels of trustworthiness in AI systems — from weakest to strongest</p>
+        </div>
+
+        <p>At the bottom, we have raw accuracy — the weakest form of evaluation. Each layer adds a stronger form of reliability: soft confidence, selective prediction, calibrated uncertainty, and at the top, <strong>formal statistical guarantees</strong> that bound the probability of error.</p>
 
         <h2>From Prediction to Uncertainty Estimation</h2>
 
-        <p>The path toward reliable reasoning requires treating uncertainty as a first-class output. This means moving beyond point predictions to methods that quantify how much the model knows and does not know about a given input.</p>
+        <p>The path toward reliable reasoning requires treating uncertainty as a <strong>first-class output</strong>. Several frameworks make this possible:</p>
 
-        <p>Several frameworks make this possible. Bayesian approaches model uncertainty through posterior distributions over parameters or predictions. Conformal prediction provides distribution-free coverage guarantees. VC-theoretic analysis bounds the gap between observed and true performance. Each framework offers different trade-offs between computational cost, theoretical guarantees, and practical applicability.</p>
+        <p><strong>Bayesian approaches</strong> model uncertainty through posterior distributions. In our work on <a href="https://ieeexplore.ieee.org/document/9834883" target="_blank" rel="noopener">analytic mutual information in BNNs</a>, we showed that closed-form uncertainty expressions are achievable, removing the need for expensive Monte Carlo approximation.</p>
 
-        <p>The common thread is that all of these approaches take uncertainty seriously — not as a nice-to-have addition, but as a core component of the system's output.</p>
+        <p><strong>Proxy-based methods</strong> estimate uncertainty without modifying the base model. Our <a href="https://icml.cc/virtual/2024/poster/33513" target="_blank" rel="noopener">ICML 2024 work</a> demonstrated that proxy-based uncertainty estimation can significantly improve instruction following — the model learns when to trust its own outputs.</p>
 
-        <h2>Reliability as a Design Principle</h2>
+        <p><strong>VC-theoretic analysis</strong> provides distribution-free bounds on the gap between observed and true performance. Our <a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener">NeurIPS 2025 work</a> applies this to LLM self-evaluation, answering the question: when can a model reliably judge its own outputs?</p>
 
-        <p>Reliability should not be bolted on after the fact. It should be a design principle from the beginning. This means choosing architectures that support uncertainty estimation, training procedures that preserve calibration, and evaluation protocols that test not just what the model knows, but whether it knows what it does not know.</p>
-
-        <p>For language models specifically, this is challenging because the dominant training paradigm — next-token prediction at scale — produces models that are fluent but not necessarily calibrated. Bridging this gap is one of the central challenges of making LLMs ready for high-stakes applications.</p>
+        <div class="essay-insight">
+          <div class="essay-insight-label">Key Insight</div>
+          <p>Reliability should not be bolted on after the fact. It should be a <strong>design principle from the beginning</strong> — in architecture, training, and evaluation.</p>
+        </div>
 
         <h2>The Practical Stakes</h2>
 
-        <p>None of this is abstract. When a language model assists in medical diagnosis, legal analysis, or scientific reasoning, the cost of a confident but wrong answer can be severe. The goal is not to make models that never make mistakes — that is unrealistic — but to make models that communicate their uncertainty honestly, so that humans and systems downstream can make informed decisions about when to trust and when to verify.</p>
+        <p>When a language model assists in medical diagnosis, legal analysis, or scientific reasoning, the cost of a confident but wrong answer can be severe. The goal is not to make models that never make mistakes — that is unrealistic — but to make models that <strong>communicate their uncertainty honestly</strong>, so that humans and systems downstream can make informed decisions about when to trust and when to verify.</p>
 
         <p>Accuracy is necessary but not sufficient. Reliability is the harder, more important goal.</p>
       </div>
 
       <footer class="essay-footer">
         <div class="essay-related">
-          <h3>Related Work</h3>
-          <ul>
-            <li><a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</a> — NeurIPS 2025 Workshop</li>
-            <li><a href="https://icml.cc/virtual/2024/poster/33513" target="_blank" rel="noopener">Improving Instruction Following through Proxy-Based Uncertainty Estimation</a> — ICML 2024</li>
-            <li><a href="https://ieeexplore.ieee.org/document/9834883" target="_blank" rel="noopener">Analytic Mutual Information in Bayesian Neural Networks</a> — IEEE ISIT 2022</li>
-          </ul>
+          <h3>Related Papers</h3>
+          <div class="essay-papers">
+            <a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">NeurIPS</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</span>
+                <span class="essay-paper-venue">NeurIPS 2025 Workshop</span>
+              </div>
+            </a>
+            <a href="https://icml.cc/virtual/2024/poster/33513" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">ICML</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Improving Instruction Following through Proxy-Based Uncertainty Estimation</span>
+                <span class="essay-paper-venue">ICML 2024</span>
+              </div>
+            </a>
+            <a href="https://github.com/P-B-U/proxy_based_uncertainty" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--code">Code</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">proxy_based_uncertainty</span>
+                <span class="essay-paper-venue">GitHub &middot; Source code for ICML 2024 paper</span>
+              </div>
+            </a>
+            <a href="https://ieeexplore.ieee.org/document/9834883" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">IEEE</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Analytic Mutual Information in Bayesian Neural Networks</span>
+                <span class="essay-paper-venue">IEEE ISIT 2022</span>
+              </div>
+            </a>
+          </div>
         </div>
-        <a href="../#essays" class="essay-back">&larr; Back to Essays</a>
+
+        <div class="essay-actions">
+          <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" target="_blank" rel="noopener" class="essay-action-btn">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/jae-oh-woo-45666829" target="_blank" rel="noopener" class="essay-action-btn">LinkedIn</a>
+          <a href="../#contact" class="essay-action-btn">Contact</a>
+        </div>
+
+        <a href="../#essays" class="essay-back">&larr; Back to all essays</a>
       </footer>
     </div>
   </article>
