@@ -26,7 +26,7 @@
       <header class="essay-header">
         <time class="essay-meta">April 2026</time>
         <h1 class="essay-page-title">Structural Uncertainty in LLM Reasoning</h1>
-        <p class="essay-subtitle">Why reasoning failures often appear not as random errors, but as instability in the structure of generated reasoning paths.</p>
+        <p class="essay-subtitle">Why answer agreement is blind to reasoning instability — and how self-preference rankings reveal what dispersion metrics miss.</p>
         <div class="essay-author">
           <img src="https://avatars.githubusercontent.com/u/5765039" alt="Jae Oh Woo" class="essay-author-img">
           <div class="essay-author-info">
@@ -36,93 +36,111 @@
       </header>
 
       <div class="essay-body">
-        <p>When a large language model fails at a reasoning task, the failure is rarely random. Ask the same model the same question multiple times, and the errors tend to cluster. The model does not flip coins — it has <strong>systematic weaknesses</strong>, patterns of failure that reflect something deeper than surface-level noise.</p>
+        <p>Suppose you ask a language model the same logical reasoning question five times. All five answers agree. Standard evaluation would conclude: low uncertainty, high reliability. But what if the model, when asked to <strong>compare and rank its own reasoning paths</strong>, produces a completely different ordering every time?</p>
 
-        <p>Understanding this structure is key to building more reliable reasoning systems.</p>
-
-        <h2>Beyond Token-Level Uncertainty</h2>
-
-        <p>Most approaches to uncertainty in language models operate at the <strong>token level</strong>. At each generation step, the model produces a probability distribution over the next token. High entropy signals local uncertainty. But local uncertainty and reasoning reliability are different things.</p>
-
-        <div class="essay-diagram">
-          <div class="diagram-flow">
-            <div class="diagram-node diagram-node--success">Step 1<br>p = 0.95</div>
-            <div class="diagram-arrow">&rarr;</div>
-            <div class="diagram-node diagram-node--success">Step 2<br>p = 0.92</div>
-            <div class="diagram-arrow">&rarr;</div>
-            <div class="diagram-node diagram-node--success">Step 3<br>p = 0.97</div>
-            <div class="diagram-arrow">&rarr;</div>
-            <div class="diagram-node diagram-node--danger">Conclusion<br>WRONG</div>
-          </div>
-          <p class="essay-diagram-caption">High local confidence at every step, but globally incoherent reasoning</p>
-        </div>
-
-        <p>A model can be locally confident at every step — assigning high probability to each successive token — while producing a reasoning chain that is <strong>globally incoherent</strong>. Each individual step looks plausible, but the overall argument does not hold. This is the hallmark of structural uncertainty: the instability lives not in individual tokens but in the <strong>topology of the reasoning path</strong>.</p>
-
-        <h2>What Structural Instability Looks Like</h2>
-
-        <p>Consider a multi-step logical reasoning problem. A reliable model should produce reasoning paths that are <strong>stable under small perturbations</strong>: rephrasing the question slightly, changing the order of premises, or adding irrelevant context should not fundamentally alter the logical structure of the response.</p>
-
-        <div class="essay-pullquote">
-          <p>The model appears correct on any single sample, but the instability across samples reveals that the reasoning is not grounded in genuine understanding.</p>
-        </div>
-
-        <p>In practice, LLMs often fail this test. Small perturbations to the input produce dramatically different reasoning chains — not just different wording, but different logical structures, different intermediate conclusions, and sometimes different final answers.</p>
+        <p>This is the gap that motivated our work on <a href="https://openreview.net/forum?id=YMwow5RQgP" target="_blank" rel="noopener">structural uncertainty</a>. The core observation is simple but consequential: <strong>answer-level agreement can mask reasoning-level instability</strong>. Five candidates may all arrive at "20" — the same wrong answer — while the model's own preferences over <em>how</em> they reason flip entirely from one evaluation to the next.</p>
 
         <div class="essay-diagram">
           <div class="diagram-compare">
             <div class="diagram-compare-col diagram-compare-col--left">
-              <span class="diagram-compare-title">Fragile Reasoning</span>
-              <div class="diagram-compare-item">Same question, different phrasings</div>
-              <div class="diagram-compare-item">Contradictory intermediate steps</div>
-              <div class="diagram-compare-item">Answers change with irrelevant context</div>
-              <div class="diagram-compare-item">Correct by luck, not understanding</div>
+              <span class="diagram-compare-title">Dispersion-Based View</span>
+              <div class="diagram-compare-item">All 5 candidates answer "20"</div>
+              <div class="diagram-compare-item">Answer entropy = 0</div>
+              <div class="diagram-compare-item">Reports: high confidence</div>
+              <div class="diagram-compare-item">Misses: the answer is wrong</div>
             </div>
             <div class="diagram-compare-col diagram-compare-col--right">
-              <span class="diagram-compare-title">Robust Reasoning</span>
-              <div class="diagram-compare-item">Stable across rephrasings</div>
-              <div class="diagram-compare-item">Consistent logical structure</div>
-              <div class="diagram-compare-item">Invariant to irrelevant additions</div>
-              <div class="diagram-compare-item">Correct because the reasoning is sound</div>
+              <span class="diagram-compare-title">Structural View</span>
+              <div class="diagram-compare-item">All 5 candidates answer "20"</div>
+              <div class="diagram-compare-item">Self-preference rankings unstable</div>
+              <div class="diagram-compare-item">Reports: reasoning inconsistency</div>
+              <div class="diagram-compare-item">Catches: unstable reasoning behind agreement</div>
             </div>
           </div>
-          <p class="essay-diagram-caption">Fragile vs. robust reasoning under perturbation</p>
+          <p class="essay-diagram-caption">Same answers, opposite uncertainty signals — the scenario that dispersion methods miss</p>
         </div>
 
-        <h2>Measuring Structural Uncertainty</h2>
+        <h2>What Structural Uncertainty Actually Measures</h2>
 
-        <p>If structural uncertainty is the problem, we need methods that can detect it. Token-level entropy is insufficient because it <strong>measures the wrong thing</strong>. What we need are metrics that capture the stability of reasoning structure across multiple generations.</p>
+        <p>The key idea is to probe not <em>what</em> the model answers, but <em>how stably it evaluates its own reasoning</em>. Given a question, we generate multiple candidate solutions, then ask the same model to judge pairwise preferences among them — essentially: "which of these two reasoning paths is better?" We repeat this across multiple independent trials, each using a different random <strong>spanning tree</strong> over the candidates to select which pairs to compare.</p>
 
-        <p>One approach is to sample multiple reasoning paths for the same input and analyze not just whether they reach the same conclusion, but whether they follow <strong>logically consistent intermediate steps</strong>. High variance in reasoning structure — even when final answers agree — is a signal that the model's reasoning is fragile.</p>
+        <div class="essay-diagram">
+          <div class="diagram-flow">
+            <div class="diagram-node diagram-node--muted">Sample N<br>Candidates</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--secondary">Pairwise<br>Self-Preference</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--primary">Bradley-Terry<br>+ PageRank</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--success">Entropy<br>Decomposition</div>
+          </div>
+          <p class="essay-diagram-caption">The structural uncertainty pipeline: from candidates to consistency signal</p>
+        </div>
+
+        <p>The sparse pairwise judgments are aggregated into a global ranking distribution using <strong>Bradley-Terry modeling with PageRank normalization</strong>. Each trial produces a ranking distribution &pi;<sup>(m)</sup> over candidates. Across M trials, these distributions form an ensemble that we decompose into two complementary entropy-based signals.</p>
+
+        <h2>Two Components, Two Failure Modes</h2>
+
+        <p>The decomposition separates total structural uncertainty into:</p>
+
+        <div class="essay-diagram">
+          <div class="diagram-compare">
+            <div class="diagram-compare-col diagram-compare-col--left">
+              <span class="diagram-compare-title" style="color: var(--accent);">Across-Trial Instability</span>
+              <div class="diagram-compare-item" style="color: var(--text-2);">Different spanning trees &rarr; different rankings</div>
+              <div class="diagram-compare-item" style="color: var(--text-2);">The model can't stably decide which reasoning is best</div>
+              <div class="diagram-compare-item" style="color: var(--text-2);">Correlates <strong>negatively</strong> with accuracy</div>
+              <div class="diagram-compare-item" style="color: var(--text-2);">Signals: unreliable reasoning</div>
+            </div>
+            <div class="diagram-compare-col diagram-compare-col--right">
+              <span class="diagram-compare-title" style="color: var(--accent);">Within-Trial Ambiguity</span>
+              <div class="diagram-compare-item" style="color: var(--text-2);">Ranking spread across candidates in a single trial</div>
+              <div class="diagram-compare-item" style="color: var(--text-2);">Multiple plausible reasoning paths compete</div>
+              <div class="diagram-compare-item" style="color: var(--text-2);">Correlates <strong>positively</strong> with accuracy on reasoning tasks</div>
+              <div class="diagram-compare-item" style="color: var(--text-2);">Signals: rich solution space</div>
+            </div>
+          </div>
+          <p class="essay-diagram-caption">The two components of structural uncertainty relate to accuracy in opposite directions</p>
+        </div>
+
+        <p>This asymmetry is one of the most interesting findings. <strong>Across-trial instability</strong> is bad — when the model can't consistently decide which reasoning path is better, the reasoning itself is unreliable. But <strong>within-trial ambiguity</strong> can actually be a positive signal on reasoning tasks: it means multiple plausible solution strategies coexist, which tends to occur when the model genuinely understands the problem well enough to produce diverse valid approaches.</p>
+
+        <div class="essay-pullquote">
+          <p>Instability across evaluations signals unreliable reasoning. Ambiguity within evaluations signals a rich solution space. The distinction matters — they carry opposite information about correctness.</p>
+        </div>
+
+        <h2>When the Signal Breaks Down</h2>
+
+        <p>Structural uncertainty is not a universal confidence estimator — and recognizing its limits is itself a contribution. Across five LLMs (Claude Sonnet 4.5, GPT-OSS 20B, Qwen 3 32B, Amazon Nova Premier, DeepSeek R1) and eight benchmarks, a clear pattern emerges:</p>
+
+        <p>On <strong>mathematical and logical reasoning tasks</strong> (MATH-500, AMC-23, AIME, Math-Synth), structural signals provide strong complementary information to answer dispersion. The combination of structural uncertainty with self-consistency entropy improves identification of unreliable reasoning instances.</p>
+
+        <p>On <strong>factual retrieval tasks</strong> (HotpotQA), the structural signal <em>collapses toward uniformity</em>. When the task requires retrieving a fact rather than constructing a reasoning path, there is no meaningful diversity in solution strategies — so self-preference rankings become uninformative.</p>
 
         <div class="essay-diagram">
           <div class="diagram-stack">
-            <div class="diagram-stack-layer diagram-node--primary" style="padding:14px;">Structural Stability Analysis</div>
-            <div class="diagram-stack-layer diagram-node--secondary" style="padding:12px;">Cross-path logical consistency</div>
-            <div class="diagram-stack-layer diagram-node--muted" style="padding:12px;">Multi-sample reasoning divergence</div>
-            <div class="diagram-stack-layer diagram-node--warn" style="padding:12px;">Token-level entropy</div>
+            <div class="diagram-stack-layer diagram-node--primary" style="padding:14px;">Reasoning tasks (MATH, AMC, AIME)</div>
+            <div class="diagram-stack-layer" style="padding:10px; font-size:0.68rem; color:var(--text-3); background:none;">Structural uncertainty complements dispersion &uarr;</div>
+            <div class="diagram-stack-layer diagram-node--secondary" style="padding:14px;">Knowledge tasks (MMLU-Pro, TruthfulQA)</div>
+            <div class="diagram-stack-layer" style="padding:10px; font-size:0.68rem; color:var(--text-3); background:none;">Partial complementarity</div>
+            <div class="diagram-stack-layer diagram-node--warn" style="padding:14px;">Retrieval tasks (HotpotQA)</div>
+            <div class="diagram-stack-layer" style="padding:10px; font-size:0.68rem; color:var(--text-3); background:none;">Structural signal collapses &darr;</div>
           </div>
-          <p class="essay-diagram-caption">Levels of reasoning uncertainty measurement — from shallow to deep</p>
+          <p class="essay-diagram-caption">Task regime determines whether structural uncertainty is informative</p>
         </div>
-
-        <p>Another approach draws on <strong>information-theoretic tools</strong>. Rather than measuring uncertainty in output tokens, we can measure uncertainty in the logical relationships between reasoning steps — treating the reasoning chain as a graph or tree rather than a flat sequence of tokens.</p>
-
-        <h2>Implications for Evaluation</h2>
-
-        <p>Standard evaluation compares the model's final answer to the ground truth. But this misses the distinction between <strong>robust correctness</strong> and <strong>fragile correctness</strong>.</p>
 
         <div class="essay-insight">
           <div class="essay-insight-label">Key Insight</div>
-          <p>A model that reaches the right answer through a stable, logically sound reasoning path is fundamentally different from a model that reaches the right answer through an unstable path that happens to land correctly. The first is reliable; the second is lucky.</p>
+          <p>This regime sensitivity is itself diagnostic. The <strong>collapse of structural uncertainty</strong> on retrieval tasks identifies the boundary where reasoning-level consistency evaluation ceases to be useful — making structural uncertainty a <strong>regime-sensitive evaluator</strong> rather than a universal metric.</p>
         </div>
 
-        <h2>From Detection to Mitigation</h2>
+        <h2>Why This Matters for Evaluating Logical Reasoning</h2>
 
-        <p>Detecting structural uncertainty is the first step. The harder question is what to do about it. Several directions are promising:</p>
+        <p>Standard self-consistency — sampling multiple answers and checking whether they agree — is the most widely used post-hoc reliability signal for LLM reasoning. It works well when errors are diverse. But it has a blind spot: <strong>systematic errors that produce agreement</strong>. When a model's failure mode is to consistently arrive at the same wrong answer through different flawed reasoning paths, self-consistency reports low uncertainty while the reasoning is fundamentally unreliable.</p>
 
-        <p><strong>Uncertainty-aware decoding</strong> that explicitly optimizes for reasoning stability rather than just token likelihood. <strong>Training methods</strong> that penalize structural inconsistency across reasoning paths. And <strong>inference-time methods</strong> — like the iterative self-reflection approach in our <a href="https://aclanthology.org/2026.findings-eacl.69/" target="_blank" rel="noopener">EACL 2026 work</a> — that sample multiple paths, detect structural disagreement, and refine the reasoning iteratively.</p>
+        <p>Structural uncertainty addresses exactly this gap. By probing the stability of the model's own <em>preferences</em> over its reasoning — not just the answers — it detects a form of inconsistency that answer-level metrics cannot see. The combination of both signals provides strictly more information than either alone, at least in the reasoning regimes where structural diversity exists.</p>
 
-        <p>None of these eliminate reasoning failures entirely. But they shift the system from one that <strong>fails silently</strong> — producing confident but unstable reasoning — to one that <strong>fails informatively</strong>, providing actionable uncertainty signals to downstream users and systems.</p>
+        <p>The broader implication is that evaluating LLM reasoning requires looking beyond what the model says, to how consistently it evaluates what it says. <strong>Consistency of judgment over reasoning paths is a fundamentally different signal from consistency of final answers</strong> — and for logical reasoning, it is often the more informative one.</p>
       </div>
 
       <footer class="essay-footer">
@@ -132,8 +150,15 @@
             <a href="https://openreview.net/forum?id=YMwow5RQgP" target="_blank" rel="noopener" class="essay-paper-card">
               <div class="essay-paper-icon essay-paper-icon--conf">ICLR</div>
               <div class="essay-paper-body">
-                <span class="essay-paper-title">Structural Uncertainty in LLM Logical Reasoning</span>
-                <span class="essay-paper-venue">ICLR 2026 Workshop &middot; Best Paper</span>
+                <span class="essay-paper-title">Quantifying Consistency in LLM Logical Reasoning via Structural Uncertainty</span>
+                <span class="essay-paper-venue">ICLR 2026 Workshop on Logical Reasoning of LLMs &middot; Best Paper</span>
+              </div>
+            </a>
+            <a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">NeurIPS</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</span>
+                <span class="essay-paper-venue">NeurIPS 2025 Workshop</span>
               </div>
             </a>
             <a href="https://aclanthology.org/2026.findings-eacl.69/" target="_blank" rel="noopener" class="essay-paper-card">
@@ -150,11 +175,11 @@
                 <span class="essay-paper-venue">GitHub &middot; Source code for EACL 2026 paper</span>
               </div>
             </a>
-            <a href="https://iclr.cc/virtual/2023/poster/11983" target="_blank" rel="noopener" class="essay-paper-card">
-              <div class="essay-paper-icon essay-paper-icon--conf">ICLR</div>
+            <a href="https://ieeexplore.ieee.org/document/9834883" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">IEEE</div>
               <div class="essay-paper-body">
-                <span class="essay-paper-title">Active Learning in Bayesian Neural Networks with Balanced Entropy Learning Principle</span>
-                <span class="essay-paper-venue">ICLR 2023 &middot; Top 25%</span>
+                <span class="essay-paper-title">Analytic Mutual Information in Bayesian Neural Networks</span>
+                <span class="essay-paper-venue">IEEE ISIT 2022 &middot; Foundation for the entropy decomposition</span>
               </div>
             </a>
           </div>
