@@ -26,7 +26,7 @@
       <header class="essay-header">
         <time class="essay-meta">April 2026</time>
         <h1 class="essay-page-title">Why Consensus Is Not Correctness in Multi-Agent AI</h1>
-        <p class="essay-subtitle">Multi-agent systems can agree on the wrong answer. Why uncertainty control matters more than surface-level agreement.</p>
+        <p class="essay-subtitle">When agents unanimously agree on the wrong answer, the real question is not who won the debate — but when it is safe to act.</p>
         <div class="essay-author">
           <img src="https://avatars.githubusercontent.com/u/5765039" alt="Jae Oh Woo" class="essay-author-img">
           <div class="essay-author-info">
@@ -36,90 +36,93 @@
       </header>
 
       <div class="essay-body">
-        <p>There is a natural intuition that if multiple agents agree, the answer is probably right. This is the logic behind ensemble methods, committee voting, and more recently, <strong>multi-agent debate</strong> in large language models. But agreement is not the same as correctness, and conflating the two can produce confidently wrong systems.</p>
+        <p>Multi-agent debate improves LLM reasoning. After several rounds of deliberation, agents update their beliefs, challenge each other's reasoning, and often converge on a shared answer. This convergence feels reassuring — if three different models agree, the answer must be right.</p>
 
-        <p>Consider a panel of LLMs debating a factual question. After several rounds, they converge on a single answer. Does convergence mean they found the truth? Not necessarily. If the models share similar training distributions, similar biases, and similar failure modes, they can easily converge on the same error. <strong>Consensus amplifies shared knowledge, but it also amplifies shared blind spots.</strong></p>
-
-        <div class="essay-diagram">
-          <div class="diagram-flow">
-            <div class="diagram-node diagram-node--muted">Agent A</div>
-            <div class="diagram-arrow">&plus;</div>
-            <div class="diagram-node diagram-node--muted">Agent B</div>
-            <div class="diagram-arrow">&plus;</div>
-            <div class="diagram-node diagram-node--muted">Agent C</div>
-            <div class="diagram-arrow">&rarr;</div>
-            <div class="diagram-node diagram-node--danger">Consensus<br>(may be wrong)</div>
-          </div>
-          <p class="essay-diagram-caption">Correlated agents converge on shared errors, not truth</p>
-        </div>
-
-        <h2>The Problem with Majority Rules</h2>
-
-        <p>Majority voting is appealing because it is simple. But simplicity comes at a cost. When agents share <strong>correlated errors</strong> — which is almost always the case for models from similar training paradigms — majority voting provides weaker guarantees than we might hope. The effective diversity of the ensemble is lower than the number of agents suggests.</p>
-
-        <div class="essay-pullquote">
-          <p>A room full of people trained on the same textbook will agree confidently on whatever that textbook got wrong.</p>
-        </div>
-
-        <p>This is not a hypothetical concern. In practice, LLM-based multi-agent systems routinely exhibit correlated failures on tasks requiring reasoning outside the distribution of common training data. The agents agree, but they agree on something wrong.</p>
-
-        <h2>From Agreement to Calibrated Uncertainty</h2>
-
-        <p>The alternative is to move from asking <em>"what do most agents think?"</em> to asking <em>"how uncertain is the system, and can we control the risk of being wrong?"</em> This is where <a href="https://arxiv.org/abs/2604.07667" target="_blank" rel="noopener">conformal prediction</a> becomes valuable.</p>
-
-        <p>Conformal methods do not try to pick a single answer. Instead, they produce <strong>prediction sets</strong> — collections of possible answers that are guaranteed to contain the true answer with a user-specified probability. The guarantee is distribution-free: it holds regardless of the underlying model or data distribution.</p>
+        <p>Except when it isn't. <strong>Agreement among agents is not evidence of correctness.</strong> When models converge on a wrong answer through social reinforcement, consensus-based stopping commits that error to an automated action with no recourse. In our experiments on <a href="https://arxiv.org/abs/2604.07667" target="_blank" rel="noopener">MMLU-Pro</a>, we found that <strong>23.9% of initially-disputed cases end in unanimous wrong agreement</strong> — the agents debate, converge, and agree on an incorrect answer with high apparent confidence.</p>
 
         <div class="essay-diagram">
           <div class="diagram-compare">
             <div class="diagram-compare-col diagram-compare-col--left">
-              <span class="diagram-compare-title">Naive Consensus</span>
-              <div class="diagram-compare-item">Picks single answer by vote</div>
-              <div class="diagram-compare-item">No formal error guarantee</div>
-              <div class="diagram-compare-item">Hides disagreement</div>
-              <div class="diagram-compare-item">Fails silently</div>
+              <span class="diagram-compare-title">Consensus Stopping</span>
+              <div class="diagram-compare-item">Reduces debate to single point estimate (majority vote or argmax)</div>
+              <div class="diagram-compare-item">Uses agreement as stopping signal</div>
+              <div class="diagram-compare-item">0% escalation — always commits</div>
+              <div class="diagram-compare-item">Error rates up to 32.1%</div>
             </div>
             <div class="diagram-compare-col diagram-compare-col--right">
-              <span class="diagram-compare-title">Conformal Aggregation</span>
-              <div class="diagram-compare-item">Returns calibrated prediction set</div>
-              <div class="diagram-compare-item">Formal coverage guarantee</div>
-              <div class="diagram-compare-item">Uncertainty is explicit</div>
-              <div class="diagram-compare-item">Fails informatively</div>
+              <span class="diagram-compare-title">Conformal Stopping</span>
+              <div class="diagram-compare-item">Produces calibrated prediction sets</div>
+              <div class="diagram-compare-item">Acts on singletons, escalates larger sets</div>
+              <div class="diagram-compare-item">Escalates uncertain cases to human review</div>
+              <div class="diagram-compare-item">90.0–96.8% accuracy on acted cases</div>
             </div>
           </div>
-          <p class="essay-diagram-caption">Two approaches to multi-agent aggregation</p>
+          <p class="essay-diagram-caption">The cost of acting without calibrated refusal</p>
         </div>
 
-        <p>Applied to multi-agent deliberation, this means we can let agents debate and aggregate their views, but instead of forcing a single consensus answer, we produce a set of answers with <strong>formal coverage guarantees</strong>. If the set is small, the system is genuinely confident. If the set is large, the system is honestly uncertain — and this uncertainty signal is itself valuable for downstream decision-making.</p>
+        <h2>The Missing Piece: Calibrated Refusal</h2>
 
-        <h2>Why This Matters for Safety</h2>
+        <p>The problem is not that debate doesn't work — it does improve reasoning. The problem is what happens <em>after</em> debate. Every deployed pipeline ultimately reduces the debate to a single answer and acts on it. Majority voting, weighted averaging, argmax — all of these <strong>discard uncertainty that could have flagged the error</strong>.</p>
 
-        <p>In safety-critical applications — medical diagnosis, legal reasoning, scientific discovery — a confidently wrong answer is far more dangerous than an honestly uncertain one.</p>
-
-        <div class="essay-insight">
-          <div class="essay-insight-label">Key Insight</div>
-          <p>The right question is not "do the agents agree?" but <strong>"can we bound the probability that the system's output is wrong?"</strong> These are fundamentally different questions, and they lead to fundamentally different system designs.</p>
+        <div class="essay-pullquote">
+          <p>The real deployment question is not "who won the debate?" but "when is it safe to act?" Current systems have no answer to this question.</p>
         </div>
 
-        <h2>The Conformal Social Choice Framework</h2>
+        <p>LLM agents are known to conform to perceived majority opinions — a form of social reinforcement that can produce <strong>wrong consensus</strong>: agents converge on an incorrect answer with high apparent confidence. Stability-based stopping detects agreement but cannot tell whether it is correct. The result is uncalibrated commitment: wrong consensus feeds to automated action with no safety check.</p>
 
-        <p>In our recent work, we formalize this idea through <strong>conformal social choice</strong> — a framework that combines social choice theory (how to aggregate preferences) with conformal prediction (how to provide statistical guarantees). The key innovation is treating multi-agent deliberation not as a voting problem, but as an uncertainty quantification problem.</p>
+        <h2>Conformal Social Choice: The Framework</h2>
+
+        <p>We introduce <strong>Conformal Social Choice</strong>, a post-hoc decision layer that converts debate outputs into calibrated <em>act-versus-escalate</em> decisions. The framework has four stages:</p>
 
         <div class="essay-diagram">
           <div class="diagram-flow">
-            <div class="diagram-node diagram-node--muted">Multi-Agent<br>Debate</div>
+            <div class="diagram-node diagram-node--muted">Debate<br>(T rounds)</div>
             <div class="diagram-arrow">&rarr;</div>
-            <div class="diagram-node diagram-node--secondary">Social Choice<br>Aggregation</div>
+            <div class="diagram-node diagram-node--secondary">Linear Opinion<br>Pool</div>
             <div class="diagram-arrow">&rarr;</div>
-            <div class="diagram-node diagram-node--primary">Conformal<br>Prediction Set</div>
+            <div class="diagram-node diagram-node--primary">Split Conformal<br>Calibration</div>
             <div class="diagram-arrow">&rarr;</div>
-            <div class="diagram-node diagram-node--success">Guaranteed<br>Coverage</div>
+            <div class="diagram-node diagram-node--success">Act or<br>Escalate</div>
           </div>
-          <p class="essay-diagram-caption">Conformal Social Choice pipeline</p>
+          <p class="essay-diagram-caption">The four-stage Conformal Social Choice pipeline</p>
         </div>
 
-        <h2>Looking Forward</h2>
+        <p><strong>Stage 1: Verbalized probability elicitation.</strong> Heterogeneous agents (in our experiments: Claude Haiku, DeepSeek-R1, and Qwen-3 32B) debate for T rounds. Rather than extracting token-level log-probabilities — unavailable for many proprietary APIs — each agent outputs explicit numerical probabilities for every answer option. This is a fully black-box approach.</p>
 
-        <p>As multi-agent AI systems become more prevalent — in code generation, research assistance, autonomous decision-making — the need for principled uncertainty control will only grow. Consensus is a useful signal, but it is not a substitute for statistical guarantees. The systems we trust with important decisions should be the ones that <strong>know what they don't know</strong>.</p>
+        <p><strong>Stage 2: Social probability aggregation.</strong> Agent beliefs are combined via a <strong>linear opinion pool</strong> — a weighted mixture that preserves the full probability distribution, not just the top vote. Unlike majority voting, this retains the <em>intensity</em> of preferences: an agent assigning 0.6 to option A contributes differently than one assigning 0.99.</p>
+
+        <p><strong>Stage 3: Conformal calibration.</strong> Using a held-out calibration set, split conformal prediction transforms the social probabilities into prediction sets with a <strong>marginal coverage guarantee</strong>: the correct answer is included with probability &ge; 1&minus;&alpha;. This requires no assumptions on individual model calibration — only exchangeability.</p>
+
+        <p><strong>Stage 4: Hierarchical action policy.</strong> This is the key decision mechanism. <strong>Singleton sets</strong> (one answer) &rarr; autonomous action. <strong>Larger sets</strong> &rarr; human escalation. <strong>Empty sets</strong> &rarr; anomaly flag. The prediction set is not just for evaluation — it directly determines whether the system acts or asks for help.</p>
+
+        <div class="essay-insight">
+          <div class="essay-insight-label">Key Insight</div>
+          <p>The conformal layer does not make debate more accurate. It makes debate failures <strong>actionable</strong>. By refusing to act on cases where debate is confidently wrong, the remaining decisions achieve dramatically higher accuracy — a <strong>selection effect of calibrated refusal</strong>, not a reasoning improvement.</p>
+        </div>
+
+        <h2>What the Numbers Show</h2>
+
+        <p>On eight MMLU-Pro domains with three agents, at &alpha;=0.05:</p>
+
+        <div class="essay-diagram">
+          <div class="diagram-stack">
+            <div class="diagram-stack-layer diagram-node--primary" style="padding:14px;">81.9% of wrong-consensus cases intercepted before automated action</div>
+            <div class="diagram-stack-layer diagram-node--secondary" style="padding:12px;">Coverage within 1–2 points of the 1&minus;&alpha; target across all domains</div>
+            <div class="diagram-stack-layer diagram-node--success" style="padding:12px;">Conformal singletons achieve 90.0–96.8% accuracy</div>
+            <div class="diagram-stack-layer diagram-node--warn" style="padding:12px;">Up to 22.1 percentage points above consensus stopping accuracy</div>
+          </div>
+          <p class="essay-diagram-caption">Results on MMLU-Pro (8 domains, 3 heterogeneous agents)</p>
+        </div>
+
+        <p>The tradeoff is explicit: improved safety comes at reduced automation. Not every case gets resolved autonomously — some get escalated to human review. But the operating point is <strong>user-adjustable via &alpha;</strong>. A stricter &alpha; (say 0.01) escalates more cases but provides stronger guarantees; a relaxed &alpha; (say 0.20) automates more but with less safety margin.</p>
+
+        <h2>Why Act-versus-Escalate, Not Just Better Answers</h2>
+
+        <p>Most work on multi-agent debate asks: <em>how can we make agents reason better?</em> or <em>when should debate stop?</em> These are important questions, but they miss the deployment reality. In practice, the output of a debate feeds into an automated pipeline — placing an order, sending a response, making a recommendation. The question that matters for safety is not whether the debate was good, but whether the system should be <strong>allowed to act</strong> on its conclusion.</p>
+
+        <p>Conformal Social Choice reframes multi-agent debate from an <strong>accuracy-maximization problem</strong> into a <strong>decision problem with calibrated risk control</strong>. The system doesn't claim to always be right. It claims that when it chooses to act, its probability of being wrong is bounded — and when it isn't confident enough, it says so.</p>
+
+        <p>That distinction — between being right and knowing when you might be wrong — is the difference between a system you demo and a system you deploy.</p>
       </div>
 
       <footer class="essay-footer">
@@ -130,14 +133,21 @@
               <div class="essay-paper-icon essay-paper-icon--arxiv">arXiv</div>
               <div class="essay-paper-body">
                 <span class="essay-paper-title">From Debate to Decision: Conformal Social Choice for Safe Multi-Agent Deliberation</span>
-                <span class="essay-paper-venue">Preprint, March 2026</span>
+                <span class="essay-paper-venue">Preprint, April 2026 &middot; 3 agents, 8 MMLU-Pro domains</span>
               </div>
             </a>
             <a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener" class="essay-paper-card">
               <div class="essay-paper-icon essay-paper-icon--conf">NeurIPS</div>
               <div class="essay-paper-body">
                 <span class="essay-paper-title">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</span>
-                <span class="essay-paper-venue">NeurIPS 2025 Workshop</span>
+                <span class="essay-paper-venue">NeurIPS 2025 Workshop &middot; PVC/C-PVC for LLM self-evaluation</span>
+              </div>
+            </a>
+            <a href="https://openreview.net/forum?id=YMwow5RQgP" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">ICLR</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Quantifying Consistency in LLM Logical Reasoning via Structural Uncertainty</span>
+                <span class="essay-paper-venue">ICLR 2026 Workshop &middot; Best Paper &middot; Self-preference ranking stability</span>
               </div>
             </a>
           </div>
