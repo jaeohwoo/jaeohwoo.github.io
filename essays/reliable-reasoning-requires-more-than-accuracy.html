@@ -26,7 +26,7 @@
       <header class="essay-header">
         <time class="essay-meta">April 2026</time>
         <h1 class="essay-page-title">Reliable Reasoning Requires More Than Accuracy</h1>
-        <p class="essay-subtitle">Can language models tell when they are wrong? The answer reveals a fundamental tradeoff between expressiveness and calibration.</p>
+        <p class="essay-subtitle">Can language models tell when they are wrong? The answer reveals a persistent tension between expressiveness and calibration.</p>
         <div class="essay-author">
           <img src="https://avatars.githubusercontent.com/u/5765039" alt="Jae Oh Woo" class="essay-author-img">
           <div class="essay-author-info">
@@ -113,7 +113,7 @@
 
         <div class="essay-insight">
           <div class="essay-insight-label">Key Insight</div>
-          <p>This tradeoff is <strong>not an artifact of specific architectures or training methods</strong>. It persists across different model families (Qwen, Llama, DeepSeek, Mistral), different training paradigms (SFT, DPO, GRPO, distillation, RL), and different cognitive domains (math, factual, commonsense). It appears to be a fundamental constraint of probabilistic reasoning systems.</p>
+          <p>This tradeoff is <strong>not an artifact of specific architectures or training methods</strong>. It persists across different model families (Qwen, Llama, DeepSeek, Mistral), different training paradigms (SFT, DPO, GRPO, distillation, RL), and different cognitive domains (math, factual, commonsense). It suggests a persistent constraint that current probabilistic reasoning systems have not yet overcome.</p>
         </div>
 
         <h2>Domain-Specific Self-Evaluation</h2>
@@ -124,9 +124,9 @@
 
         <h2>Why This Matters</h2>
 
-        <p>For autonomous AI systems — those that must operate without constant human oversight — self-evaluation is not optional. A system that can solve problems but cannot assess when it might be wrong is fundamentally unsafe for deployment in high-stakes settings.</p>
+        <p>For autonomous AI systems — those that must operate without constant human oversight — self-evaluation is not optional. A system that can solve problems but cannot assess when it might be wrong is difficult to trust in high-stakes settings.</p>
 
-        <p>The PVC/C-PVC framework provides the first principled tools for <strong>measuring and comparing</strong> this capability across models. And the expressiveness-calibration tradeoff it reveals poses a concrete challenge: we need models that are both discriminative <em>and</em> well-calibrated in their self-assessment. Current 7-8B models have not solved this. Whether scaling, better training objectives, or fundamentally different architectures can break the tradeoff remains an open question — and one of the most important for building AI systems we can actually trust.</p>
+        <p>The PVC/C-PVC framework adds a capacity-based lens for <strong>measuring and comparing</strong> this capability across models. And the expressiveness-calibration tension it reveals poses a concrete challenge: we need models that are both discriminative <em>and</em> well-calibrated in their self-assessment. Current 7-8B models have not solved this. Whether scaling, better training objectives, or different architectures can ease the tension remains an open question — and one of the most important for building AI systems we can actually trust.</p>
       </div>
 
       <footer class="essay-footer">
@@ -145,27 +145,6 @@
               <div class="essay-paper-body">
                 <span class="essay-paper-title">Quantifying Consistency in LLM Logical Reasoning via Structural Uncertainty</span>
                 <span class="essay-paper-venue">ICLR 2026 Workshop &middot; Best Paper &middot; Complementary self-preference approach</span>
-              </div>
-            </a>
-            <a href="https://icml.cc/virtual/2024/poster/33513" target="_blank" rel="noopener" class="essay-paper-card">
-              <div class="essay-paper-icon essay-paper-icon--conf">ICML</div>
-              <div class="essay-paper-body">
-                <span class="essay-paper-title">Improving Instruction Following in Language Models through Proxy-Based Uncertainty Estimation</span>
-                <span class="essay-paper-venue">ICML 2024</span>
-              </div>
-            </a>
-            <a href="https://github.com/P-B-U/proxy_based_uncertainty" target="_blank" rel="noopener" class="essay-paper-card">
-              <div class="essay-paper-icon essay-paper-icon--code">Code</div>
-              <div class="essay-paper-body">
-                <span class="essay-paper-title">proxy_based_uncertainty</span>
-                <span class="essay-paper-venue">GitHub &middot; Source code for ICML 2024 paper</span>
-              </div>
-            </a>
-            <a href="https://ieeexplore.ieee.org/document/9834883" target="_blank" rel="noopener" class="essay-paper-card">
-              <div class="essay-paper-icon essay-paper-icon--conf">IEEE</div>
-              <div class="essay-paper-body">
-                <span class="essay-paper-title">Analytic Mutual Information in Bayesian Neural Networks</span>
-                <span class="essay-paper-venue">IEEE ISIT 2022 &middot; Information-theoretic uncertainty decomposition</span>
               </div>
             </a>
           </div>
