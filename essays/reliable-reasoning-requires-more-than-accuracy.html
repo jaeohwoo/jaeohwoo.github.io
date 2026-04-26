@@ -26,7 +26,7 @@
       <header class="essay-header">
         <time class="essay-meta">April 2026</time>
         <h1 class="essay-page-title">Reliable Reasoning Requires More Than Accuracy</h1>
-        <p class="essay-subtitle">Accuracy tells us whether a model got the answer right. Reliability asks whether we know when to trust it.</p>
+        <p class="essay-subtitle">Can language models tell when they are wrong? The answer reveals a fundamental tradeoff between expressiveness and calibration.</p>
         <div class="essay-author">
           <img src="https://avatars.githubusercontent.com/u/5765039" alt="Jae Oh Woo" class="essay-author-img">
           <div class="essay-author-info">
@@ -36,79 +36,97 @@
       </header>
 
       <div class="essay-body">
-        <p>The default way to evaluate a language model is accuracy: what fraction of the time does it produce the correct answer? This metric is useful, but it is dangerously incomplete. A model that is right 90% of the time but gives no signal about which 10% it gets wrong is, in many contexts, <strong>less useful</strong> than a model that is right 80% of the time but reliably knows when it is uncertain.</p>
+        <p>A language model that solves a math problem correctly is useful. A language model that solves a math problem correctly <em>and knows it got it right</em> is far more useful. And a language model that can look at two of its own solutions and reliably pick the better one — that is the capability we actually need for autonomous reasoning systems.</p>
+
+        <p>This is the question we set out to formalize: <strong>to what extent can LLMs evaluate the reliability of their own reasoning?</strong> Not just whether they get the right answer, but whether they can distinguish their correct outputs from incorrect ones, and whether their confidence in that distinction is calibrated.</p>
+
+        <h2>Self-Evaluation as a Testable Capability</h2>
+
+        <p>Here is the experimental setup. Give a model a problem. Let it generate two distinct solutions. Then ask the same model: <em>which solution is better, and how confident are you?</em> An external judge ensemble determines the ground truth. This gives us two measurable quantities for each problem category:</p>
+
+        <div class="essay-diagram">
+          <div class="diagram-flow">
+            <div class="diagram-node diagram-node--muted">Model generates<br>2 solutions</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--secondary">Model picks one<br>+ reports confidence</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--primary">Compare to<br>expert judge</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--success">SEA &amp;<br>Calibration Error</div>
+          </div>
+          <p class="essay-diagram-caption">The self-evaluation protocol: models judge their own reasoning against expert consensus</p>
+        </div>
+
+        <p><strong>Self-Evaluation Accuracy (SEA)</strong> — how often the model picks the objectively better solution. <strong>Calibration Error</strong> — how well the model's reported confidence aligns with its actual success rate. A model that picks correctly 70% of the time but claims 95% confidence is poorly calibrated, even if its accuracy is decent.</p>
+
+        <h2>From Accuracy to VC Theory</h2>
+
+        <p>The deeper question is not just "how good is this model at self-evaluation?" but "what is the <em>capacity</em> of its self-evaluation?" — how many distinct problem types can it reliably evaluate across?</p>
+
+        <p>This is where classical learning theory becomes relevant. The <a href="https://en.wikipedia.org/wiki/Vapnik%E2%80%93Chervonenkis_dimension" target="_blank" rel="noopener">Vapnik-Chervonenkis (VC) dimension</a> measures the capacity of a hypothesis class — how many points it can shatter. But classical VC theory handles binary classifiers, not probabilistic predictors that output confidence scores. LLMs don't just say "correct" or "incorrect" — they say "I'm 85% sure this one is better."</p>
+
+        <p>We introduce two extensions that bridge this gap:</p>
 
         <div class="essay-diagram">
           <div class="diagram-compare">
-            <div class="diagram-compare-col diagram-compare-col--left">
-              <span class="diagram-compare-title">Accuracy-Only View</span>
-              <div class="diagram-compare-item">90% correct overall</div>
-              <div class="diagram-compare-item">No uncertainty signal</div>
-              <div class="diagram-compare-item">Silent failures</div>
-              <div class="diagram-compare-item">Users can't distinguish good from bad outputs</div>
+            <div class="diagram-compare-col diagram-compare-col--right" style="border-color: rgba(37,99,235,0.15); background: var(--accent-soft);">
+              <span class="diagram-compare-title" style="color: var(--accent);">PVC — Probabilistic VC Dimension</span>
+              <div class="diagram-compare-item">Extends VC to probabilistic predictors</div>
+              <div class="diagram-compare-item">Measures: how many problem types can the model classify with confidence &ge; &gamma;?</div>
+              <div class="diagram-compare-item">Captures <strong>expressiveness</strong> of self-evaluation</div>
+              <div class="diagram-compare-item">Higher = more discriminative power</div>
             </div>
-            <div class="diagram-compare-col diagram-compare-col--right">
-              <span class="diagram-compare-title">Reliability View</span>
-              <div class="diagram-compare-item">80% correct with calibrated confidence</div>
-              <div class="diagram-compare-item">Flags uncertain outputs</div>
-              <div class="diagram-compare-item">Fails informatively</div>
-              <div class="diagram-compare-item">Users know when to trust and when to verify</div>
+            <div class="diagram-compare-col diagram-compare-col--right" style="border-color: rgba(21,128,61,0.15); background: #f0fdf4;">
+              <span class="diagram-compare-title" style="color: #15803d;">C-PVC — Calibration-Aware PVC</span>
+              <div class="diagram-compare-item">Adds calibration requirement on top of PVC</div>
+              <div class="diagram-compare-item">Requires: confidence scores must align with actual success rates (within tolerance &tau;)</div>
+              <div class="diagram-compare-item">Captures <strong>expressiveness + calibration</strong></div>
+              <div class="diagram-compare-item">Higher = discriminative AND well-calibrated</div>
             </div>
           </div>
-          <p class="essay-diagram-caption">Why 80% with calibration can outperform 90% without</p>
+          <p class="essay-diagram-caption">Two complexity metrics for LLM self-evaluation capability</p>
         </div>
 
-        <h2>The Calibration Gap</h2>
+        <p>The key theoretical result: PVC and C-PVC yield <strong>generalization bounds and sample complexity guarantees</strong> that mirror classical VC theory. The classical structure — O(√(d/n)) convergence, Ω(d/&epsilon;&sup2;) sample complexity — carries over, with the VC dimension replaced by PVC or C-PVC. This means the framework is not just a metric — it provides formal guarantees about how self-evaluation performance on a test set relates to true self-evaluation capability.</p>
 
-        <p>A <strong>well-calibrated</strong> model is one whose confidence scores correspond to actual probabilities. When it says it is 90% confident, it should be correct roughly 90% of the time. Most modern LLMs are poorly calibrated — they express high confidence even when wrong, and their uncertainty estimates are unreliable.</p>
+        <h2>The Expressiveness-Calibration Tradeoff</h2>
 
-        <p>This is not merely an aesthetic problem. In any system where a human or downstream process must decide whether to act on a model's output, calibration is essential. Without it, the user has no basis for distinguishing reliable outputs from unreliable ones.</p>
+        <p>We tested eleven 7-8B parameter models across three benchmarks: 360 mathematical reasoning problems, TruthfulQA for factual accuracy, and CommonsenseQA for commonsense reasoning. The central empirical finding is a <strong>systematic inverse correlation</strong>:</p>
 
         <div class="essay-pullquote">
-          <p>A confident wrong answer is not just useless — it is actively harmful, because it erodes the trust needed for AI systems to be useful at all.</p>
+          <p>Models exhibiting enhanced self-evaluation expressiveness consistently demonstrate diminished calibration fidelity. The better a model is at discriminating correct from incorrect, the worse its confidence scores reflect reality.</p>
         </div>
 
-        <h2>Why Accuracy Benchmarks Miss the Point</h2>
-
-        <p>Standard benchmarks report aggregate accuracy across a test set. But <strong>aggregate performance hides distributional structure</strong>. A model might achieve 95% accuracy overall while systematically failing on logical negation, multi-step arithmetic, or causal reasoning under confounders.</p>
-
-        <p>Worse, optimizing for benchmark accuracy can actively harm reliability. Models learn to exploit surface patterns in benchmark datasets, producing correct answers for the wrong reasons. This inflates accuracy while making the model <strong>more brittle</strong> on out-of-distribution inputs.</p>
-
-        <h2>A Hierarchy of Trustworthiness</h2>
+        <p>Models like <strong>s1.1-7B</strong> and <strong>Qwen2.5-7B-Instruct</strong> achieve high PVC-VUS scores — strong discriminative self-assessment — but their confidence is poorly calibrated. Conversely, <strong>JiuZhang3.0-7B</strong> shows superior calibration (lowest ECE, smallest PVC-VUS gap) but lower discriminative power. No model excels at both simultaneously.</p>
 
         <div class="essay-diagram">
           <div class="diagram-stack">
-            <div class="diagram-stack-layer diagram-node--primary" style="padding:14px;">Formal Guarantees (Conformal, VC bounds)</div>
-            <div class="diagram-stack-layer diagram-node--secondary" style="padding:12px;">Calibrated Uncertainty</div>
-            <div class="diagram-stack-layer diagram-node--muted" style="padding:12px;">Selective Prediction (abstain when uncertain)</div>
-            <div class="diagram-stack-layer diagram-node--warn" style="padding:12px;">Soft Confidence Scores</div>
-            <div class="diagram-stack-layer diagram-node--danger" style="padding:12px;">Accuracy Only</div>
+            <div class="diagram-stack-layer diagram-node--danger" style="padding:14px;">High PVC, Poor Calibration (s1.1-7B, Qwen2.5-Instruct)</div>
+            <div class="diagram-stack-layer" style="padding:8px; font-size:0.68rem; color:var(--text-3); background:none;">"I can tell which answer is better, but my confidence is unreliable"</div>
+            <div class="diagram-stack-layer diagram-node--warn" style="padding:14px;">Balanced (most models)</div>
+            <div class="diagram-stack-layer" style="padding:8px; font-size:0.68rem; color:var(--text-3); background:none;">"Moderate discrimination, moderate calibration"</div>
+            <div class="diagram-stack-layer diagram-node--success" style="padding:14px;">Better Calibration, Lower PVC (JiuZhang3.0-7B)</div>
+            <div class="diagram-stack-layer" style="padding:8px; font-size:0.68rem; color:var(--text-3); background:none;">"My confidence is honest, but my discrimination is limited"</div>
           </div>
-          <p class="essay-diagram-caption">Levels of trustworthiness in AI systems — from weakest to strongest</p>
+          <p class="essay-diagram-caption">The expressiveness-calibration spectrum across eleven 7-8B models</p>
         </div>
-
-        <p>At the bottom, we have raw accuracy — the weakest form of evaluation. Each layer adds a stronger form of reliability: soft confidence, selective prediction, calibrated uncertainty, and at the top, <strong>formal statistical guarantees</strong> that bound the probability of error.</p>
-
-        <h2>From Prediction to Uncertainty Estimation</h2>
-
-        <p>The path toward reliable reasoning requires treating uncertainty as a <strong>first-class output</strong>. Several frameworks make this possible:</p>
-
-        <p><strong>Bayesian approaches</strong> model uncertainty through posterior distributions. In our work on <a href="https://ieeexplore.ieee.org/document/9834883" target="_blank" rel="noopener">analytic mutual information in BNNs</a>, we showed that closed-form uncertainty expressions are achievable, removing the need for expensive Monte Carlo approximation.</p>
-
-        <p><strong>Proxy-based methods</strong> estimate uncertainty without modifying the base model. Our <a href="https://icml.cc/virtual/2024/poster/33513" target="_blank" rel="noopener">ICML 2024 work</a> demonstrated that proxy-based uncertainty estimation can significantly improve instruction following — the model learns when to trust its own outputs.</p>
-
-        <p><strong>VC-theoretic analysis</strong> provides distribution-free bounds on the gap between observed and true performance. Our <a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener">NeurIPS 2025 work</a> applies this to LLM self-evaluation, answering the question: when can a model reliably judge its own outputs?</p>
 
         <div class="essay-insight">
           <div class="essay-insight-label">Key Insight</div>
-          <p>Reliability should not be bolted on after the fact. It should be a <strong>design principle from the beginning</strong> — in architecture, training, and evaluation.</p>
+          <p>This tradeoff is <strong>not an artifact of specific architectures or training methods</strong>. It persists across different model families (Qwen, Llama, DeepSeek, Mistral), different training paradigms (SFT, DPO, GRPO, distillation, RL), and different cognitive domains (math, factual, commonsense). It appears to be a fundamental constraint of probabilistic reasoning systems.</p>
         </div>
 
-        <h2>The Practical Stakes</h2>
+        <h2>Domain-Specific Self-Evaluation</h2>
 
-        <p>When a language model assists in medical diagnosis, legal analysis, or scientific reasoning, the cost of a confident but wrong answer can be severe. The goal is not to make models that never make mistakes — that is unrealistic — but to make models that <strong>communicate their uncertainty honestly</strong>, so that humans and systems downstream can make informed decisions about when to trust and when to verify.</p>
+        <p>The tradeoff is not uniform across domains. Some models show stronger self-evaluation on mathematical reasoning while others excel on factual or commonsense tasks. This suggests that <strong>self-evaluation capability is not a single axis</strong> — it is domain-dependent, shaped by training data, fine-tuning objectives, and the cognitive structure of the task.</p>
 
-        <p>Accuracy is necessary but not sufficient. Reliability is the harder, more important goal.</p>
+        <p>Mathematical reasoning, with its clear logical structure, often allows models to evaluate solution quality through internal consistency checks. Factual and commonsense reasoning, where correctness depends on world knowledge rather than logical derivation, presents a different self-evaluation challenge.</p>
+
+        <h2>Why This Matters</h2>
+
+        <p>For autonomous AI systems — those that must operate without constant human oversight — self-evaluation is not optional. A system that can solve problems but cannot assess when it might be wrong is fundamentally unsafe for deployment in high-stakes settings.</p>
+
+        <p>The PVC/C-PVC framework provides the first principled tools for <strong>measuring and comparing</strong> this capability across models. And the expressiveness-calibration tradeoff it reveals poses a concrete challenge: we need models that are both discriminative <em>and</em> well-calibrated in their self-assessment. Current 7-8B models have not solved this. Whether scaling, better training objectives, or fundamentally different architectures can break the tradeoff remains an open question — and one of the most important for building AI systems we can actually trust.</p>
       </div>
 
       <footer class="essay-footer">
@@ -119,14 +137,21 @@
               <div class="essay-paper-icon essay-paper-icon--conf">NeurIPS</div>
               <div class="essay-paper-body">
                 <span class="essay-paper-title">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</span>
-                <span class="essay-paper-venue">NeurIPS 2025 Workshop</span>
+                <span class="essay-paper-venue">NeurIPS 2025 Workshop LAW &middot; Introduces PVC and C-PVC</span>
+              </div>
+            </a>
+            <a href="https://openreview.net/forum?id=YMwow5RQgP" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">ICLR</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Quantifying Consistency in LLM Logical Reasoning via Structural Uncertainty</span>
+                <span class="essay-paper-venue">ICLR 2026 Workshop &middot; Best Paper &middot; Complementary self-preference approach</span>
               </div>
             </a>
             <a href="https://icml.cc/virtual/2024/poster/33513" target="_blank" rel="noopener" class="essay-paper-card">
               <div class="essay-paper-icon essay-paper-icon--conf">ICML</div>
               <div class="essay-paper-body">
                 <span class="essay-paper-title">Improving Instruction Following through Proxy-Based Uncertainty Estimation</span>
-                <span class="essay-paper-venue">ICML 2024</span>
+                <span class="essay-paper-venue">ICML 2024 &middot; Proxy uncertainty for instruction adherence</span>
               </div>
             </a>
             <a href="https://github.com/P-B-U/proxy_based_uncertainty" target="_blank" rel="noopener" class="essay-paper-card">
@@ -140,7 +165,7 @@
               <div class="essay-paper-icon essay-paper-icon--conf">IEEE</div>
               <div class="essay-paper-body">
                 <span class="essay-paper-title">Analytic Mutual Information in Bayesian Neural Networks</span>
-                <span class="essay-paper-venue">IEEE ISIT 2022</span>
+                <span class="essay-paper-venue">IEEE ISIT 2022 &middot; Information-theoretic uncertainty decomposition</span>
               </div>
             </a>
           </div>
