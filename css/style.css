@@ -588,7 +588,7 @@ strong { font-weight: 600; }
 
 /* Featured card: larger side-by-side photo pair */
 .work--featured.work--with-photo {
-  grid-template-columns: 1fr minmax(380px, 42%);
+  grid-template-columns: 1fr minmax(266px, 30%);
 }
 /* Column widths use the images' aspect ratios (plaque ~0.93:1, cert ~1.49:1)
    so both images render at the same height. */
