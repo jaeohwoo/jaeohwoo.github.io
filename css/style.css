@@ -585,6 +585,29 @@ strong { font-weight: 600; }
   align-items: center;
 }
 .work--with-photo .work-body { min-width: 0; }
+
+/* Featured card: larger side-by-side photo pair */
+.work--featured.work--with-photo {
+  grid-template-columns: 1fr minmax(380px, 42%);
+}
+/* Column widths use the images' aspect ratios (plaque ~0.93:1, cert ~1.49:1)
+   so both images render at the same height. */
+.work-photo--pair {
+  display: grid;
+  grid-template-columns: 0.93fr 1.49fr;
+  gap: 0.6rem;
+  align-items: center;
+  overflow: visible;
+}
+.work-photo--pair img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  transition: transform 0.3s;
+}
+.work-photo--pair img:hover { transform: scale(1.03); }
 .work-photo {
   overflow: hidden;
   border-radius: 10px;
@@ -900,7 +923,11 @@ strong { font-weight: 600; }
   .work--with-photo {
     grid-template-columns: 1fr;
   }
+  .work--featured.work--with-photo {
+    grid-template-columns: 1fr;
+  }
   .work-photo { order: -1; }
+  .work-photo--pair { grid-template-columns: 0.93fr 1.49fr; }
 
   .work-foot {
     flex-direction: column;
