@@ -624,10 +624,10 @@ strong { font-weight: 600; }
   transition: transform 0.3s;
 }
 .work-photo--stack img:nth-child(1) {
-  width: 68%;
+  width: 41%;
 }
 .work-photo--stack img:nth-child(2) {
-  width: 32%;
+  width: 19%;
 }
 .work-photo--stack img:hover { transform: scale(1.03); }
 .work-photo {
