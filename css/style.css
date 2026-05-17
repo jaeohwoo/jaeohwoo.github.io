@@ -624,7 +624,7 @@ strong { font-weight: 600; }
   transition: transform 0.3s;
 }
 .work-photo--stack img:nth-child(2) {
-  width: 65%;
+  width: 40%;
 }
 .work-photo--stack img:hover { transform: scale(1.03); }
 .work-photo {
