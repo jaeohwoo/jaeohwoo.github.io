@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knowing When to Ask: Self-Gated Clarification for Language Agents &mdash; Jae Oh Woo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/essay.css">
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-name">Jae Oh Woo</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../#essays">&larr; Essays</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="essay-page">
+    <div class="essay-container">
+      <header class="essay-header">
+        <time class="essay-meta">May 2026</time>
+        <h1 class="essay-page-title">Knowing When to Ask: Self-Gated Clarification for Language Agents</h1>
+        <p class="essay-subtitle">Most agents either over-ask or never ask at all. The right question is not how often an agent asks &mdash; it is <em>where</em> it asks, and whether asking competes with acting on the same scale.</p>
+        <div class="essay-author">
+          <img src="https://avatars.githubusercontent.com/u/5765039" alt="Jae Oh Woo" class="essay-author-img">
+          <div class="essay-author-info">
+            <span class="essay-author-name"><a href="../">Jae Oh Woo</a></span>
+          </div>
+        </div>
+      </header>
+
+      <div class="essay-body">
+        <p>Hierarchical agents fail at intermediate decisions. A taxonomy classifier picks the wrong subtree at depth two and the rest of the trajectory inherits the error. A tool-using agent commits to a query before realizing it is missing a key constraint. The pattern is the same: <strong>the agent commits to a branch without recognizing that it lacks the information needed to commit at all</strong>.</p>
+
+        <p>The standard remedies bolt clarification onto the side of the policy. A confidence threshold says "ask if uncertain." A separate router decides whether to call a clarifier. These work, but they share a flaw: <strong>asking is a different action class from acting</strong>, on a different scale, decided by a different head. The agent never weighs "ask" and "act" against each other on equal footing.</p>
+
+        <p>Our <a href="https://ai-discovery-in-the-wild.github.io/" target="_blank" rel="noopener">recent paper at ACM CAIS 2026</a> proposes a different framing: put clarification <em>inside</em> the action space, on the same ordinal rating scale as every other branch. Asking does not get a special pathway. It competes.</p>
+
+        <div class="essay-diagram">
+          <div class="diagram-compare">
+            <div class="diagram-compare-col diagram-compare-col--left">
+              <span class="diagram-compare-title">Bolt-On Clarification</span>
+              <div class="diagram-compare-item">Confidence threshold or external router</div>
+              <div class="diagram-compare-item">Asking is a separate decision pathway</div>
+              <div class="diagram-compare-item">Tuned globally, not per decision point</div>
+              <div class="diagram-compare-item">Often: ask too often, or never at all</div>
+            </div>
+            <div class="diagram-compare-col diagram-compare-col--right">
+              <span class="diagram-compare-title">Self-Gated Clarification</span>
+              <div class="diagram-compare-item">"Ask" lives in the action space itself</div>
+              <div class="diagram-compare-item">Same ordinal scale as navigation actions</div>
+              <div class="diagram-compare-item">Decided locally at every branch</div>
+              <div class="diagram-compare-item">Asking competes with acting</div>
+            </div>
+          </div>
+          <p class="essay-diagram-caption">Where clarification lives changes which questions you can answer about it.</p>
+        </div>
+
+        <h2>The Core Move: Asking on the Same Scale as Acting</h2>
+
+        <p>At each decision point, the agent rates every candidate child branch on a shared ordinal scale and rates a clarification action on the same scale. There is no separate threshold, no second model, no global hyperparameter. <strong>If asking outranks every branch, the agent asks. If a branch dominates, the agent commits.</strong></p>
+
+        <div class="essay-pullquote">
+          <p>Bolting a clarifier onto a policy tells you <em>how often</em> the agent asks. Putting clarification inside the action space lets you ask <em>where</em> the agent asks, and whether asking is competing with the right alternatives.</p>
+        </div>
+
+        <p>This single change unlocks something the bolt-on view cannot see. Two structurally distinct information-seeking modes emerge directly from the agent's own ratings:</p>
+
+        <p><strong>Mandatory clarification</strong> &mdash; no branch is viable. Every navigation action is rated low. The agent is not picking among acceptable options; it is recognizing that none of them are. Asking is the only sensible action.</p>
+
+        <p><strong>Opportunistic clarification</strong> &mdash; one branch leads, but residual uncertainty remains. The agent has a candidate it would commit to, but asking still outranks committing. This is the deployment-relevant regime: the agent is right about where it is heading, but cautious about whether it is heading there too soon.</p>
+
+        <p>You do not get this distinction from a confidence threshold. A scalar confidence cannot tell you whether low confidence comes from "all branches are bad" or "one branch is good but I'm not yet sure enough." The ordinal-rating view exposes both.</p>
+
+        <h2>What the Numbers Show</h2>
+
+        <p>We evaluate on Harmonized Tariff Schedule classification &mdash; a 30,000-node taxonomy across three benchmarks, with nine LLMs spanning four families. The hierarchy is deep and unforgiving: a wrong subtree at depth two cannot be recovered at depth six.</p>
+
+        <div class="essay-diagram">
+          <div class="diagram-stack">
+            <div class="diagram-stack-layer diagram-node--primary" style="padding:14px;">Information-Seeking Effectiveness rises from 50% to 74% as agents shift from mandatory to opportunistic clarification</div>
+            <div class="diagram-stack-layer diagram-node--secondary" style="padding:12px;">A regime shift, not a constant rate &mdash; better agents do not ask more, they ask <em>differently</em></div>
+            <div class="diagram-stack-layer diagram-node--success" style="padding:12px;">Up to +16.2pp accuracy gain at 10-digit depth under controlled answers</div>
+            <div class="diagram-stack-layer diagram-node--warn" style="padding:12px;">Pattern persists even with degraded answer quality (&minus;18.8pp), showing <em>where</em> to ask is separable from <em>what</em> to ask for</div>
+          </div>
+          <p class="essay-diagram-caption">Results across three HTS benchmarks and 9 LLMs (4 families)</p>
+        </div>
+
+        <p>Information-Seeking Effectiveness &mdash; the fraction of clarification interactions followed by a correct next step &mdash; is the cleanest metric here. It is not "did asking help on average?"; it is "when this agent chose to ask, was that ask useful?" The shift from 50% to 74% is the difference between asking-as-noise and asking-as-targeted-information-seeking.</p>
+
+        <div class="essay-insight">
+          <div class="essay-insight-label">Key Insight</div>
+          <p>The interesting variable is not whether agents ask, but <strong>where in the trajectory they ask</strong>. Stronger agents do not ask more often; they ask at decision points where a small piece of additional information unlocks a downstream chain of correct decisions. That localization is what improves; the volume of asking is roughly flat.</p>
+        </div>
+
+        <h2>Separating Where from What</h2>
+
+        <p>One thing this framing makes possible is a cleaner experimental decomposition. We can hold the <em>policy that decides where to ask</em> fixed and degrade the <em>quality of answers received</em>. Accuracy drops by 18.8 percentage points &mdash; but the location pattern of clarification stays nearly unchanged.</p>
+
+        <p>This matters because it tells us the agent's clarification policy is not collapsing under bad oracle answers. It is asking at the right places regardless. <strong>Where to ask and what help to receive are separable problems</strong>, and the self-gated rating mechanism handles the first one even when the second one degrades.</p>
+
+        <p>That separability is also where the upper bound comes from. Under controlled answers &mdash; an idealized oracle that returns the right disambiguating signal &mdash; we see +16.2pp accuracy at 10-digit classification depth. That is a bound on what better information-seeking <em>could</em> unlock for an agent that already knows where to seek it.</p>
+
+        <h2>Why This Connects to the Rest of the Agenda</h2>
+
+        <p>The thread running through my recent work is the same: AI systems should not only answer; they should know <em>when their reasoning is reliable, when uncertainty is high, and when decisions should be deferred</em>. Different papers attack different parts of this loop:</p>
+
+        <p>The <a href="why-consensus-is-not-correctness.html">conformal social choice essay</a> asks when a multi-agent debate result is safe to act on, and when it should escalate to a human. The <a href="reliable-reasoning-requires-more-than-accuracy.html">probabilistic VC essay</a> asks when a model's self-evaluation can be trusted to generalize. The <a href="structural-uncertainty-in-llm-reasoning.html">structural uncertainty essay</a> asks when surface agreement is hiding underlying instability.</p>
+
+        <p>This essay's question is the agentic version of all three: <strong>when, in the middle of a task, should the agent stop committing and ask?</strong> Self-gated clarification answers that question by refusing to treat asking as a special action. It is just another rating on the same scale &mdash; and that small structural choice is what makes "knowing when to ask" learnable rather than hand-tuned.</p>
+
+        <p>For deployed agents, that distinction matters. A system that always answers is brittle; a system that asks every step is unusable. A system that asks <em>where it should</em> is the one that ships.</p>
+      </div>
+
+      <footer class="essay-footer">
+        <div class="essay-related">
+          <h3>Related Papers</h3>
+          <div class="essay-papers">
+            <a href="https://ai-discovery-in-the-wild.github.io/" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">CAIS</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Knowing When to Ask: Self-Gated Clarification for Hierarchical Language Agents</span>
+                <span class="essay-paper-venue">ACM CAIS 2026 Workshop on AI Agents for Discovery in the Wild &middot; Accepted May 2026</span>
+              </div>
+            </a>
+            <a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">NeurIPS</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</span>
+                <span class="essay-paper-venue">NeurIPS 2025 Workshop &middot; Self-evaluation reliability foundations</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="essay-more">
+          <h3>More Essays</h3>
+          <div class="essay-more-grid">
+            <a href="why-consensus-is-not-correctness.html" class="essay-more-card">
+              <span class="essay-more-title">Why Consensus Is Not Correctness in Multi-Agent AI</span>
+              <span class="essay-more-desc">Conformal prediction turns multi-agent debate into calibrated act-or-escalate decisions.</span>
+            </a>
+            <a href="structural-uncertainty-in-llm-reasoning.html" class="essay-more-card">
+              <span class="essay-more-title">Structural Uncertainty in LLM Reasoning</span>
+              <span class="essay-more-desc">How self-preference rankings reveal reasoning instability that answer agreement misses.</span>
+            </a>
+            <a href="reliable-reasoning-requires-more-than-accuracy.html" class="essay-more-card">
+              <span class="essay-more-title">Reliable Reasoning Requires More Than Accuracy</span>
+              <span class="essay-more-desc">A VC-theoretic framework reveals a fundamental tradeoff in LLM self-evaluation.</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="essay-actions">
+          <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" target="_blank" rel="noopener" class="essay-action-btn">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/jae-oh-woo-45666829" target="_blank" rel="noopener" class="essay-action-btn">LinkedIn</a>
+          <a href="../#contact" class="essay-action-btn">Contact</a>
+        </div>
+
+        <a href="../#essays" class="essay-back">&larr; Back to all essays</a>
+      </footer>
+    </div>
+  </article>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
