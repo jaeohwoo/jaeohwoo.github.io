@@ -254,6 +254,15 @@ strong { font-weight: 600; }
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
 }
+.hl-group-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-3);
+  margin: 1.6rem 0 0.6rem;
+}
+.hl-group-label:first-of-type { margin-top: 0; }
 .hl-card {
   display: flex;
   flex-direction: column;
@@ -355,6 +364,17 @@ strong { font-weight: 600; }
   line-height: 1.85;
 }
 .about-body p:last-child { margin-bottom: 0; }
+.about-thesis {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--text);
+  border-left: 3px solid var(--accent);
+  padding-left: 1.1rem;
+  margin-bottom: 1.6rem;
+}
+.about-thesis em { color: var(--accent); font-style: italic; }
 .about-lede {
   font-size: 0.98rem;
   color: var(--text);
@@ -671,6 +691,18 @@ strong { font-weight: 600; }
   box-shadow: var(--shadow-md);
   transform: translateY(-3px);
   text-decoration: none;
+}
+.essay-kind {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  padding: 3px 8px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  align-self: flex-start;
 }
 .essay-date {
   font-size: 0.62rem;

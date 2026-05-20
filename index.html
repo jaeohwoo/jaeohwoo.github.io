@@ -41,7 +41,7 @@
             Reliable Reasoning, Calibration, and Uncertainty for AI Systems
           </p>
           <p class="hero-sub">
-            I develop principled methods for evaluating and improving LLM reasoning, with a focus on self-evaluation, uncertainty, and mathematically grounded reliability.
+            I build the foundations and systems needed to decide <em>when AI reasoning can be trusted, when it should defer, and how uncertainty turns into safer decisions</em> &mdash; combining calibration, self-evaluation, and distribution-free guarantees for real LLM and agentic systems.
           </p>
           <div class="hero-actions">
             <a href="#selected-work" class="btn btn-primary">Selected Work</a>
@@ -67,31 +67,61 @@
   <section class="highlights">
     <div class="page">
       <h2 class="section-label">Highlights</h2>
+
+      <h3 class="hl-group-label">Research Recognition</h3>
       <div class="hl-grid">
         <a href="https://openreview.net/forum?id=YMwow5RQgP" target="_blank" rel="noopener" class="hl-card hl-card--gold">
           <span class="hl-badge">Best Paper</span>
           <span class="hl-venue">ICLR 2026 Workshop</span>
           <span class="hl-detail">Logical Reasoning of LLMs</span>
         </a>
-        <div class="hl-card hl-card--gold">
-          <span class="hl-badge">Gold Reviewer</span>
-          <span class="hl-venue">ICML 2026</span>
-          <span class="hl-detail">Reviewer Award</span>
-        </div>
-        <div class="hl-card hl-card--gold">
-          <span class="hl-badge">Gold Prize</span>
-          <span class="hl-venue">Samsung Best Paper</span>
-          <span class="hl-detail">2023</span>
-        </div>
         <a href="https://iclr.cc/virtual/2023/poster/11983" target="_blank" rel="noopener" class="hl-card hl-card--gold">
           <span class="hl-badge">Top 25%</span>
           <span class="hl-venue">ICLR 2023</span>
           <span class="hl-detail">Balanced Entropy / Active Learning</span>
         </a>
         <div class="hl-card hl-card--gold">
+          <span class="hl-badge">Gold Prize</span>
+          <span class="hl-venue">Samsung Best Paper</span>
+          <span class="hl-detail">2023</span>
+        </div>
+      </div>
+
+      <h3 class="hl-group-label">Industry Impact</h3>
+      <div class="hl-grid">
+        <div class="hl-card hl-card--reinvent">
+          <span class="hl-badge">Chalk Talk &middot; 500-level</span>
+          <span class="hl-venue">AWS re:Invent &middot; INV508</span>
+          <span class="hl-detail">LLMs Reflecting on Their Reasoning</span>
+        </div>
+        <div class="hl-card hl-card--reinvent">
+          <span class="hl-badge">Chalk Talk &middot; 500-level</span>
+          <span class="hl-venue">AWS re:Invent &middot; INV506</span>
+          <span class="hl-detail">Bayesian Multi-Path Uncertainty in LLMs</span>
+        </div>
+        <div class="hl-card hl-card--reinvent">
+          <span class="hl-badge">Builder Workshop</span>
+          <span class="hl-venue">AWS re:Invent &middot; SPS301</span>
+          <span class="hl-detail">Robo Reviewer for AI Video Evaluation</span>
+        </div>
+      </div>
+
+      <h3 class="hl-group-label">Service &amp; Awards</h3>
+      <div class="hl-grid">
+        <div class="hl-card hl-card--gold">
+          <span class="hl-badge">Gold Reviewer</span>
+          <span class="hl-venue">ICML 2026</span>
+          <span class="hl-detail">Reviewer Award</span>
+        </div>
+        <div class="hl-card hl-card--gold">
           <span class="hl-badge">Top Reviewer</span>
           <span class="hl-venue">NeurIPS 2023</span>
           <span class="hl-detail">Reviewer Recognition</span>
+        </div>
+        <div class="hl-card">
+          <span class="hl-badge">Session Chair &middot; Reviewer</span>
+          <span class="hl-venue">ICLR &middot; ICML &middot; NeurIPS &middot; ISIT</span>
+          <span class="hl-detail">Program Committee Service</span>
         </div>
       </div>
     </div>
@@ -145,6 +175,9 @@
     <div class="page">
       <h2 class="section-label">About</h2>
       <div class="about-body content-text">
+        <p class="about-thesis">
+          Modern AI systems should not only answer; they should know <em>when their reasoning is reliable, when uncertainty is high, and when decisions should be deferred.</em>
+        </p>
         <p class="about-lede">
           I study how AI systems reason, quantify uncertainty, and improve under limited supervision.
           At <strong>AWS</strong>, I develop methods that make large language models more reliable, better calibrated, and grounded in principled foundations.
@@ -221,9 +254,9 @@
             </div>
             <h3 class="work-title">Quantifying Consistency in LLM Logical Reasoning via Structural Uncertainty</h3>
             <div class="work-narrative">
-              <div class="work-row"><span class="work-label">Problem</span> LLMs can produce correct-looking but logically unstable reasoning.</div>
-              <div class="work-row"><span class="work-label">Method</span> Introduces structural uncertainty as a reliability signal for logical consistency.</div>
-              <div class="work-row"><span class="work-label">Impact</span> A practical framework for evaluating when LLM reasoning can be trusted.</div>
+              <div class="work-row"><span class="work-label">Problem</span> Answer-level agreement can mask reasoning that is logically unstable underneath.</div>
+              <div class="work-row"><span class="work-label">Method</span> Self-preference rankings over reasoning paths surface structural inconsistency that answer dispersion alone misses.</div>
+              <div class="work-row"><span class="work-label">Impact</span> Detects hidden reasoning instability that consensus or majority voting hides.</div>
             </div>
             <div class="work-foot">
               <span class="work-authors">B Chaudhury, MF Wang, HH Park, R Ghosh, S Hong, <strong>JO Woo</strong></span>
@@ -240,13 +273,32 @@
 
         <article class="work">
           <div class="work-top">
+            <span class="venue-badge venue-icml">ICML 2026 Workshop</span>
+          </div>
+          <h3 class="work-title">From Debate to Decision: Distribution-Free Act-or-Defer Control for Multi-Agent LLM Pipelines</h3>
+          <div class="work-narrative">
+            <div class="work-row"><span class="work-label">Problem</span> Multi-agent debate can converge to confident but wrong consensus &mdash; agreement is not correctness.</div>
+            <div class="work-row"><span class="work-label">Method</span> Conformal social choice turns debate outputs into calibrated act-or-defer decisions with distribution-free risk control.</div>
+            <div class="work-row"><span class="work-label">Impact</span> Converts uncertain multi-agent deliberation into safe deployment decisions that know when to escalate.</div>
+          </div>
+          <div class="work-foot">
+            <span class="work-authors">MF Wang, H Xie, G Wang, A Gao, G Yang, Z Li, QW Qiu, F Han, H Qiu, ..., <strong>JO Woo</strong></span>
+            <div class="work-links">
+              <a href="https://agentic-uncertainty-icml2026.github.io/" target="_blank" rel="noopener">Workshop</a>
+              <a href="https://arxiv.org/abs/2604.07667" target="_blank" rel="noopener">arXiv</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="work">
+          <div class="work-top">
             <span class="venue-badge venue-eacl">EACL 2026 Findings</span>
           </div>
           <h3 class="work-title">Reflect, Rewrite, Repeat: How Simple Arithmetic Enables Advanced Reasoning in Small Language Models</h3>
           <div class="work-narrative">
-            <div class="work-row"><span class="work-label">Problem</span> Small LMs lack the reasoning capabilities of large models.</div>
-            <div class="work-row"><span class="work-label">Method</span> Iterative self-reflection on simple arithmetic bootstraps advanced reasoning.</div>
-            <div class="work-row"><span class="work-label">Impact</span> Small models can develop sophisticated reasoning without large-scale pretraining.</div>
+            <div class="work-row"><span class="work-label">Problem</span> Small LMs lack the reasoning depth of large models, yet are critical for cost-efficient deployment.</div>
+            <div class="work-row"><span class="work-label">Method</span> Iterative self-reflection on simple arithmetic bootstraps advanced reasoning patterns.</div>
+            <div class="work-row"><span class="work-label">Impact</span> Closes the reasoning gap for small models without large-scale pretraining &mdash; viable LLM reliability at the edge.</div>
           </div>
           <div class="work-foot">
             <span class="work-authors">MF Wang, H Xie, MY Kim, B Chaudhury, M Ashok, S Gunturu, S Hong, <strong>JO Woo</strong>, ...</span>
@@ -263,9 +315,9 @@
           </div>
           <h3 class="work-title">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</h3>
           <div class="work-narrative">
-            <div class="work-row"><span class="work-label">Problem</span> It is unclear when LLM self-evaluation can be trusted.</div>
-            <div class="work-row"><span class="work-label">Method</span> VC-theoretic analysis to bound the reliability of self-assessment.</div>
-            <div class="work-row"><span class="work-label">Impact</span> A principled way to measure when LLMs can trust their own judgments.</div>
+            <div class="work-row"><span class="work-label">Problem</span> Black-box LLM self-evaluation is widely used, but its generalization limits are not well understood.</div>
+            <div class="work-row"><span class="work-label">Method</span> A probabilistic VC framework bounds the sample complexity and capacity of self-assessment.</div>
+            <div class="work-row"><span class="work-label">Impact</span> Estimates when black-box self-evaluation can generalize beyond observed tasks &mdash; exposing a capacity-calibration tension.</div>
           </div>
           <div class="work-foot">
             <span class="work-authors"><strong>JO Woo</strong>, MF Wang, R Ghosh, B Chaudhury, MY Kim</span>
@@ -282,8 +334,8 @@
           <h3 class="work-title">Improving Instruction Following in Language Models through Proxy-Based Uncertainty Estimation</h3>
           <div class="work-narrative">
             <div class="work-row"><span class="work-label">Problem</span> LLMs inconsistently follow instructions, especially under ambiguity.</div>
-            <div class="work-row"><span class="work-label">Method</span> Proxy-based uncertainty estimation to improve instruction adherence.</div>
-            <div class="work-row"><span class="work-label">Impact</span> Enhanced LLM reliability without retraining the base model.</div>
+            <div class="work-row"><span class="work-label">Method</span> Proxy-based uncertainty estimation to flag low-confidence instruction adherence at inference time.</div>
+            <div class="work-row"><span class="work-label">Impact</span> Adds a calibration layer for instruction following without retraining the base model &mdash; deployable to any frozen LLM.</div>
           </div>
           <div class="work-foot">
             <span class="work-authors">J Lee, <strong>JO Woo</strong>, J Seok, P Hassanzadeh, W Jang</span>
@@ -303,9 +355,9 @@
             </div>
             <h3 class="work-title">Active Learning in Bayesian Neural Networks with Balanced Entropy Learning Principle</h3>
             <div class="work-narrative">
-              <div class="work-row"><span class="work-label">Problem</span> Standard acquisition functions are biased toward high or low entropy.</div>
-              <div class="work-row"><span class="work-label">Method</span> Balanced entropy principle for more effective data acquisition.</div>
-              <div class="work-row"><span class="work-label">Impact</span> Principled active learning under limited supervision in BNNs.</div>
+              <div class="work-row"><span class="work-label">Problem</span> Standard acquisition functions are biased toward extremes of model uncertainty &mdash; either too confident or too unsure.</div>
+              <div class="work-row"><span class="work-label">Method</span> A balanced-entropy criterion derived from information-theoretic first principles.</div>
+              <div class="work-row"><span class="work-label">Impact</span> Foundational principle for data-efficient learning under limited supervision &mdash; transferred into 4 issued US patents at Samsung.</div>
             </div>
             <div class="work-foot">
               <span class="work-authors"><strong>JO Woo</strong></span>
@@ -350,24 +402,27 @@
   <!-- Essays -->
   <section id="essays" class="section section-tinted">
     <div class="page">
-      <h2 class="section-label">Essays</h2>
+      <h2 class="section-label">Research Essays</h2>
       <p class="essays-intro content-text">
-        I occasionally write about the principles behind reliable AI systems — reasoning, uncertainty, calibration, and the gap between benchmark performance and trustworthy deployment.
+        Short essays on reliability, calibration, structural uncertainty, and decision-making in AI systems &mdash; the worldview behind my research.
       </p>
       <div class="essay-grid">
         <a href="essays/why-consensus-is-not-correctness.html" class="essay-card">
+          <span class="essay-kind">Perspective</span>
           <time class="essay-date">Apr 2026</time>
           <h3 class="essay-title">Why Consensus Is Not Correctness in Multi-Agent AI</h3>
           <p class="essay-desc">When initially disputed cases converge to unanimous wrong agreement, consensus becomes a deployment risk. Conformal prediction turns debate outputs into calibrated act-or-escalate decisions.</p>
           <span class="essay-read">Read essay &rarr;</span>
         </a>
         <a href="essays/reliable-reasoning-requires-more-than-accuracy.html" class="essay-card">
+          <span class="essay-kind">Research Note</span>
           <time class="essay-date">Apr 2026</time>
           <h3 class="essay-title">Reliable Reasoning Requires More Than Accuracy</h3>
           <p class="essay-desc">Can LLMs tell when they are wrong? A VC-theoretic framework exposes a capacity-calibration tension in model self-evaluation.</p>
           <span class="essay-read">Read essay &rarr;</span>
         </a>
         <a href="essays/structural-uncertainty-in-llm-reasoning.html" class="essay-card">
+          <span class="essay-kind">Technical Essay</span>
           <time class="essay-date">Apr 2026</time>
           <h3 class="essay-title">Structural Uncertainty in LLM Reasoning</h3>
           <p class="essay-desc">Answer agreement can mask reasoning instability. Self-preference rankings reveal failure modes that answer dispersion alone can miss.</p>
@@ -646,8 +701,8 @@
     <div class="page">
       <h2 class="section-label">Contact</h2>
       <p class="contact-lead content-text">
-        Available for research collaboration, invited talks, and selected consulting
-        on LLM reasoning, uncertainty, and evaluation.
+        Open to research collaborations and invited talks on reliable reasoning,
+        uncertainty, and trustworthy AI systems.
       </p>
       <a href="mailto:jaeoh.woo@aya.yale.edu" class="contact-email">jaeoh.woo@aya.yale.edu &rarr;</a>
       <div class="contact-row">
