@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Why Consensus Is Not Correctness in Multi-Agent AI — Jae Oh Woo</title>
+  <title>Why Consensus Is Not Correctness in Multi-Agent AI | Jae Oh Woo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/essay.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/essay-theme.css">
 </head>
 <body>
 
@@ -26,9 +28,9 @@
       <header class="essay-header">
         <time class="essay-meta">April 2026</time>
         <h1 class="essay-page-title">Why Consensus Is Not Correctness in Multi-Agent AI</h1>
-        <p class="essay-subtitle">When agents unanimously agree on the wrong answer, the real question is not who won the debate — but when it is safe to act.</p>
+        <p class="essay-subtitle">When agents unanimously agree on the wrong answer, the real question is not who won the debate. It is when it is safe to act.</p>
         <div class="essay-author">
-          <img src="https://avatars.githubusercontent.com/u/5765039" alt="Jae Oh Woo" class="essay-author-img">
+          <img src="https://avatars.githubusercontent.com/u/1177142?v=4" alt="Jae Oh Woo" class="essay-author-img">
           <div class="essay-author-info">
             <span class="essay-author-name"><a href="../">Jae Oh Woo</a></span>
           </div>
@@ -36,17 +38,17 @@
       </header>
 
       <div class="essay-body">
-        <p>Multi-agent debate improves LLM reasoning. After several rounds of deliberation, agents update their beliefs, challenge each other's reasoning, and often converge on a shared answer. This convergence feels reassuring — if three different models agree, the answer must be right.</p>
+        <p>Multi-agent debate improves LLM reasoning. After several rounds of deliberation, agents update their beliefs, challenge each other's reasoning, and often converge on a shared answer. This convergence feels reassuring: if three different models agree, the answer must be right.</p>
 
-        <p>Except when it isn't. <strong>Agreement among agents may be informative, but it is not sufficient evidence for safe automated action.</strong> When models converge on a wrong answer through social reinforcement, consensus-based stopping commits that error to an automated action with no recourse. In our experiments on <a href="https://arxiv.org/abs/2604.07667" target="_blank" rel="noopener">MMLU-Pro</a>, we found that <strong>23.9% of initially-disputed cases end in unanimous wrong agreement</strong> — the agents debate, converge, and agree on an incorrect answer with high apparent confidence.</p>
+        <p>Except when it isn't. <strong>Agreement among agents may be informative, but it is not sufficient evidence for safe automated action.</strong> When models converge on a wrong answer through social reinforcement, consensus-based stopping commits that error to an automated action with no recourse. In our <a href="https://aclanthology.org/2026.emnlp-main.830/" target="_blank" rel="noopener">EMNLP 2026 paper</a>, we found on MMLU-Pro that <strong>23.9% of initially disputed cases end in unanimous wrong agreement</strong>. The agents disagree at the start, debate, converge, and agree on an incorrect answer with high apparent confidence.</p>
 
         <div class="essay-diagram">
           <div class="diagram-compare">
             <div class="diagram-compare-col diagram-compare-col--left">
               <span class="diagram-compare-title">Consensus Stopping</span>
-              <div class="diagram-compare-item">Reduces debate to single point estimate (majority vote or argmax)</div>
-              <div class="diagram-compare-item">Uses agreement as stopping signal</div>
-              <div class="diagram-compare-item">0% escalation — always commits</div>
+              <div class="diagram-compare-item">Reduces debate to a single point estimate (majority vote or argmax)</div>
+              <div class="diagram-compare-item">Uses agreement as the stopping signal</div>
+              <div class="diagram-compare-item">0% escalation: always commits</div>
               <div class="diagram-compare-item">Error rates up to 32.1%</div>
             </div>
             <div class="diagram-compare-col diagram-compare-col--right">
@@ -54,25 +56,33 @@
               <div class="diagram-compare-item">Produces calibrated prediction sets</div>
               <div class="diagram-compare-item">Acts on singletons, escalates larger sets</div>
               <div class="diagram-compare-item">Escalates uncertain cases to human review</div>
-              <div class="diagram-compare-item">90.0–96.8% accuracy on acted cases</div>
+              <div class="diagram-compare-item">90.0–96.8% accuracy on cases resolved before the final round</div>
             </div>
           </div>
           <p class="essay-diagram-caption">The cost of acting without calibrated refusal</p>
         </div>
 
+        <h2>How a Debate Talks Itself Into a Wrong Answer</h2>
+
+        <p>In a typical debate protocol, each agent sees a summary of the previous round and answers again. That is the point of debate: an agent that missed a step can pick it up from a peer. But the same channel carries pressure. LLMs are known to conform to externally expressed opinions, and when two agents lean toward option C with confident reasoning, the third has every reason to move toward C, whether or not C is right. The process looks more like opinion dynamics than proof checking: beliefs get averaged, a cluster forms, and once it includes everyone, the debate stops. From the outside, "three models verified the reasoning" and "two models persuaded the third for the wrong reasons" look identical.</p>
+
+        <p>On the MMLU-Pro test split, agents disagree at round 0 on 1,963 questions. Of these, 469 end in unanimous wrong consensus, and the share grows with every round: 14.2% by round 1, 21.1% by round 2, 23.9% by round 3. More rounds do not just fail to fix these errors; they produce more of them. Law (34.8%) and Psychology (33.3%) are most susceptible, Math (12.1%) the most resilient. Counting cases that were already wrong and unanimous at round 0, 586 of 4,158 test questions (14.1%) end in wrong consensus.</p>
+
+        <p>Consensus stopping is fast (on average it stops at round 1.36–1.81) and commits on nearly everything, but the accuracy of its early commitments ranges from 67.9% to 94.9%. In Engineering, 17.4% of the cases where agents "confidently" agreed before the final round are wrong, and nothing flags them.</p>
+
         <h2>The Missing Piece: Calibrated Refusal</h2>
 
-        <p>The problem is not that debate doesn't work — it does improve reasoning. The problem is what happens <em>after</em> debate. Every deployed pipeline ultimately reduces the debate to a single answer and acts on it. Majority voting, weighted averaging, argmax — all of these <strong>discard uncertainty that could have flagged the error</strong>.</p>
+        <p>The problem is not that debate doesn't work. Debate followed by majority voting is the strongest point-estimate method in our experiments (66.7–94.2% accuracy across domains). The problem is what happens <em>after</em> debate. Many pipelines reduce the debate to a single answer and act on it. Majority voting, weighted averaging and argmax all <strong>discard uncertainty that could have flagged the error</strong>.</p>
 
         <div class="essay-pullquote">
-          <p>The real deployment question is not "who won the debate?" but "when is it safe to act?" Current systems have no answer to this question.</p>
+          <p>The real deployment question is not "who won the debate?" but "when is it safe to act?" Agreement-based stopping rules do not answer this question.</p>
         </div>
 
-        <p>LLM agents are known to conform to perceived majority opinions — a form of social reinforcement that can produce <strong>wrong consensus</strong>: agents converge on an incorrect answer with high apparent confidence. Stability-based stopping detects agreement but cannot tell whether it is correct. The result is uncalibrated commitment: wrong consensus feeds to automated action with no safety check.</p>
+        <p>Stability-based stopping detects agreement but cannot tell whether it is correct. The result is uncalibrated commitment: wrong consensus feeds into automated action with no safety check. What is missing is a component whose job is to say "no answer here is reliable enough; a person should look at this."</p>
 
         <h2>Conformal Social Choice: The Framework</h2>
 
-        <p>We introduce <strong>Conformal Social Choice</strong>, a post-hoc decision layer that converts debate outputs into calibrated <em>act-versus-escalate</em> decisions. The framework has four stages:</p>
+        <p>We introduce <strong>Conformal Social Choice</strong>, a post-hoc decision layer that converts debate outputs into calibrated <em>act-versus-escalate</em> decisions, with no retraining and no access to model internals. The framework has four stages:</p>
 
         <div class="essay-diagram">
           <div class="diagram-flow">
@@ -87,42 +97,95 @@
           <p class="essay-diagram-caption">The four-stage Conformal Social Choice pipeline</p>
         </div>
 
-        <p><strong>Stage 1: Verbalized probability elicitation.</strong> Heterogeneous agents (in our experiments: Claude Haiku, DeepSeek-R1, and Qwen-3 32B) debate for T rounds. Rather than extracting token-level log-probabilities — unavailable for many proprietary APIs — each agent outputs explicit numerical probabilities for every answer option. This is a fully black-box approach.</p>
+        <p><strong>Stage 1: Verbalized probability elicitation.</strong> Heterogeneous agents (in our main experiments: Claude Haiku 4.5, DeepSeek-R1 and Qwen-3 32B) debate for T=4 rounds. Rather than extracting token-level log-probabilities, which many proprietary APIs do not expose, each agent states explicit probabilities for every answer option. This is fully black-box, and it parses reliably: only 0.77% of agent responses fell back to a uniform distribution.</p>
 
-        <p><strong>Stage 2: Social probability aggregation.</strong> Agent beliefs are combined via a <strong>linear opinion pool</strong> — a weighted mixture that preserves the full probability distribution, not just the top vote. Unlike majority voting, this retains the <em>intensity</em> of preferences: an agent assigning 0.6 to option A contributes differently than one assigning 0.99.</p>
+        <p><strong>Stage 2: Social probability aggregation.</strong> Agent beliefs are combined via a <strong>linear opinion pool</strong>, a weighted mixture that keeps the full distribution, not just the top vote. Unlike majority voting, it retains the <em>intensity</em> of preferences: an agent assigning 0.6 to option A contributes differently than one assigning 0.99.</p>
 
-        <p><strong>Stage 3: Conformal calibration.</strong> Using a held-out calibration set, split conformal prediction transforms the social probabilities into prediction sets with a <strong>marginal coverage guarantee</strong>: the correct answer is included with probability &ge; 1&minus;&alpha;. This requires no assumptions on individual model calibration — only exchangeability.</p>
+        <p><strong>Stage 3: Conformal calibration.</strong> Using a held-out calibration set, split conformal prediction turns the social probabilities into prediction sets with a <strong>marginal coverage guarantee</strong>: the correct answer is included with probability &ge; 1&minus;&alpha;, with no assumption on individual model calibration, only exchangeability.</p>
 
-        <p><strong>Stage 4: Hierarchical action policy.</strong> This is the key decision mechanism. <strong>Singleton sets</strong> (one answer) &rarr; autonomous action. <strong>Larger sets</strong> &rarr; human escalation. <strong>Empty sets</strong> &rarr; anomaly flag. The prediction set is not just for evaluation — it directly determines whether the system acts or asks for help.</p>
+        <p><strong>Stage 4: Hierarchical action policy.</strong> <strong>Singleton sets</strong> &rarr; autonomous action. <strong>Larger sets</strong> &rarr; human escalation, with the remaining candidates. <strong>Empty sets</strong> &rarr; anomaly flag. The prediction set is not an evaluation device; it decides whether the system acts or asks for help.</p>
 
         <div class="essay-insight">
           <div class="essay-insight-label">Key Insight</div>
-          <p>The conformal layer does not make debate more accurate. It makes debate failures <strong>actionable</strong>. By refusing to act on cases where debate is confidently wrong, the remaining decisions achieve dramatically higher accuracy — a <strong>selection effect of calibrated refusal</strong>, not a reasoning improvement.</p>
+          <p>The conformal layer does not make debate more accurate. It makes debate failures <strong>actionable</strong>. By refusing to act on cases where debate is confidently wrong, the remaining decisions achieve much higher accuracy: a <strong>selection effect of calibrated refusal</strong>, not a reasoning improvement.</p>
         </div>
+
+        <h2>What the Guarantee Says, in Plain Words</h2>
+
+        <p>Take questions with known answers that the system was never tuned on: the calibration set (in our experiments, half of each domain). Run the debate on each and record how much social probability the group gave the <em>correct</em> answer. One minus that number is the nonconformity score: near 0 when the group backed the truth, near 1 when it was confidently wrong. Pick the cutoff below which a fraction 1&minus;&alpha; of these scores fall, with a small finite-sample correction. That fixes a probability threshold.</p>
+
+        <p>At test time, <strong>keep every option whose social probability clears the threshold</strong>. One option: act. Several: escalate with those options. None: flag. Because the true answer cleared the threshold on a fraction 1&minus;&alpha; of calibration questions, it will do so on at least that fraction of new questions, provided they are exchangeable with the calibration ones. That is the whole argument. It holds however badly calibrated the individual agents are; noisy verbalized probabilities can make sets larger but cannot break coverage.</p>
+
+        <div class="essay-diagram">
+          <div class="diagram-compare">
+            <div class="diagram-compare-col diagram-compare-col--right">
+              <span class="diagram-compare-title">Guaranteed</span>
+              <div class="diagram-compare-item">The set contains the true answer with probability at least 1&minus;&alpha;, on average over test questions</div>
+              <div class="diagram-compare-item">At each pre-specified round, with a threshold calibrated for that round</div>
+              <div class="diagram-compare-item">With no assumption on any single agent's calibration</div>
+            </div>
+            <div class="diagram-compare-col diagram-compare-col--left">
+              <span class="diagram-compare-title">Not Guaranteed</span>
+              <div class="diagram-compare-item">That any individual singleton is correct</div>
+              <div class="diagram-compare-item">Coverage within a subgroup, such as hard questions</div>
+              <div class="diagram-compare-item">Coverage after adaptive stopping at the first singleton</div>
+              <div class="diagram-compare-item">Anything under shift between calibration and deployment</div>
+            </div>
+          </div>
+          <p class="essay-diagram-caption">The scope of the coverage contract</p>
+        </div>
+
+        <p>The adaptive-stopping item is the easiest to get wrong. Stopping at the first singleton round is a data-dependent choice, so we report its outcomes empirically and make no coverage claim for it. Anytime-valid sequential conformal methods are the natural way to close that gap.</p>
 
         <h2>What the Numbers Show</h2>
 
-        <p>On eight MMLU-Pro domains with three agents, at &alpha;=0.05:</p>
+        <p>At &alpha;=0.05, fixed-round coverage ranges from 93.0% to 97.6% across the eight MMLU-Pro domains, LogiQA, GPQA and all rounds; at &alpha;=0.10, from 87.6% to 93.2%. Over 20 repeated MMLU-Pro splits, mean coverage stays within 1.3 points of target. Set size adapts to difficulty without per-domain tuning: at round 3, Math averages 1.01 options per set and Law 6.91 out of 10. On safety, at &alpha;=0.05:</p>
 
         <div class="essay-diagram">
           <div class="diagram-stack">
-            <div class="diagram-stack-layer diagram-node--primary" style="padding:14px;">81.9% of wrong-consensus cases intercepted before automated action</div>
-            <div class="diagram-stack-layer diagram-node--secondary" style="padding:12px;">Coverage within 1–2 points of the 1&minus;&alpha; target across all domains</div>
-            <div class="diagram-stack-layer diagram-node--success" style="padding:12px;">Conformal singletons achieve 90.0–96.8% accuracy</div>
-            <div class="diagram-stack-layer diagram-node--warn" style="padding:12px;">Up to 22.1 percentage points above consensus stopping accuracy</div>
+            <div class="diagram-stack-layer diagram-node--primary" style="padding:14px;">81.9% of final-round wrong-consensus cases (480 of 586) have non-singleton sets</div>
+            <div class="diagram-stack-layer diagram-node--secondary" style="padding:12px;">Only 2 of 4,158 test questions become a new wrong singleton (about 240:1)</div>
+            <div class="diagram-stack-layer diagram-node--success" style="padding:12px;">Conformal singletons achieve 90.0–96.8% accuracy before the final round</div>
+            <div class="diagram-stack-layer diagram-node--warn" style="padding:12px;">Up to 22.1 percentage points above consensus stopping (Law: 90.0% vs. 67.9%)</div>
           </div>
           <p class="essay-diagram-caption">Results on MMLU-Pro (8 domains, 3 heterogeneous agents)</p>
         </div>
 
-        <p>The tradeoff is explicit: improved safety comes at reduced automation. Not every case gets resolved autonomously — some get escalated to human review. But the operating point is <strong>user-adjustable via &alpha;</strong>. A stricter &alpha; (say 0.01) escalates more cases but provides stronger guarantees; a relaxed &alpha; (say 0.20) automates more but with less safety margin.</p>
+        <p>The 81.9% is a retrospective final-round diagnostic, not a measured error-prevention rate for the adaptive policy, since some of those questions may have reached a singleton earlier. The accuracy gain is largest where wrong consensus is most common, which is what one expects if it comes from refusing bad consensus rather than from better reasoning. On LogiQA and GPQA, final-round interception is 90.8% and 87.3%.</p>
+
+        <h2>Choosing &alpha;: the Price of Safety</h2>
+
+        <p>Improved safety comes at reduced automation, and &alpha; sets the exchange rate. On Math, consensus is already 94.9% accurate; conformal stopping resolves a similar share (98.2% vs. 97.8%) and is 0.3 points less accurate. On Law it is 22.1 points more accurate, but at &alpha;=0.05 it acts on only 6.2% of questions and escalates 93.8%. Relaxing to &alpha;=0.10 raises Law's singleton rate to 20.9%, roughly three times the automation, at the cost of some interception; new wrong singletons rise from 2 to 8.</p>
+
+        <p>A very strict &alpha; does not simply buy more safety. At &alpha;=0.01 the threshold is set by roughly the worst calibration example, a question where the group was confidently wrong. The threshold saturates and sets swell: by round 3, Law averages 9.20 options and even Math 4.03. Debate sharpens confidence, which helps where it is right and makes the remaining errors more extreme, and a stringent &alpha; is dominated by those extremes. In our experiments, &alpha; between 0.05 and 0.10 gave the useful operating points.</p>
+
+        <p>My advice: choose &alpha; per domain from the cost of a wrong automated action relative to a human review, and accept that some domains will route most traffic to people. A system that escalates 93.8% of Law questions is not broken. It is telling you, for a calibrated reason, not to trust the agents on that work.</p>
+
+        <h2>Is the Conformal Layer Doing Real Work?</h2>
+
+        <p>Would any conservative abstention rule do as well? We tested three scalar gates on the same social probabilities: a fixed 0.95 top-probability threshold, and calibration-tuned top-probability and entropy thresholds. On the 586 wrong-consensus cases they intercept 79.4–80.0%, close to conformal's 81.9%, while escalating 26.8–35.1% of correct consensus against conformal's 31.9%.</p>
+
+        <p>So conformal does not win on the aggregate interception number. Its value lies elsewhere: a finite-sample coverage guarantee at each fixed round, which empirically swept thresholds lack, and, on escalation, a <strong>calibrated candidate set</strong> instead of a bare "I don't know", shrinking the reviewer's choice from ten options to the few that remain plausible.</p>
+
+        <h2>Where It Breaks</h2>
+
+        <p><strong>Confidently wrong and concentrated.</strong> On Math, only 11.4% of wrong-consensus cases are flagged: distributions are so concentrated that even wrong answers form singletons. Calibrated refusal needs some doubt to work with.</p>
+
+        <p><strong>Marginal, not conditional; exchangeable, not shifted.</strong> The guarantee is an average over test questions and says nothing about a subgroup of hard ones. And if deployment traffic drifts from the calibration data, it no longer applies; live systems need online conformal methods or regular recalibration.</p>
+
+        <p><strong>Transfer is good, not perfect.</strong> With a second ensemble (Claude Haiku 4.5, Amazon Nova Pro, DeepSeek-R1) on five MMLU-Pro domains, interception is 77.4%, and at &alpha;=0.05 Physics undercovers at 90.5–92.6% against a 95% target. On LogiQA and GPQA, the higher interception comes with much higher over-rejection of correct consensus (74.2% and 61.6%).</p>
+
+        <p><strong>Cost and scope.</strong> A three-agent, four-round debate is 12 LLM calls per question, and all experiments are closed-set multiple choice; open-ended generation needs additional design choices.</p>
 
         <h2>Why Act-versus-Escalate, Not Just Better Answers</h2>
 
-        <p>Most work on multi-agent debate asks: <em>how can we make agents reason better?</em> or <em>when should debate stop?</em> These are important questions, but they miss the deployment reality. In practice, the output of a debate feeds into an automated pipeline — placing an order, sending a response, making a recommendation. The question that matters for safety is not whether the debate was good, but whether the system should be <strong>allowed to act</strong> on its conclusion.</p>
+        <p>Most work on multi-agent debate asks: <em>how can we make agents reason better?</em> or <em>when should debate stop?</em> These are important questions, but they miss the deployment reality. In practice, the output of a debate feeds into an automated pipeline: placing an order, sending a response, making a recommendation. The question that matters for safety is not whether the debate was good, but whether the system should be <strong>allowed to act</strong> on its conclusion.</p>
 
-        <p>Conformal Social Choice reframes multi-agent debate from an <strong>accuracy-maximization problem</strong> into a <strong>decision problem with calibrated risk control</strong>. The system doesn't claim to always be right. It claims that when it chooses to act, its probability of being wrong is bounded — and when it isn't confident enough, it says so.</p>
+        <p>Conformal Social Choice reframes multi-agent debate from an <strong>accuracy-maximization problem</strong> into a <strong>decision problem with calibrated risk control</strong>. The system doesn't claim to always be right. It claims that its prediction sets contain the right answer at a rate you chose in advance, and when the set is not a single answer, it says so and shows you the alternatives.</p>
 
-        <p>That distinction — between being right and knowing when you might be wrong — is the difference between a system you demo and a system you deploy.</p>
+        <p>For people building agentic systems, three habits follow. Treat agreement among agents as one signal, not a license to act. Keep the probability distributions, not just the votes, because the information needed to refuse lives in the runner-up mass a majority vote throws away. And budget for escalation from the start: calibrate per domain, decide what a reviewer receives, and recalibrate when traffic shifts. Making the escalation decision itself budget-aware is the direction of our follow-up workshop paper, <a href="https://openreview.net/forum?id=5g04fnFmLz" target="_blank" rel="noopener">Budgeted Act-or-Defer Multi-Agent LLM Deliberation with Local Reliability Bounds</a> (ICML 2026 FAGEN).</p>
+
+        <p>The distinction between being right and knowing when you might be wrong is the difference between a system you demo and a system you deploy.</p>
       </div>
 
       <footer class="essay-footer">
@@ -133,7 +196,7 @@
               <div class="essay-paper-icon essay-paper-icon--conf">EMNLP</div>
               <div class="essay-paper-body">
                 <span class="essay-paper-title">From Debate to Decision: Conformal Social Choice for Safe Multi-Agent Deliberation</span>
-                <span class="essay-paper-venue">EMNLP 2026 &middot; SAC Highlight Award &middot; 3 agents, 8 MMLU-Pro domains</span>
+                <span class="essay-paper-venue">EMNLP 2026 &middot; SAC Highlight Award &middot; 3 agents, 8 MMLU-Pro domains, LogiQA, GPQA</span>
               </div>
             </a>
             <a href="https://aclanthology.org/2026.emnlp-main.699/" target="_blank" rel="noopener" class="essay-paper-card">
@@ -158,15 +221,15 @@
           <div class="essay-more-grid">
             <a href="knowing-when-to-ask.html" class="essay-more-card">
               <span class="essay-more-title">Knowing When to Ask: Self-Gated Clarification for Language Agents</span>
-              <span class="essay-more-desc">Putting clarification inside the action space &mdash; the agentic version of "when to act, when to defer."</span>
+              <span class="essay-more-desc">Putting clarification inside the action space: the agentic version of "when to act, when to defer."</span>
             </a>
             <a href="reliable-reasoning-requires-more-than-accuracy.html" class="essay-more-card">
               <span class="essay-more-title">Reliable Reasoning Requires More Than Accuracy</span>
-              <span class="essay-more-desc">A VC-theoretic framework reveals a fundamental tradeoff between expressiveness and calibration in LLM self-evaluation.</span>
+              <span class="essay-more-desc">A VC-theoretic framework shows a fundamental tradeoff between expressiveness and calibration in LLM self-evaluation.</span>
             </a>
             <a href="structural-uncertainty-in-llm-reasoning.html" class="essay-more-card">
               <span class="essay-more-title">Structural Uncertainty in LLM Reasoning</span>
-              <span class="essay-more-desc">How self-preference rankings reveal reasoning instability that answer agreement misses.</span>
+              <span class="essay-more-desc">How self-preference rankings expose reasoning instability that answer agreement misses.</span>
             </a>
           </div>
         </div>

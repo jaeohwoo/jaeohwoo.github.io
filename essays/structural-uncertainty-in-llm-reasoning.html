@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Structural Uncertainty in LLM Reasoning — Jae Oh Woo</title>
+  <title>Structural Uncertainty in LLM Reasoning | Jae Oh Woo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/essay.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/essay-theme.css">
 </head>
 <body>
 
@@ -24,11 +26,11 @@
   <article class="essay-page">
     <div class="essay-container">
       <header class="essay-header">
-        <time class="essay-meta">April 2026</time>
+        <time class="essay-meta">April 2026 &middot; Updated October 2026</time>
         <h1 class="essay-page-title">Structural Uncertainty in LLM Reasoning</h1>
-        <p class="essay-subtitle">Why answer agreement is blind to reasoning instability — and how self-preference rankings reveal what dispersion metrics miss.</p>
+        <p class="essay-subtitle">Why answer agreement is blind to reasoning instability, and how the stability of a model's rankings over its own answers catches what dispersion metrics miss.</p>
         <div class="essay-author">
-          <img src="https://avatars.githubusercontent.com/u/5765039" alt="Jae Oh Woo" class="essay-author-img">
+          <img src="https://avatars.githubusercontent.com/u/1177142?v=4" alt="Jae Oh Woo" class="essay-author-img">
           <div class="essay-author-info">
             <span class="essay-author-name"><a href="../">Jae Oh Woo</a></span>
           </div>
@@ -38,7 +40,7 @@
       <div class="essay-body">
         <p>Suppose you ask a language model the same logical reasoning question five times. All five answers agree. Standard evaluation would conclude: low uncertainty, high reliability. But what if the model, when asked to <strong>compare and rank its own reasoning paths</strong>, produces a completely different ordering every time?</p>
 
-        <p>This is the gap that motivated our work on <a href="https://openreview.net/forum?id=YMwow5RQgP" target="_blank" rel="noopener">structural uncertainty</a>. The core observation is simple but consequential: <strong>answer-level agreement can mask reasoning-level instability</strong>. Five candidates may all arrive at "20" — the same wrong answer — while the model's own preferences over <em>how</em> they reason flip entirely from one evaluation to the next.</p>
+        <p>This is the gap that motivated our work on structural uncertainty. The idea first appeared at the ICLR 2026 Workshop on Logical Reasoning of LLMs as <a href="https://openreview.net/forum?id=YMwow5RQgP" target="_blank" rel="noopener">"Quantifying Consistency in LLM Logical Reasoning via Structural Uncertainty"</a>, where it received the Best Paper award. The full version, <a href="https://aclanthology.org/2026.emnlp-main.699/" target="_blank" rel="noopener">"Structural Uncertainty from Self-Preference in Black-Box Language Models"</a>, appears in the EMNLP 2026 main conference, and it is the version this essay follows. The core observation is simple but consequential: <strong>answer-level agreement can mask reasoning-level instability</strong>. Five candidates may all arrive at "20", the same wrong answer, while the model's own preferences over <em>how</em> they reason flip from one evaluation to the next. In the illustrative example that opens the paper, one candidate moves from first place to last across trials.</p>
 
         <div class="essay-diagram">
           <div class="diagram-compare">
@@ -57,12 +59,20 @@
               <div class="diagram-compare-item">Detects: unstable reasoning behind agreement</div>
             </div>
           </div>
-          <p class="essay-diagram-caption">Same answers, opposite uncertainty signals — the scenario that dispersion methods miss</p>
+          <p class="essay-diagram-caption">Same answers, opposite uncertainty signals: the scenario that dispersion methods miss</p>
         </div>
+
+        <h2>Sampled Outputs Are Not Exchangeable</h2>
+
+        <p>Most black-box uncertainty estimators draw several responses and measure how much they differ: how many distinct answers appear, or how spread out the responses are in embedding space. In that computation the responses are <strong>exchangeable</strong>. Shuffle or relabel them and the score does not move. But two response sets can have identical variance and still encode very different preference orderings: in one, the model consistently regards one derivation as best; in the other, it prefers a different one every time you ask. Dispersion collapses both to the same number. We wanted to ask not only <em>how much do the responses differ</em>, but <em>how consistently does the model rank them</em>.</p>
+
+        <p>This matters most for systematic errors: when every sample lands on the same wrong answer, answer entropy is zero and extra sampling cannot help.</p>
 
         <h2>What Structural Uncertainty Actually Measures</h2>
 
-        <p>The key idea is to probe not <em>what</em> the model answers, but <em>how stably it evaluates its own reasoning</em>. Given a question, we generate multiple candidate solutions, then ask the same model to judge pairwise preferences among them — essentially: "which of these two reasoning paths is better?" We repeat this across multiple independent trials, each using a different random <strong>spanning tree</strong> over the candidates to select which pairs to compare.</p>
+        <p>The key idea is to probe not <em>what</em> the model answers, but <em>how stably it evaluates its own reasoning</em>. Given a question, we generate N = 5 candidates, each from a different prompt template (step-by-step with a self-check, think-aloud, Socratic, decomposition, analogical), so that they differ in strategy and not only in wording. We then ask the same model, at temperature 0, which of two responses is better. No logits, no external judge, no model internals.</p>
+
+        <p>Rather than comparing all pairs, each trial draws a uniform random <strong>spanning tree</strong> over the candidates and queries only its N &minus; 1 edges: the cheapest graph that still connects every candidate. Repeating this for M independent trials asks a different minimal set of questions about the same five responses each time, loosely like Monte Carlo dropout applied to the comparison graph rather than to weights.</p>
 
         <div class="essay-diagram">
           <div class="diagram-flow">
@@ -77,7 +87,18 @@
           <p class="essay-diagram-caption">The structural uncertainty pipeline: from candidates to consistency signal</p>
         </div>
 
-        <p>The sparse pairwise judgments are aggregated into a global ranking distribution using <strong>Bradley-Terry modeling with PageRank normalization</strong>. Each trial produces a ranking distribution &pi;<sup>(m)</sup> over candidates. Across M trials, these distributions form an ensemble that we decompose into two complementary entropy-based signals.</p>
+        <p>The sparse pairwise judgments are aggregated into a global ranking distribution using <strong>Bradley-Terry modelling with PageRank normalization</strong>. Bradley-Terry gives each candidate a latent utility &theta;<sub>i</sub>, with P(i beats j) = exp(&theta;<sub>i</sub>) / (exp(&theta;<sub>i</sub>) + exp(&theta;<sub>j</sub>)); because a tree's comparisons always admit a perfect total order, an L2 penalty keeps the fit finite. The fitted model fills in win probabilities for every pair, and PageRank, with mass flowing from weaker to stronger candidates, turns them into a ranking distribution &pi;<sup>(m)</sup>. Across M trials, with &pi;&#772; the average ranking and H the Shannon entropy:</p>
+
+        <div class="essay-diagram">
+          <div class="diagram-stack">
+            <div class="diagram-stack-layer diagram-node--primary" style="padding:14px;">Total: StructU = H[&pi;&#772;]</div>
+            <div class="diagram-stack-layer diagram-node--secondary" style="padding:14px;">Within-trial: StructU<sub>within</sub> = (1/M) &Sigma;<sub>m</sub> H[&pi;<sup>(m)</sup>]</div>
+            <div class="diagram-stack-layer diagram-node--secondary" style="padding:14px;">Across-trial: StructU<sub>across</sub> = StructU &minus; StructU<sub>within</sub></div>
+          </div>
+          <p class="essay-diagram-caption">The decomposition is defined entirely over the observed ranking ensemble</p>
+        </div>
+
+        <p>The across-trial term is a Jensen gap: zero only when every trial produces the same ranking. To be careful, this describes the observable behaviour of self-preference under a fixed protocol; it does not claim to identify the model's underlying data or parameter uncertainty.</p>
 
         <h2>Two Components, Two Failure Modes</h2>
 
@@ -96,33 +117,73 @@
               <span class="diagram-compare-title" style="color: var(--accent);">Within-Trial Ambiguity</span>
               <div class="diagram-compare-item" style="color: var(--text-2);">Ranking spread across candidates in a single trial</div>
               <div class="diagram-compare-item" style="color: var(--text-2);">Multiple plausible reasoning paths compete</div>
-              <div class="diagram-compare-item" style="color: var(--text-2);">Correlates <strong>positively</strong> with accuracy on reasoning tasks</div>
-              <div class="diagram-compare-item" style="color: var(--text-2);">Signals: rich solution space</div>
+              <div class="diagram-compare-item" style="color: var(--text-2);">Correlates <strong>positively</strong> with accuracy on math reasoning</div>
+              <div class="diagram-compare-item" style="color: var(--text-2);">Signals: several candidates stay competitive</div>
             </div>
           </div>
           <p class="essay-diagram-caption">The two components of structural uncertainty relate to accuracy in opposite directions</p>
         </div>
 
-        <p>This asymmetry is one of the most interesting findings. <strong>Across-trial instability</strong> is bad — when the model can't consistently decide which reasoning path is better, the reasoning itself is unreliable. But <strong>within-trial ambiguity</strong> can actually be a positive signal on reasoning tasks: it means multiple plausible solution strategies coexist, which tends to occur when the model genuinely understands the problem well enough to produce diverse valid approaches.</p>
+        <p>If every trial gives a confident ranking but the winner changes with the sampled edges, the model is <em>inconsistently confident</em> (high across, low within). If every trial spreads its mass evenly, the same way each time, it is <em>stably uncertain</em> (low across, high within). A single number would blur the two.</p>
+
+        <p>The asymmetry with accuracy is one of the most interesting findings. <strong>Across-trial instability</strong> is associated with failure. <strong>Within-trial ambiguity</strong> goes the other way on math reasoning: for Claude Sonnet 4.5 on MATH-500, the Spearman correlation with per-question accuracy is &minus;0.37 for the across-trial component and +0.42 for the within-trial one. This is consistent with several plausible candidates remaining competitive, though we state it as a pattern, not a mechanism. It weakens on MMLU-Pro and is near zero on HotpotQA.</p>
 
         <div class="essay-pullquote">
-          <p>Instability across evaluations signals unreliable reasoning. Ambiguity within evaluations signals a rich solution space. The distinction matters — they carry opposite information about correctness.</p>
+          <p>Instability across evaluations signals unreliable reasoning. Ambiguity within evaluations is consistent with several candidates staying competitive. The distinction matters: they carry opposite information about correctness.</p>
         </div>
+
+        <p>The opposite signs also set the practical combination with self-consistency entropy (Self-ConsU): across-trial uncertainty is added to it, within-trial uncertainty is subtracted. The rule is fixed globally, not tuned per task or model.</p>
+
+        <h2>A Worked Example: Five Wrong Answers That Agree</h2>
+
+        <p>One case from the paper's appendix is worth retelling. Math-Synth is a synthetic arithmetic benchmark of 993 verified problems built around nested negations. One problem asks for &minus;(&minus;(&minus;(&minus;(&minus;(&minus;(&minus;(&minus;500) &times; 200)))))) + &minus;(&minus;(&minus;1)): the inner part is 100,000, six outer negations leave it positive, and the answer is 100,001.</p>
+
+        <p>All five of Claude Sonnet 4.5's responses answer &minus;99,999, so Self-ConsU is zero. But they get there by different routes: four miscount the negations, the analogical one misparses the grouping, one runs a self-check that repeats the miscount, another has no verification at all. The model's preferences over them are unstable. Across 20 pairwise judgments, 80% of confidence scores are at or below 65 (50 means no preference), the judge cites "clarity" to prefer one response in some trials and its rival in others, and one response's PageRank score swings between 0.055 and 0.212 depending on the sampled edges. For a correctly solved problem from the same benchmark, also with Self-ConsU = 0, the responses differ only in presentation and the 20 judgments contain zero reversals.</p>
+
+        <div class="essay-diagram">
+          <div class="diagram-compare">
+            <div class="diagram-compare-col diagram-compare-col--left">
+              <span class="diagram-compare-title">Unanimous and Wrong</span>
+              <div class="diagram-compare-item">Five responses, one answer (&minus;99,999)</div>
+              <div class="diagram-compare-item">Self-ConsU = 0</div>
+              <div class="diagram-compare-item">Different error paths, preference reversals</div>
+              <div class="diagram-compare-item">StructU<sub>across</sub> = 0.035: signal fires</div>
+            </div>
+            <div class="diagram-compare-col diagram-compare-col--right">
+              <span class="diagram-compare-title">Unanimous and Right</span>
+              <div class="diagram-compare-item">Five responses, one correct answer</div>
+              <div class="diagram-compare-item">Self-ConsU = 0</div>
+              <div class="diagram-compare-item">Stylistic differences only, zero reversals</div>
+              <div class="diagram-compare-item">StructU<sub>across</sub> &asymp; 0.001: appropriately quiet</div>
+            </div>
+          </div>
+          <p class="essay-diagram-caption">Math-Synth, Claude Sonnet 4.5: identical surface agreement, roughly 30&times; difference in across-trial uncertainty</p>
+        </div>
+
+        <p>That gap, with identical answer entropy, is the paper's claim in miniature: when reliably right, preferences are stable; when reliably wrong through different flawed routes, they destabilize.</p>
+
+        <h2>How It Compares With Dispersion Baselines</h2>
+
+        <p>The evaluation covers five LLMs (Claude Sonnet 4.5, gpt-oss-20b, Qwen 3 32B, Amazon Nova Premier, DeepSeek R1) and eight benchmarks: Math-Synth, MATH-500, AMC-23, AIME-24 and AIME-25 for math, MMLU-Pro for knowledge, HotpotQA and TruthfulQA for factual retrieval. Baselines use the same five samples: answer entropy (Self-ConsU), embedding dispersion (SemanticU) and prompted confidence (VerbalizedU). The main metric is selective prediction (Sel-AUC).</p>
+
+        <p>The headline is complementarity, not replacement. The combined estimator (structural uncertainty plus Self-ConsU) is best or second-best on Math-Synth, MATH-500, AMC-23, MMLU-Pro and TruthfulQA. The lift over Self-ConsU is largest where answer agreement is least informative, for weaker models on hard contest problems: +12.0% for Qwen 3 32B on AIME-25, +13.4% for Amazon Nova Premier on AMC-23. And the signal is new information, not re-encoded variance: across all 40 model-dataset pairs it is nearly orthogonal to SemanticU (median |&rho;| = 0.10), and its two components correlate with Self-ConsU in opposite directions (&rho; = &minus;0.26 within, +0.15 across).</p>
+
+        <h2>Is the Signal an Artifact?</h2>
+
+        <p>With this many moving parts, one should ask whether the pipeline itself produces the signal. Keeping every component fixed and replacing the model's judgments with random ones drops Math-Synth AUROC by 0.320 on average for the within-trial component and 0.238 for the across-trial one; for Claude, within-trial AUROC falls from 0.984 to 0.488, which is chance. Length is not the explanation either: on MATH-500 the length preference is mild and inconsistent (mean Cohen's d = 0.19, and gpt-oss-20b prefers <em>shorter</em> responses), and 62% of the within-trial relationship with accuracy survives a length control on average. Nor is it just extra compute: on DeepSeek R1 and AIME-25, five generations plus 20 pairwise judgments (25 calls) reach a Sel-AUC of 0.728, against 0.717 for Self-ConsU from 25 fresh generations. More draws from the same answer distribution do not buy what a different kind of question buys.</p>
 
         <h2>When the Signal Breaks Down</h2>
 
-        <p>Structural uncertainty is not a universal confidence estimator — and recognizing its limits is itself a contribution. Across five LLMs (Claude Sonnet 4.5, GPT-OSS 20B, Qwen 3 32B, Amazon Nova Premier, DeepSeek R1) and eight benchmarks, a clear pattern emerges:</p>
+        <p>Structural uncertainty is not a universal confidence estimator, and recognizing its limits is itself a contribution. On <strong>mathematical reasoning</strong> it adds strong complementary information to answer dispersion.</p>
 
-        <p>On <strong>mathematical and logical reasoning tasks</strong> (MATH-500, AMC-23, AIME, Math-Synth), structural signals provide strong complementary information to answer dispersion. The combination of structural uncertainty with self-consistency entropy improves identification of unreliable reasoning instances.</p>
-
-        <p>On <strong>factual retrieval tasks</strong> (HotpotQA), the structural signal <em>collapses toward uniformity</em>. When the task requires retrieving a fact rather than constructing a reasoning path, there is no meaningful diversity in solution strategies — so self-preference rankings become uninformative.</p>
+        <p>On <strong>factual retrieval</strong> (HotpotQA), the structural signal <em>collapses toward uniformity</em>. Within-trial entropy sits at its maximum, log 5 &asymp; 1.61, for correct and incorrect questions alike, and across-trial entropy sits near zero: the model gives all five responses roughly equal preference, the same way in every trial. Different prompt templates cannot produce different reasoning paths when the documents fix the retrieval chain, so the candidates differ only in phrasing. Here dispersion wins for the strongest models (for Claude, Sel-AUC 0.839 for Self-ConsU against 0.742 combined).</p>
 
         <div class="essay-diagram">
           <div class="diagram-stack">
             <div class="diagram-stack-layer diagram-node--primary" style="padding:14px;">Reasoning tasks (MATH, AMC, AIME)</div>
             <div class="diagram-stack-layer" style="padding:10px; font-size:0.68rem; color:var(--text-3); background:none;">Structural uncertainty complements dispersion &uarr;</div>
             <div class="diagram-stack-layer diagram-node--secondary" style="padding:14px;">Knowledge tasks (MMLU-Pro, TruthfulQA)</div>
-            <div class="diagram-stack-layer" style="padding:10px; font-size:0.68rem; color:var(--text-3); background:none;">Partial complementarity</div>
+            <div class="diagram-stack-layer" style="padding:10px; font-size:0.68rem; color:var(--text-3); background:none;">Combined estimator still helps; component correlations weaken</div>
             <div class="diagram-stack-layer diagram-node--warn" style="padding:14px;">Retrieval tasks (HotpotQA)</div>
             <div class="diagram-stack-layer" style="padding:10px; font-size:0.68rem; color:var(--text-3); background:none;">Structural signal collapses &darr;</div>
           </div>
@@ -131,16 +192,18 @@
 
         <div class="essay-insight">
           <div class="essay-insight-label">Key Insight</div>
-          <p>This regime sensitivity is itself diagnostic. The <strong>collapse of structural uncertainty</strong> on retrieval tasks identifies the boundary where reasoning-level consistency evaluation ceases to be useful — making structural uncertainty a <strong>regime-sensitive evaluator</strong> rather than a universal metric.</p>
+          <p>This regime sensitivity is itself diagnostic. The <strong>collapse of structural uncertainty</strong> on retrieval tasks marks the boundary where reasoning-level consistency evaluation stops being useful, which makes structural uncertainty a <strong>regime-sensitive evaluator</strong> rather than a universal metric. It is also cheap to check: averaging across-trial uncertainty over 20 pilot questions from a new task classifies the regime correctly at least 98% of the time for all five models.</p>
         </div>
+
+        <p>Other limitations, plainly: the method needs N generations plus M(N &minus; 1) judgments per question (20 at N = 5, M = 5), so it does not belong on latency-critical paths. Because models judge their own outputs, the signal inherits their biases; it is a behavioural signal, not a certificate of correctness. More candidates are not automatically better (N = 10 did worse than N = 5). And we only tested short-answer tasks with verifiable answers.</p>
 
         <h2>Why This Matters for Evaluating Logical Reasoning</h2>
 
-        <p>Standard self-consistency — sampling multiple answers and checking whether they agree — is the most widely used post-hoc reliability signal for LLM reasoning. It works well when errors are diverse. But it has a blind spot: <strong>systematic errors that produce agreement</strong>. When a model's failure mode is to consistently arrive at the same wrong answer through different flawed reasoning paths, self-consistency reports low uncertainty while the reasoning is fundamentally unreliable.</p>
+        <p>Self-consistency is the most widely used post-hoc reliability signal for LLM reasoning, and it works well when errors are diverse. Its blind spot is <strong>systematic errors that produce agreement</strong>: the same wrong answer through different flawed paths, as in the negation example, scores zero uncertainty. Probing the stability of the model's own <em>preferences</em> over its reasoning catches a kind of inconsistency that answer-level metrics cannot see.</p>
 
-        <p>Structural uncertainty addresses exactly this gap. By probing the stability of the model's own <em>preferences</em> over its reasoning — not just the answers — it detects a form of inconsistency that answer-level metrics cannot see. The combination of both signals provides strictly more information than either alone, at least in the reasoning regimes where structural diversity exists.</p>
+        <p>For deployment, I would layer it on self-consistency rather than replace it, where selective-prediction quality matters more than minimal inference cost, and run the pilot check first, falling back to dispersion if the preference graph has collapsed. "The samples agree" is a statement about the answer distribution, not about the reasoning that produced it.</p>
 
-        <p>The broader implication is that evaluating LLM reasoning requires looking beyond what the model says, to how consistently it evaluates what it says. <strong>Consistency of judgment over reasoning paths is a fundamentally different signal from consistency of final answers</strong> — and for logical reasoning, it is often the more informative one.</p>
+        <p>The broader implication is that evaluating LLM reasoning requires looking beyond what the model says, to how consistently it evaluates what it says. <strong>Consistency of judgment over reasoning paths is a different signal from consistency of final answers</strong>, and for reasoning tasks where answers can agree for the wrong reasons, it can catch errors that agreement hides.</p>
       </div>
 
       <footer class="essay-footer">
@@ -176,7 +239,7 @@
           <div class="essay-more-grid">
             <a href="knowing-when-to-ask.html" class="essay-more-card">
               <span class="essay-more-title">Knowing When to Ask: Self-Gated Clarification for Language Agents</span>
-              <span class="essay-more-desc">Putting clarification inside the action space &mdash; agents that ask <em>where</em> to ask, not just how often.</span>
+              <span class="essay-more-desc">Putting clarification inside the action space: agents that ask <em>where</em> to ask, not just how often.</span>
             </a>
             <a href="why-consensus-is-not-correctness.html" class="essay-more-card">
               <span class="essay-more-title">Why Consensus Is Not Correctness in Multi-Agent AI</span>
@@ -184,7 +247,7 @@
             </a>
             <a href="reliable-reasoning-requires-more-than-accuracy.html" class="essay-more-card">
               <span class="essay-more-title">Reliable Reasoning Requires More Than Accuracy</span>
-              <span class="essay-more-desc">A VC-theoretic framework reveals a fundamental tradeoff between expressiveness and calibration in LLM self-evaluation.</span>
+              <span class="essay-more-desc">A VC-theoretic framework exposes a fundamental tradeoff between expressiveness and calibration in LLM self-evaluation.</span>
             </a>
           </div>
         </div>
