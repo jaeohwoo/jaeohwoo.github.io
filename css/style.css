@@ -510,6 +510,7 @@ strong { font-weight: 600; }
 .venue-eacl { background: #ecfeff; color: #0e7490; border: 1px solid rgba(14,116,144,0.1); }
 .venue-neurips { background: #f1f5f9; color: #334155; border: 1px solid rgba(51,65,85,0.1); }
 .venue-icml { background: #fef2f2; color: #b91c1c; border: 1px solid rgba(185,28,28,0.1); }
+.venue-emnlp { background: #fff7ed; color: #c2410c; border: 1px solid rgba(194,65,12,0.1); }
 .venue-ieee { background: #f0fdf4; color: #15803d; border: 1px solid rgba(21,128,61,0.1); }
 
 .work-award {
