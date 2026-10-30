@@ -1,0 +1,89 @@
+/* ===== Dark evergreen: whole site on dark surfaces (loaded after theme.css / essay-theme.css) ===== */
+:root {
+  --navy-950: #050c09;
+  --navy-900: #08130e;
+  --navy-800: #0f2219;
+  --deep-rgb: 5,12,9;
+
+  --bg: #09140f;
+  --bg-tint: #0c1a14;
+  --card: #10201a;
+  --surface-2: #142820;
+  --text: #e7efea;
+  --text-2: #b0c0b8;
+  --text-3: #7b9087;
+  --border: #1d3229;
+  --border-hover: #2d4a3d;
+
+  --accent: #5cc09c;
+  --accent-hover: #82d4b5;
+  --accent-rgb: 92,192,156;
+  --accent-soft: rgba(92,192,156,0.12);
+  --accent-muted: #8fb3a4;
+  --chip-bg: #162a21;
+
+  --gold: #d9925f;
+  --honor-rgb: 217,146,95;
+  --award-text: #e9ab7d;
+  --award-bg: rgba(217,146,95,0.14);
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-md: 0 14px 34px -16px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-lg: 0 30px 60px -24px rgba(0,0,0,0.85);
+}
+html { background: var(--bg); color-scheme: dark; }
+body { background: var(--bg); }
+::selection { background: var(--accent); color: #06120d; }
+
+/* Section rhythm */
+.section-tinted { background: var(--bg-tint); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.hero { border-bottom: 1px solid var(--border); }
+
+/* Surfaces */
+.highlights .page { background: var(--card); border-color: var(--border); }
+.hl-card { background: var(--surface-2); border-color: var(--border); }
+.hl-card--gold { background: linear-gradient(135deg, rgba(var(--honor-rgb),0.13), var(--surface-2) 70%); border-color: rgba(var(--honor-rgb),0.28); }
+.hl-card--reinvent { background: linear-gradient(135deg, rgba(var(--accent-rgb),0.08), var(--surface-2) 70%); border-color: var(--border); }
+.work, .work--featured, .pillar, .essay-card { background: var(--card); border-color: var(--border); }
+.pillar-icon { background: rgba(var(--accent-rgb),0.12); color: var(--honor-light); }
+.pillar-tags span { background: var(--chip-bg); color: var(--text-2); }
+.pub:hover { background: rgba(255,255,255,0.02); }
+.btn-ghost { background: transparent; color: var(--text-2); border-color: var(--border-hover); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Badges and links */
+.venue-badge { background: var(--chip-bg) !important; color: var(--text-2) !important; border-color: var(--border-hover) !important; }
+.work-award { border-color: rgba(var(--honor-rgb),0.3); }
+.work-links a, .pub-link { border-color: rgba(var(--accent-rgb),0.3); }
+.work-links a:hover, .pub-link:hover { color: #06120d; }
+.news-badge--preprint, .news-badge--service, .news-badge--talk { background: var(--chip-bg); color: var(--text-2); }
+.news-badge--accept { background: var(--accent-soft); color: var(--accent); }
+.essay-kind { border-color: rgba(var(--accent-rgb),0.35); }
+
+/* Images: keep light artwork from glowing on dark */
+.work-photo img, .work-photo--pair img, .work-photo--stack img { box-shadow: 0 0 0 1px var(--border), var(--shadow-md); }
+
+/* ===== Essay pages ===== */
+.essay-header::before { border-bottom: 1px solid var(--border); }
+.essay-body a { border-bottom-color: rgba(var(--accent-rgb),0.35); }
+.essay-pullquote p { color: var(--text); }
+.essay-diagram { background: var(--card); border-color: var(--border); }
+.diagram-node--primary { color: #06120d; }
+.diagram-node--secondary { background: var(--accent-soft); border-color: rgba(var(--accent-rgb),0.25); }
+.diagram-node--muted { background: var(--chip-bg); }
+.diagram-node--danger { background: rgba(239,107,107,0.12); color: #f2a3a3; border-color: rgba(239,107,107,0.25); }
+.diagram-node--success { background: rgba(var(--accent-rgb),0.12); color: var(--accent); border-color: rgba(var(--accent-rgb),0.25); }
+.diagram-node--warn { background: var(--award-bg); color: var(--award-text); border-color: rgba(var(--honor-rgb),0.25); }
+.diagram-compare-col--left { background: rgba(239,107,107,0.08); border-color: rgba(239,107,107,0.2); }
+.diagram-compare-col--right { background: rgba(var(--accent-rgb),0.08); border-color: rgba(var(--accent-rgb),0.2); }
+.diagram-compare-col--left .diagram-compare-title,
+.diagram-compare-col--left .diagram-compare-item::before { color: #f2a3a3; }
+.diagram-compare-col--right .diagram-compare-title,
+.diagram-compare-col--right .diagram-compare-item::before { color: var(--accent); }
+.diagram-stack-layer { background: var(--surface-2); border-color: var(--border); color: var(--text-2); }
+.essay-insight { background: var(--accent-soft); border-color: rgba(var(--accent-rgb),0.2); }
+.essay-paper-card, .essay-more-card { background: var(--card); border-color: var(--border); }
+.essay-paper-icon--conf { background: rgba(var(--honor-rgb),0.14); color: var(--award-text); }
+.essay-paper-icon--arxiv { background: var(--accent-soft); color: var(--accent); }
+.essay-paper-icon--code { background: var(--chip-bg); color: var(--text-2); }
+.essay-action-btn { background: var(--card); border-color: var(--border); }
