@@ -1,31 +1,34 @@
-/* ===== Dark evergreen: whole site on dark surfaces (loaded after theme.css / essay-theme.css) ===== */
+/* ===== Mid-tone Yale navy with copper honors: whole site on dark surfaces (loaded after theme.css / essay-theme.css) ===== */
 :root {
-  --navy-950: #050c09;
-  --navy-900: #08130e;
-  --navy-800: #0f2219;
-  --deep-rgb: 5,12,9;
+  --navy-950: #0c2244;
+  --navy-900: #102a52;
+  --navy-800: #173a6c;
+  --deep-rgb: 12,34,68;
+  --glow-rgb: 70,130,210;
+  --ondark-rgb: 204,216,232;
+  --ondark-hi-rgb: 235,241,248;
 
-  --bg: #09140f;
-  --bg-tint: #0c1a14;
-  --card: #10201a;
-  --surface-2: #142820;
-  --text: #e7efea;
-  --text-2: #b0c0b8;
-  --text-3: #7b9087;
-  --border: #1d3229;
-  --border-hover: #2d4a3d;
+  --bg: #142f5b;
+  --bg-tint: #122b54;
+  --card: #1a3866;
+  --surface-2: #1f4173;
+  --text: #f1f5fb;
+  --text-2: #c6d3e8;
+  --text-3: #94a8c8;
+  --border: #2a4b7e;
+  --border-hover: #3d6299;
 
-  --accent: #5cc09c;
-  --accent-hover: #82d4b5;
-  --accent-rgb: 92,192,156;
-  --accent-soft: rgba(92,192,156,0.12);
-  --accent-muted: #8fb3a4;
-  --chip-bg: #162a21;
+  --accent: #8fc1ff;
+  --accent-hover: #b3d5ff;
+  --accent-rgb: 143,193,255;
+  --accent-soft: rgba(143,193,255,0.14);
+  --accent-muted: #a9bfdc;
+  --chip-bg: #21437a;
 
-  --gold: #d9925f;
-  --honor-rgb: 217,146,95;
-  --award-text: #e9ab7d;
-  --award-bg: rgba(217,146,95,0.14);
+  --gold: #eaa26c;
+  --honor-rgb: 234,162,108;
+  --award-text: #f2b98d;
+  --award-bg: rgba(234,162,108,0.16);
 
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
   --shadow-md: 0 14px 34px -16px rgba(0,0,0,0.7), 0 1px 3px rgba(0,0,0,0.3);
@@ -33,7 +36,7 @@
 }
 html { background: var(--bg); color-scheme: dark; }
 body { background: var(--bg); }
-::selection { background: var(--accent); color: #06120d; }
+::selection { background: var(--accent); color: #0c2244; }
 
 /* Section rhythm */
 .section-tinted { background: var(--bg-tint); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -55,7 +58,7 @@ body { background: var(--bg); }
 .venue-badge { background: var(--chip-bg) !important; color: var(--text-2) !important; border-color: var(--border-hover) !important; }
 .work-award { border-color: rgba(var(--honor-rgb),0.3); }
 .work-links a, .pub-link { border-color: rgba(var(--accent-rgb),0.3); }
-.work-links a:hover, .pub-link:hover { color: #06120d; }
+.work-links a:hover, .pub-link:hover { color: #0c2244; }
 .news-badge--preprint, .news-badge--service, .news-badge--talk { background: var(--chip-bg); color: var(--text-2); }
 .news-badge--accept { background: var(--accent-soft); color: var(--accent); }
 .essay-kind { border-color: rgba(var(--accent-rgb),0.35); }
@@ -68,7 +71,7 @@ body { background: var(--bg); }
 .essay-body a { border-bottom-color: rgba(var(--accent-rgb),0.35); }
 .essay-pullquote p { color: var(--text); }
 .essay-diagram { background: var(--card); border-color: var(--border); }
-.diagram-node--primary { color: #06120d; }
+.diagram-node--primary { color: #0c2244; }
 .diagram-node--secondary { background: var(--accent-soft); border-color: rgba(var(--accent-rgb),0.25); }
 .diagram-node--muted { background: var(--chip-bg); }
 .diagram-node--danger { background: rgba(239,107,107,0.12); color: #f2a3a3; border-color: rgba(239,107,107,0.25); }
@@ -87,3 +90,11 @@ body { background: var(--bg); }
 .essay-paper-icon--arxiv { background: var(--accent-soft); color: var(--accent); }
 .essay-paper-icon--code { background: var(--chip-bg); color: var(--text-2); }
 .essay-action-btn { background: var(--card); border-color: var(--border); }
+
+/* Softer copper glow in the hero so it does not muddy the blue */
+.hero {
+  background:
+    radial-gradient(900px 500px at 85% 20%, rgba(var(--glow-rgb),0.30), transparent 60%),
+    radial-gradient(700px 420px at 10% 110%, rgba(var(--honor-rgb),0.06), transparent 60%),
+    linear-gradient(180deg, var(--navy-950) 0%, var(--navy-900) 100%);
+}
