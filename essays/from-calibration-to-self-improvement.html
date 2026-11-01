@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>From Calibration to Self-Improvement: How One Question Shaped My Research | Jae Oh Woo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/essay.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/essay-theme.css">
+  <link rel="stylesheet" href="../css/dark.css">
+  <link rel="stylesheet" href="../css/future.css">
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-name">Jae Oh Woo</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../#essays">&larr; Essays</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <article class="essay-page">
+    <div class="essay-container">
+      <header class="essay-header">
+        <time class="essay-meta">November 2026</time>
+        <h1 class="essay-page-title">From Calibration to Self-Improvement: How One Question Shaped My Research</h1>
+        <p class="essay-subtitle">I want AI systems that can evaluate their own judgments, ask for help when they need it, and improve from the help they get. This is an account of where that goal came from and how my reading of it has changed.</p>
+        <div class="essay-author">
+          <img src="https://avatars.githubusercontent.com/u/1177142?v=4" alt="Jae Oh Woo" class="essay-author-img">
+          <div class="essay-author-info">
+            <span class="essay-author-name"><a href="../">Jae Oh Woo</a></span>
+          </div>
+        </div>
+      </header>
+
+      <div class="essay-body">
+        <p>Most of my recent papers come back to one question: <strong>when should a model's own judgment be trusted?</strong> A model that answers is useful. A model that can tell which of its answers deserve trust, and that stops to ask when they do not, is something we can build systems on. The other essays on this site each take one piece of that question in detail. This one is about the thread between them: why I came to care about it, which smaller questions it split into, and how my interpretation of the results has shifted along the way.</p>
+
+        <h2>Starting from Entropy</h2>
+
+        <p>My training is in mathematics. I studied mathematics at KAIST, then applied mathematics at Yale, where my dissertation was on <a href="../#publications">information-theoretic inequalities, limit theorems, and universal compression over unknown alphabets</a>. I was later a Simons Postdoctoral Fellow at UT Austin, and entropy stayed at the center of my work: entropy inequalities for sums in discrete groups, and the entropy and mutual information of point processes. These are statements about how much is unknown, and how much a given observation would tell you.</p>
+
+        <p>When I moved into industry, at Moody's Analytics and Samsung SDS Research America, the same quantities turned out to be practical tools. In active learning, a model chooses which unlabeled examples a person should label next. The whole problem is a model estimating what it does not know. Two of my single-author papers come from this line of work. <a href="https://arxiv.org/abs/2201.09815" target="_blank" rel="noopener">Analytic Mutual Information in Bayesian Neural Networks</a> (ISIT 2022) derives a closed-form expression for the mutual information between model parameters and the predictive output, using point process entropy, and applies it to Dirichlet parameter estimation and active learning. <a href="https://arxiv.org/abs/2105.14559" target="_blank" rel="noopener">Balanced Entropy Learning</a> (ICLR 2023) proposes an acquisition function built from Beta approximations of the marginals, a ratio of an augmented entropy to a marginalized joint entropy, which tends to select diverse points near the decision boundary.</p>
+
+        <div class="essay-pullquote">
+          <p>Knowing what you do not know is not a philosophical luxury. It is what makes data-efficient learning possible: a model that can locate its own uncertainty can ask for the labels that matter.</p>
+        </div>
+
+        <p>That lesson is the root of everything that follows. In active learning the model's uncertainty is used to decide <em>what to ask for</em>. Much of my later work asks the same thing of language models, where the "label" might be a human answer, a teacher's correction, or a decision to escalate.</p>
+
+        <h2>Three Questions for Language Models</h2>
+
+        <p>Large language models changed the form of the problem. They do not just output a probability; they produce judgments in language: a stated confidence, a preference between two of their own solutions, a verdict on whether a step of reasoning holds. Those judgments are cheap to obtain and easy to over-trust. Over time the work organised itself around three questions.</p>
+
+        <div class="essay-diagram">
+          <div class="diagram-flow">
+            <div class="diagram-node diagram-node--primary">Evaluate<br>its own judgments</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--secondary">Ask or defer<br>when needed</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--success">Improve<br>from feedback</div>
+          </div>
+          <p class="essay-diagram-caption">Three questions that organise the later work. Each depends on the one before it.</p>
+        </div>
+
+        <h2>Question 1: Can a model evaluate its own judgments?</h2>
+
+        <p>In <a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</a> (NeurIPS 2025 Workshop), we treated self-evaluation as a capability with a capacity, extending VC dimension to probabilistic predictors with and without a calibration requirement. In our experiments with 7 to 8B models, scored against an LLM judge reference, no model was best both at picking its better solutions and at keeping its confidence honest. That is an observation about those models, not a theorem; the <a href="reliable-reasoning-requires-more-than-accuracy.html">Reliable Reasoning essay</a> explains what it does and does not show.</p>
+
+        <p>A second line asks whether a model's self-judgments are <em>stable</em>. <a href="https://aclanthology.org/2026.emnlp-main.699/" target="_blank" rel="noopener">Structural Uncertainty from Self-Preference in Black-Box Language Models</a> (EMNLP 2026; an earlier version received the Best Paper award at the <a href="https://openreview.net/forum?id=YMwow5RQgP" target="_blank" rel="noopener">ICLR 2026 Workshop on Logical Reasoning of LLMs</a>) measures how consistently a model ranks its own sampled candidates. The signal complements answer dispersion rather than replacing it, and how useful it is depends on the task; the <a href="structural-uncertainty-in-llm-reasoning.html">Structural Uncertainty essay</a> goes through where it helps and where it flattens out.</p>
+
+        <p>Earlier, <a href="https://arxiv.org/abs/2405.06424" target="_blank" rel="noopener">Improving Instruction Following in Language Models through Proxy-Based Uncertainty Estimation</a> (ICML 2024) approached evaluation from the reward side. We built an uncertainty-aware reward model that, using Bayesian approximation, scores a pair of responses and also estimates how uncertain that score is. Here the uncertainty is not used at inference time; it is used during training, to refine which data are selected and to guide policy optimization, which improved instruction following on Vicuna and MT-bench.</p>
+
+        <h2>Question 2: When should it ask for help or defer?</h2>
+
+        <p>Evaluation alone does not change what a system does. The second question is what to do with an uncertain judgment. In <a href="https://aclanthology.org/2026.emnlp-main.830/" target="_blank" rel="noopener">From Debate to Decision: Conformal Social Choice for Safe Multi-Agent Deliberation</a> (EMNLP 2026), we put a split conformal layer after multi-agent debate: the system acts when the calibrated prediction set has one answer and escalates to a person when it has several, with a coverage guarantee at each pre-specified round. The paper is explicit that the accuracy gain on early decisions comes from which cases the system declines to act on, not from better reasoning. Two workshop papers develop the act-or-defer framing further, <a href="https://openreview.net/forum?id=wk9pd2VaUB" target="_blank" rel="noopener">one at ICML 2026 AgenticUQ</a> and a budgeted version <a href="https://openreview.net/forum?id=5g04fnFmLz" target="_blank" rel="noopener">at ICML 2026 FAGEN</a>. The <a href="why-consensus-is-not-correctness.html">Consensus essay</a> explains the guarantee and its limits.</p>
+
+        <p>Deferral at the end of a decision is one case. Asking in the middle of a task is another. In <a href="https://arxiv.org/abs/2606.11349" target="_blank" rel="noopener">Knowing When to Ask: Self-Gated Clarification for Hierarchical Language Agents</a> (ACM CAIS 2026 Workshop on AI Agents for Discovery in the Wild), clarification becomes an action the agent rates on the same scale as its other moves. The study separates <em>where</em> an agent asks from <em>what</em> answer comes back, and treats its accuracy gains under a controlled answer source as an upper bound. The <a href="knowing-when-to-ask.html">Knowing When to Ask essay</a> covers it.</p>
+
+        <h2>Question 3: How can it improve from that feedback?</h2>
+
+        <p>The third question closes the loop. In <a href="https://aclanthology.org/2026.findings-eacl.69/" target="_blank" rel="noopener">Reflect, Rewrite, Repeat: How Simple Arithmetic Enables Advanced Reasoning in Small Language Models</a> (EACL 2026 Findings), a stronger teacher model grades and rewrites a small model's answers, and the small model is trained on those corrections through iterative DPO followed by SFT, with a learning-verification step that checks whether the trained model now solves the problem itself. With about 700 basic arithmetic training samples, the small models improved on reasoning benchmarks such as GSM8K and AIME'25.</p>
+
+        <p>It is worth being precise about what this shows. The improvement comes from <strong>teacher feedback</strong>, not from the small model reflecting on its own answers. We chose a teacher because self-reflection alone can be superficial. So R3 is evidence that a model can learn efficiently from good external feedback, not that it can improve itself unaided. The ICML 2024 reward model fits the same question from another angle: an uncertainty estimate decides which training signal is worth trusting.</p>
+
+        <h2>How My Interpretation Changed</h2>
+
+        <p>When we wrote the probabilistic VC paper, I read per-category self-evaluation scores as a measure of <em>capacity</em>: how many categories a model can self-evaluate reliably, and how much data you need before that measurement can be trusted. I still think that framing was a useful starting point. But working with the same scores over the following year changed how I read them, in three ways.</p>
+
+        <p><strong>From certificate to audit.</strong> A per-category calibration score tells you <em>where</em> a model's self-evaluation fails. It is a diagnostic of the model under a given prompt and confidence protocol, not a certificate that the model will behave well on new inputs. <strong>From ground truth to reference.</strong> The labels in this kind of study come from LLM judges, and judges disagree with each other. I now treat judge labels as a reference point that should be reported and questioned, not as ground truth. <strong>From auditing to acting.</strong> Finding the categories where a model fails is one task. Acting on them, for example by setting a different trust threshold for each category, is another: it means choosing a decision rule from data, and every additional category that gets its own rule raises the amount of data needed before that rule can be trusted. Auditing is cheap; acting on the audit has a finite-sample price.</p>
+
+        <div class="essay-diagram">
+          <div class="diagram-flow">
+            <div class="diagram-node diagram-node--muted">Capacity<br>how much can it self-evaluate?</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--secondary">Audit<br>where does it fail?</div>
+            <div class="diagram-arrow">&rarr;</div>
+            <div class="diagram-node diagram-node--primary">Decision<br>what action does the score support?</div>
+          </div>
+          <p class="essay-diagram-caption">The same per-category scores, read three ways as the work developed.</p>
+        </div>
+
+        <p>Put simply, I stopped asking "is this model calibrated?" and started asking "<strong>what decision does this score support, and at what cost?</strong>" The other projects had been pointing that way already. The conformal guarantee is attached to a decision rule, act or escalate, not to the agents' confidence. In the clarification study, a rating-only ablation that scored actions without ever acting on the score did not help; the gain came from letting the score decide. And R3 improves because feedback is turned into training data, not because a reflection is produced.</p>
+
+        <div class="essay-insight">
+          <div class="essay-insight-label">Key Insight</div>
+          <p>A self-assessment earns its value through the decision it supports. Calibration is a property of a score; reliability is a property of what a system does with that score, and the second needs its own evidence.</p>
+        </div>
+
+        <h2>The Mathematics Underneath</h2>
+
+        <p>I have not left the mathematics behind, and I do not think of it as a separate interest. This year I posted <a href="https://arxiv.org/abs/2609.23922" target="_blank" rel="noopener">R&eacute;nyi Stability of B<sub>h</sub> Sets</a>, a single-author preprint in combinatorics and information theory. It asks how much probability mass must be removed so that what remains is collision-free, given that the sum map loses only a little R&eacute;nyi entropy, and it gives a sharp phase diagram in two R&eacute;nyi orders. It says nothing about language models. What carries over is a habit: state exactly which quantity controls which, and what the bound costs. The move from capacity to audit to decision is that habit applied to my own earlier results.</p>
+
+        <h2>What Is Still Open</h2>
+
+        <p>Several questions remain open, and I would rather list them than claim they are settled.</p>
+
+        <p><strong>Calibrated deferral mid-task.</strong> The conformal work gives a guarantee at the end of a decision; the clarification work asks mid-trajectory using uncalibrated ordinal scores. Bringing calibrated guarantees to intermediate decisions is not done. <strong>Who answers.</strong> Asking well is only useful if the answer is good. How the value of asking changes as the answer source moves from a knowledgeable person to retrieval or a weaker model is largely unmeasured. <strong>Improvement without a strong teacher.</strong> R3 depends on a teacher. Whether a model's own evaluation, once audited, can stand in for part of that feedback is the question that would turn self-evaluation into self-improvement, and our results do not yet answer it. <strong>References that are not ground truth.</strong> If judges are references, then audits inherit their biases, and we need better ways to report that uncertainty alongside the audit.</p>
+
+        <p>The goal has stayed the same since the active learning days: a system that knows where its judgment is weak, asks for help there, and gets better from what it hears back. What has changed is how carefully I separate those three steps, and how much evidence I now ask of each one before calling a system reliable.</p>
+      </div>
+
+      <footer class="essay-footer">
+        <div class="essay-related">
+          <h3>Related Papers</h3>
+          <div class="essay-papers">
+            <a href="https://arxiv.org/abs/2105.14559" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">ICLR</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Active Learning in Bayesian Neural Networks with Balanced Entropy Learning Principle</span>
+                <span class="essay-paper-venue">ICLR 2023 &middot; Information-theoretic acquisition for active learning</span>
+              </div>
+            </a>
+            <a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">NeurIPS</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</span>
+                <span class="essay-paper-venue">NeurIPS 2025 Workshop &middot; Self-evaluation capacity and calibration</span>
+              </div>
+            </a>
+            <a href="https://arxiv.org/abs/2405.06424" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">ICML</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Improving Instruction Following in Language Models through Proxy-Based Uncertainty Estimation</span>
+                <span class="essay-paper-venue">ICML 2024 &middot; Uncertainty-aware reward model for data selection and policy optimization</span>
+              </div>
+            </a>
+            <a href="https://aclanthology.org/2026.emnlp-main.830/" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">EMNLP</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">From Debate to Decision: Conformal Social Choice for Safe Multi-Agent Deliberation</span>
+                <span class="essay-paper-venue">EMNLP 2026 &middot; SAC Highlight Award</span>
+              </div>
+            </a>
+            <a href="https://arxiv.org/abs/2606.11349" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--arxiv">arXiv</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Knowing When to Ask: Self-Gated Clarification for Hierarchical Language Agents</span>
+                <span class="essay-paper-venue">arXiv:2606.11349 &middot; ACM CAIS 2026 Workshop on AI Agents for Discovery in the Wild</span>
+              </div>
+            </a>
+            <a href="https://aclanthology.org/2026.findings-eacl.69/" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--conf">EACL</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Reflect, Rewrite, Repeat: How Simple Arithmetic Enables Advanced Reasoning in Small Language Models</span>
+                <span class="essay-paper-venue">EACL 2026 Findings &middot; Learning from teacher feedback</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="essay-more">
+          <h3>More Essays</h3>
+          <div class="essay-more-grid">
+            <a href="reliable-reasoning-requires-more-than-accuracy.html" class="essay-more-card">
+              <span class="essay-more-title">Reliable Reasoning Requires More Than Accuracy</span>
+              <span class="essay-more-desc">A probabilistic VC view of self-evaluation, and what per-category audits against a judge reference can and cannot tell us.</span>
+            </a>
+            <a href="why-consensus-is-not-correctness.html" class="essay-more-card">
+              <span class="essay-more-title">Why Consensus Is Not Correctness in Multi-Agent AI</span>
+              <span class="essay-more-desc">Conformal prediction turns multi-agent debate into calibrated act-or-escalate decisions.</span>
+            </a>
+            <a href="knowing-when-to-ask.html" class="essay-more-card">
+              <span class="essay-more-title">Knowing When to Ask: Self-Gated Clarification for Language Agents</span>
+              <span class="essay-more-desc">Putting clarification inside the action space lets asking compete with acting at every step.</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="essay-actions">
+          <a href="https://scholar.google.com/citations?user=HMLtAoMAAAAJ" target="_blank" rel="noopener" class="essay-action-btn">Google Scholar</a>
+          <a href="https://www.linkedin.com/in/jae-oh-woo-45666829" target="_blank" rel="noopener" class="essay-action-btn">LinkedIn</a>
+          <a href="../#contact" class="essay-action-btn">Contact</a>
+        </div>
+
+        <a href="../#essays" class="essay-back">&larr; Back to all essays</a>
+      </footer>
+    </div>
+  </article>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/network.js"></script>
+</body>
+</html>

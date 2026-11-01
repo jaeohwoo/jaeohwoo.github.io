@@ -28,9 +28,10 @@
   <article class="essay-page">
     <div class="essay-container">
       <header class="essay-header">
-        <time class="essay-meta">April 2026</time>
+        <time class="essay-meta">First posted April 2026 &middot; Updated November 2026</time>
         <h1 class="essay-page-title">Reliable Reasoning Requires More Than Accuracy</h1>
-        <p class="essay-subtitle">Can language models tell when they are wrong? The answer points to a persistent tension between expressiveness and calibration.</p>
+        <p class="essay-subtitle">Can language models tell when they are wrong? In our experiments, scored against an LLM judge reference, strong self-discrimination and honest confidence did not come together in any one model.</p>
+        <p class="essay-basis">Based on <a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener">Can LLMs Reliably Evaluate Themselves? (NeurIPS 2025 Workshop)</a>. Claims clarified; see the revision note.</p>
         <div class="essay-author">
           <img src="https://avatars.githubusercontent.com/u/1177142?v=4" alt="Jae Oh Woo" class="essay-author-img">
           <div class="essay-author-info">
@@ -40,21 +41,26 @@
       </header>
 
       <div class="essay-body">
-        <p>A language model that solves a math problem correctly is useful. A language model that solves a math problem correctly <em>and knows it got it right</em> is far more useful. And a language model that can look at two of its own solutions and reliably pick the better one, with a confidence that means what it says, is the capability we actually need for autonomous reasoning systems.</p>
+        <div class="essay-insight">
+          <div class="essay-insight-label">Revision note</div>
+          <p>Updated in November 2026. We clarified that the labels in this study come from an LLM judge reference, not from objective ground truth; we separated the per-category diagnostics we measured from the theoretical capacity and sample-complexity result, which is a statement about a hypothesis class under assumptions; and we softened the discrimination/calibration statement to an observation from our experiments. All numbers were rechecked against the NeurIPS 2025 workshop version, and figures that appear only in later drafts were removed.</p>
+        </div>
 
-        <p>This is the question we set out to formalize: <strong>to what extent can LLMs evaluate the reliability of their own reasoning?</strong> Not just whether they get the right answer, but whether they can distinguish their correct outputs from incorrect ones, and whether their confidence in that distinction is calibrated.</p>
+        <p>A language model that solves a math problem correctly is useful. A language model that solves a math problem correctly <em>and knows it got it right</em> is far more useful. And a language model that can look at two of its own solutions, pick the better one, and attach a confidence that means what it says is close to the capability we need for autonomous reasoning systems.</p>
 
-        <h2>Accuracy Does Not Tell You Whether a Model Knows When It Is Wrong</h2>
+        <p>This is the question we set out to formalize: <strong>to what extent can LLMs evaluate the reliability of their own reasoning?</strong> Not just whether they get the right answer, but whether they can distinguish their better outputs from worse ones, and whether their confidence in that choice is calibrated.</p>
 
-        <p>Most evaluation protocols score the final answer, quietly assuming that a model which solves more problems also judges its own work better. Our data does not support that.</p>
+        <h2>Being Right About Yourself and Knowing How Sure to Be Are Different Things</h2>
 
-        <p>When we compared solution accuracy with self-evaluation accuracy at the category level across all eleven models, the two were only weakly related. On our Math-360 benchmark the Pearson correlation was 0.079; on MATH-500 it was 0.191. The individual cases are more striking than the correlations. On Math-360, Llama-3.1-8B-Instruct solved 63.9% of problems against 89.6% for Qwen2.5-7B-Instruct, yet picked the better of its own two solutions more often (60.6% versus 58.1%). On TruthfulQA, s1.1-7B and Bespoke-Stratos-7B had almost the same solution accuracy (44.2% and 45.2%), but s1.1-7B was far better at judging its own answers (62.1% versus 56.7%).</p>
+        <p>Most evaluation protocols score the final answer, quietly assuming that a model which solves more problems also judges its own work better. We did not test that assumption directly in this paper, but our self-evaluation data already shows that a single summary number hides a lot.</p>
 
-        <p>Generation and self-evaluation behave like two separate skills, and an agent leans on the second one exactly when nobody is checking its intermediate steps.</p>
+        <p>Take two quantities we report for every model: the self-evaluation error (how often the model's choice between its own two solutions disagrees with the judge reference) and the expected calibration error (how far its stated confidence sits from its observed agreement rate). In our experiments they move separately. The base Qwen2.5-7B and OpenThinker2-7B have almost the same self-evaluation error (0.422 and 0.420), yet their calibration errors differ (0.314 and 0.357). JiuZhang3.0-7B has the lowest calibration error of all eleven models (0.209) while its self-evaluation error (0.484) is among the higher ones; s1.1-7B has the lowest self-evaluation error (0.378) with a calibration error of 0.285.</p>
+
+        <p>Choosing well and knowing how sure to be behave like two separate skills in our data, and an agent leans on both exactly when nobody is checking its intermediate steps.</p>
 
         <h2>Self-Evaluation as a Testable Capability</h2>
 
-        <p>Here is the experimental setup. Give a model a problem. Let it generate two distinct solutions. Then ask the same model: <em>which solution is better, and how confident are you?</em> An external ensemble of three larger models (Claude 3.7 Sonnet, Amazon Nova Premier and DeepSeek-R1) determines which solution is actually better. This gives us two measurable quantities for each problem category:</p>
+        <p>Here is the experimental setup. Give a model a problem. Let it generate two distinct solutions. Then ask the same model: <em>which solution is better, and how confident are you?</em> Separately, an ensemble of three larger models (Claude 3.7 Sonnet, Amazon Nova Premier and DeepSeek-R1), which see the reference answer, judges which solution is better. We use that verdict as the label. It is a judge reference, not objective ground truth: when we say a model "picked correctly", we mean it agreed with the judges. This gives us two measurable quantities for each problem category:</p>
 
         <div class="essay-diagram">
           <div class="diagram-flow">
@@ -62,133 +68,133 @@
             <div class="diagram-arrow">&rarr;</div>
             <div class="diagram-node diagram-node--secondary">Model picks one<br>+ reports confidence</div>
             <div class="diagram-arrow">&rarr;</div>
-            <div class="diagram-node diagram-node--primary">Compare to<br>judge ensemble</div>
+            <div class="diagram-node diagram-node--primary">Compare to<br>judge reference</div>
             <div class="diagram-arrow">&rarr;</div>
-            <div class="diagram-node diagram-node--success">SEA &amp;<br>Calibration Error</div>
+            <div class="diagram-node diagram-node--success">Per-category SEA &amp;<br>Calibration Error</div>
           </div>
-          <p class="essay-diagram-caption">The self-evaluation protocol: models judge their own reasoning against an external judge ensemble</p>
+          <p class="essay-diagram-caption">The self-evaluation protocol: a model's choice between its own two solutions is scored against an LLM judge reference (not human gold labels)</p>
         </div>
 
-        <p><strong>Self-Evaluation Accuracy (SEA)</strong> is how often, within a category, the model picks the solution the judges consider better. <strong>Calibration Error</strong> is the gap between the model's average reported confidence in that category and its SEA. A model that picks correctly 70% of the time but claims 95% confidence is poorly calibrated, even if its accuracy is decent.</p>
+        <p><strong>Self-Evaluation Accuracy (SEA)</strong> is how often, within a category, the model picks the solution the judges prefer. <strong>Calibration Error</strong> is the gap between the model's average reported confidence in that category and its SEA. A model that agrees with the reference 70% of the time but reports 90% confidence is poorly calibrated, even if its agreement rate is decent. Both quantities are defined with respect to the judge reference; if the judges are wrong on a question, so is the label.</p>
 
-        <p>We ran this on three benchmarks. Math-360 is a set of 360 original problems we wrote across eight domains (arithmetic, algebra, calculus, geometry, number theory, combinatorics, statistics and linear algebra), built to avoid contamination from pretraining data. For factual and commonsense reasoning we sampled 240 questions each from TruthfulQA and CommonsenseQA and grouped them into 10 semantic categories. We later repeated the full procedure on MATH-500.</p>
+        <p>We ran this on three benchmarks. Math-360 is a set of 360 original problems we wrote across eight domains (arithmetic, algebra, calculus, geometry, number theory, combinatorics, statistics and linear algebra), built to reduce the chance of contamination from pretraining data. For factual and commonsense reasoning we sampled 240 questions each from TruthfulQA and CommonsenseQA and grouped them into 10 broad categories. We also repeated the full procedure on MATH-500.</p>
 
         <h2>Self-Evaluation as a Hypothesis Class</h2>
 
-        <p>To bring learning theory to bear, we need to say what the "hypothesis class" is. A single pretrained model is not one fixed function: change the prompt and it reasons differently, sample at nonzero temperature and the same prompt yields different outputs. We therefore treat a model as a <em>generator</em> of predictors, the family obtained by combining fixed weights with a space of prompting strategies and decoding configurations. This makes self-evaluation a property of the model <em>plus</em> the way you prompt and sample it, which is how it is actually deployed.</p>
+        <p>To bring learning theory to bear, we need to say what the "hypothesis class" is. A single pretrained model is not one fixed function: change the prompt and it reasons differently, sample at nonzero temperature and the same prompt yields different outputs. We therefore treat a model as a <em>generator</em> of predictors, the family obtained by combining fixed weights with a space of prompts and decoding configurations. This makes self-evaluation a property of the model <em>plus</em> the way you prompt and sample it, which is how it is actually deployed. It is a modelling choice, and the theory below is about this abstract class, not a measured property of any particular network.</p>
 
-        <p>The second modelling choice is what counts as an "input". Estimating capacity question by question is intractable and noisy, so the inputs are problem categories (Algebra, Geometry, and so on), with questions inside a category assumed i.i.d. To count as handled, a category requires success across a range of related problems, not on one lucky question.</p>
+        <p>The second modelling choice is what counts as an "input". Estimating capacity question by question is intractable and noisy, so in the experiments the inputs are problem categories (Algebra, Geometry, and so on), with questions inside a category treated as draws from that category's distribution. To count as handled, a category requires success across a range of related problems, not on one lucky question.</p>
 
         <h2>From Accuracy to VC Theory</h2>
 
-        <p>The deeper question is not just "how good is this model at self-evaluation?" but "what is the <em>capacity</em> of its self-evaluation?" In other words, across how many distinct problem types can it evaluate reliably?</p>
+        <p>The deeper question is not just "how good is this model at self-evaluation?" but "across how many distinct problem types can it evaluate reliably?" That is a capacity question.</p>
 
         <p>This is where classical learning theory becomes relevant. The <a href="https://en.wikipedia.org/wiki/Vapnik%E2%80%93Chervonenkis_dimension" target="_blank" rel="noopener">Vapnik-Chervonenkis (VC) dimension</a> measures the capacity of a hypothesis class: the largest set of points it can shatter, meaning label in every possible way. But classical VC theory handles binary classifiers, not probabilistic predictors that output confidence scores. LLMs don't just say "correct" or "incorrect"; they say "I'm 85% sure this one is better."</p>
 
-        <p>We introduce two extensions that bridge this gap:</p>
+        <p>We introduce two extensions for this setting:</p>
 
         <div class="essay-diagram">
           <div class="diagram-compare">
             <div class="diagram-compare-col diagram-compare-col--right" style="border-color: rgba(37,99,235,0.15); background: var(--accent-soft);">
               <span class="diagram-compare-title" style="color: var(--accent);">PVC: Probabilistic VC Dimension</span>
-              <div class="diagram-compare-item">Extends VC to probabilistic predictors</div>
-              <div class="diagram-compare-item">Measures: on how many inputs (categories) can the model realize every labeling, each label correct with probability &ge; &gamma;?</div>
-              <div class="diagram-compare-item">Captures <strong>expressiveness</strong> of self-evaluation</div>
-              <div class="diagram-compare-item">Higher = more discriminative power</div>
+              <div class="diagram-compare-item">Theory: extends VC to probabilistic predictors</div>
+              <div class="diagram-compare-item">Definition: on how many inputs can the class realize every labeling, each label correct with probability &ge; &gamma;?</div>
+              <div class="diagram-compare-item">In our experiments: the number of categories whose SEA (against the judge reference) is at least &gamma;</div>
+              <div class="diagram-compare-item">Higher = more categories where the model's choices clear &gamma;</div>
             </div>
             <div class="diagram-compare-col diagram-compare-col--right" style="border-color: rgba(21,128,61,0.15); background: #f0fdf4;">
               <span class="diagram-compare-title" style="color: #15803d;">C-PVC: Calibration-Aware PVC</span>
-              <div class="diagram-compare-item">Adds a calibration requirement on top of PVC</div>
-              <div class="diagram-compare-item">Requires: on every input, reported confidence within &tau; of the actual probability of being correct</div>
-              <div class="diagram-compare-item">Captures <strong>expressiveness + calibration</strong></div>
-              <div class="diagram-compare-item">Higher = discriminative AND well-calibrated</div>
+              <div class="diagram-compare-item">Theory: adds a calibration requirement on top of PVC</div>
+              <div class="diagram-compare-item">Definition: on every input, reported confidence within &tau; of the actual probability of being correct</div>
+              <div class="diagram-compare-item">In our experiments: categories that also have calibration error at most &tau;</div>
+              <div class="diagram-compare-item">Higher = more categories that clear &gamma; with honest confidence</div>
             </div>
           </div>
-          <p class="essay-diagram-caption">Two complexity metrics for LLM self-evaluation capability</p>
+          <p class="essay-diagram-caption">Each measure has a theoretical definition over a hypothesis class and an empirical, per-category counterpart; the two should not be read as the same thing</p>
         </div>
 
-        <p>A small example from the paper makes the definition concrete: if PVC at &gamma; = 0.8 equals 3, there is a set of three inputs on which the model can produce any labeling, each label correct with at least 80% probability, and no set of four inputs where it can do so. Empirically, a category counts toward PVC when the model's SEA there is at least &gamma;, and toward C-PVC when, in addition, its calibration error there is at most &tau;.</p>
+        <p>A small example from the paper makes the definition concrete: if PVC at &gamma; = 0.8 equals 3, there is a set of three inputs on which the class can produce any labeling, each label correct with at least 80% probability, and no set of four inputs where it can do so. Empirically, a category counts toward PVC when the model's SEA there is at least &gamma;, and toward C-PVC when, in addition, its calibration error there is at most &tau;. These empirical counts are per-category diagnostics computed from a finite sample and a judge reference. They cannot exceed the number of categories in the benchmark, and they are not a certified estimate of the model's capacity in the theoretical sense.</p>
 
-        <p>The two measures nest in a simple way. Classical VC dimension is PVC with &gamma; = 1; relaxing &gamma; can only increase PVC; and C-PVC can never exceed PVC, shrinking further as the tolerance &tau; tightens. The difference between them, the PVC to C-PVC gap, is the quantity I care about most: it measures how much apparent self-evaluation capacity disappears once you insist that the confidence numbers be honest.</p>
+        <p>The two measures nest in a simple way. Classical VC dimension is PVC with &gamma; = 1; relaxing &gamma; can only increase PVC; and C-PVC can never exceed PVC, shrinking further as the tolerance &tau; tightens. The difference between them, the PVC to C-PVC gap, is the quantity I care about most: it measures how many categories drop out once you insist that the confidence numbers be honest. Note that the ordering guarantees the gap is never negative, so a positive gap on its own is not evidence of anything beyond the definition.</p>
 
-        <p>One design choice deserves emphasis. The calibration condition is point-wise: it must hold on <em>each</em> input, not on average. Population metrics such as Expected Calibration Error (ECE) let overconfidence in one place cancel underconfidence in another. C-PVC does not.</p>
+        <p>One design choice deserves emphasis. The calibration condition is checked per input, which in our experiments means per category. Our ECE is a weighted average of the category calibration errors, so a large error in one category can be diluted by small errors elsewhere; C-PVC instead tests each category against &tau; separately. Both work with category averages, though, so within a category overconfidence on some questions can still offset underconfidence on others. A per-category check is an audit at the resolution of the chosen categories, nothing finer.</p>
 
         <h2>Capacity and Sample Complexity in Plain Words</h2>
 
-        <p>Why a VC-style quantity rather than another score? Because capacity tells you how much evidence you need before an observed number can be trusted. The key theoretical result is that PVC and C-PVC yield <strong>generalization bounds and sample complexity guarantees</strong> that mirror classical VC theory, with the VC dimension replaced by PVC or C-PVC. For C-PVC, if the dimension is d, the guarantee holds once the number of samples m satisfies</p>
+        <p>Why a VC-style quantity rather than another score? Because, in theory, capacity tells you how much evidence you need before an observed number can be trusted. Our main theoretical result is a <strong>generalization bound</strong> that mirrors classical VC theory, with the VC dimension replaced by C-PVC. It is a statement about a class of predictors: it assumes the class has finite C-PVC dimension d and that the m examples are drawn i.i.d. Under those assumptions, the guarantee holds once</p>
 
         <div class="essay-insight">
-          <div class="essay-insight-label">Sample complexity (Theorem 1)</div>
-          <p style="text-align:center;"><em>m</em> &ge; (<em>K</em> / &epsilon;&sup2;) &middot; ( <em>d</em><sub>&gamma;,&tau;</sub> + log(1/&delta;) )</p>
-          <p>Here &epsilon; is the accuracy you want, &delta; the failure probability, and <em>K</em> an unknown universal constant. With that many samples, both the prediction error and the calibration error observed on the sample are within &epsilon; of their true values, uniformly over the class, with probability at least 1 &minus; &delta;.</p>
+          <div class="essay-insight-label">Sample complexity (Theorem 1, a result about a hypothesis class)</div>
+          <p style="text-align:center;"><em>m</em> &ge; (<em>C</em> / &epsilon;&sup2;) &middot; ( <em>d</em><sub>&gamma;,&tau;</sub> + log(1/&delta;) )</p>
+          <p>Here &epsilon; is the accuracy you want, &delta; the failure probability, and <em>C</em> a universal constant whose value the theorem does not give. With that many i.i.d. samples, the prediction error observed on the sample is within &epsilon; of its true value and the calibration error within &epsilon; + &tau;, uniformly over the class, with probability at least 1 &minus; &delta;. The bound needs the true dimension of the class; our per-category counts do not supply it.</p>
         </div>
 
-        <p>Read it as a budget. The 1/&epsilon;&sup2; factor means that halving your error tolerance quadruples the samples you need, and every extra unit of capacity adds another <em>K</em>/&epsilon;&sup2; samples on top. A model with richer self-evaluation capacity is not free: it needs more validation data before you can separate genuine skill from noise. The calibration constraint works in the other direction, acting as a regularizer, since the calibrated dimension is never larger than the uncalibrated one.</p>
+        <p>Read it as a budget, in the theory. The 1/&epsilon;&sup2; factor means that halving your error tolerance quadruples the samples you need, and every extra unit of capacity adds another <em>C</em>/&epsilon;&sup2; samples on top. A richer class is not free: it needs more data before an observed score separates genuine skill from noise. The calibration constraint works in the other direction, since the calibrated dimension is never larger than the uncalibrated one. Whether the capacity of a real transformer is finite and small enough for this to bite is a separate question, which the theory answers only under restrictive assumptions (see the limitations below).</p>
 
-        <p>Since a single (&gamma;, &tau;) setting can mislead, we integrate each measure over the whole (&gamma;, &tau;) plane, a volume under surface (VUS), giving one threshold-free number per model. Because <em>K</em> is unknown, the sample complexity summary (SC-VUS, computed with <em>K</em> = 1, &epsilon; = 0.1, &delta; = 0.05) is a relative index, not a literal count of required examples. s1.1-7B has the highest SC-VUS in our study (727.3): its larger capacity comes with a larger verification cost.</p>
+        <p>Since a single (&gamma;, &tau;) setting can mislead, we integrate each empirical measure over the whole (&gamma;, &tau;) plane, a volume under surface (VUS), giving one threshold-free number per model. We also plug the empirical counts into the bound, with <em>C</em> = 1, &epsilon; = 0.1 and &delta; = 0.05, and integrate that too (SC-VUS). Because the constant is not known and the counts are diagnostics rather than the true dimension, SC-VUS is a relative index for comparing models under the same protocol, not a guaranteed number of required examples. s1.1-7B has the highest SC-VUS in our study (727.3), which, read this way, suggests that more evaluation data is needed before its scores can be compared with confidence.</p>
 
-        <h2>The Expressiveness-Calibration Tradeoff</h2>
+        <h2>What We Observed About Discrimination and Calibration</h2>
 
-        <p>We tested eleven 7-8B parameter models across the three benchmarks. The central empirical finding is a <strong>systematic inverse relationship</strong>:</p>
+        <p>We tested eleven 7-8B parameter models across the three benchmarks. In the workshop paper we summarized the results as an inverse relationship between expressiveness and calibration. Looking at the numbers again, the more careful statement is an observed tendency in our experiments, not a general law:</p>
 
         <div class="essay-pullquote">
-          <p>Models exhibiting enhanced self-evaluation expressiveness consistently demonstrate diminished calibration fidelity. The better a model is at discriminating correct from incorrect, the worse its confidence scores reflect reality.</p>
+          <p>In our experiments, the model with the most honest confidence was not among the most discriminative, and no model was best on every measure. That is an observation about eleven models under one protocol and one judge reference, not a theorem that better discrimination must cost calibration.</p>
         </div>
 
-        <p>Models like <strong>s1.1-7B</strong> and <strong>Qwen2.5-7B-Instruct</strong> achieve the highest PVC-VUS scores (5.83 and 5.61), meaning strong discriminative self-assessment, but they lose the most when calibration is enforced, with PVC to C-PVC gaps of 1.56 and 1.52. Conversely, <strong>JiuZhang3.0-7B</strong> shows the best calibration (lowest ECE, 0.209, and the smallest gap, 0.95) but lower discriminative power (PVC-VUS 4.79). No model excels at both simultaneously.</p>
+        <p>The table supports something narrower than a clean trade-off. <strong>s1.1-7B</strong> and <strong>Qwen2.5-7B-Instruct</strong> have the highest PVC-VUS (5.83 and 5.61), and their gaps (1.56 and 1.52) are moderate, not the largest; their calibration error (0.285 each) is better than most models'. s1.1-7B also has the highest C-PVC-VUS (4.27). The largest gaps belong to <strong>Ministral-8B-Instruct-2410</strong> (1.88, with the highest calibration error, 0.402) and <strong>OpenThinker2-7B</strong> (1.87), neither of which leads on PVC-VUS. At the other end, <strong>JiuZhang3.0-7B</strong> shows the best calibration (lowest ECE, 0.209, and the smallest gap, 0.95) with a lower PVC-VUS (4.79). So the pattern is that the clearly best-calibrated model gave up discrimination, not that every gain in discrimination came with worse calibration.</p>
 
         <div class="essay-diagram">
           <div class="diagram-stack">
-            <div class="diagram-stack-layer diagram-node--danger" style="padding:14px;">High PVC, Poor Calibration (s1.1-7B, Qwen2.5-Instruct)</div>
-            <div class="diagram-stack-layer" style="padding:8px; font-size:0.68rem; color:var(--text-3); background:none;">"I can tell which answer is better, but my confidence is unreliable"</div>
-            <div class="diagram-stack-layer diagram-node--warn" style="padding:14px;">Balanced (most models)</div>
-            <div class="diagram-stack-layer" style="padding:8px; font-size:0.68rem; color:var(--text-3); background:none;">"Moderate discrimination, moderate calibration"</div>
-            <div class="diagram-stack-layer diagram-node--success" style="padding:14px;">Better Calibration, Lower PVC (JiuZhang3.0-7B)</div>
-            <div class="diagram-stack-layer" style="padding:8px; font-size:0.68rem; color:var(--text-3); background:none;">"My confidence is honest, but my discrimination is limited"</div>
+            <div class="diagram-stack-layer diagram-node--warn" style="padding:14px;">Highest PVC-VUS, moderate gap (s1.1-7B, Qwen2.5-7B-Instruct)</div>
+            <div class="diagram-stack-layer" style="padding:8px; font-size:0.68rem; color:var(--text-3); background:none;">"I often agree with the reference, and my confidence is middling in honesty"</div>
+            <div class="diagram-stack-layer diagram-node--danger" style="padding:14px;">Largest gaps (Ministral-8B-Instruct-2410, OpenThinker2-7B)</div>
+            <div class="diagram-stack-layer" style="padding:8px; font-size:0.68rem; color:var(--text-3); background:none;">"My confidence tracks my choices least well"</div>
+            <div class="diagram-stack-layer diagram-node--success" style="padding:14px;">Smallest gap, lower PVC-VUS (JiuZhang3.0-7B)</div>
+            <div class="diagram-stack-layer" style="padding:8px; font-size:0.68rem; color:var(--text-3); background:none;">"My confidence is honest, but I agree with the reference less often"</div>
           </div>
-          <p class="essay-diagram-caption">The expressiveness-calibration spectrum across eleven 7-8B models</p>
+          <p class="essay-diagram-caption">Where the eleven 7-8B models sit in our experiments (averages over the three benchmarks, all scored against the judge reference)</p>
         </div>
 
-        <p>Why not just report ECE and AUROC and be done? Two small examples from the paper show what those metrics miss. Take a model evaluated on two equally weighted categories, perfectly calibrated on one and off by 0.14 on the other. Its ECE is 0.5 &times; 0 + 0.5 &times; 0.14 = 0.07, which looks excellent. With a tolerance of &tau; = 0.1, the second category fails the C-PVC test, and the model's calibrated capacity is halved. Now take two predictors on a pair of inputs, one correct and one incorrect. One assigns confidences 0.6 and 0.4; the other assigns 0.9999 and 0.9998. Both rank the pair correctly, so both have an AUROC of 1.0, but the second is nearly certain about a wrong answer. C-PVC rejects it immediately, and it is exactly the predictor that produces silent failures in an agent loop.</p>
+        <p>Why not just report ECE and AUROC and be done? Because each answers a narrower question. A global average can look good while one category is badly off, since the well-calibrated categories pull the average down; a per-category check against &tau; flags that category directly. And a ranking metric such as AUROC only asks whether confidence orders right and wrong choices correctly, so two predictors with the same ranking can differ sharply in whether their confidence values are believable. A predictor that is nearly certain about everything, including its wrong choices, can rank well and still produce silent failures in an agent loop. Our per-category view targets that case, at the resolution of the categories we chose.</p>
 
         <div class="essay-insight">
           <div class="essay-insight-label">Key Insight</div>
-          <p>This tradeoff is <strong>not an artifact of one architecture or training method</strong>. It persists across model families (Qwen, Llama, DeepSeek, Mistral and others), training paradigms (pretraining only, SFT, DPO, RL and distillation) and cognitive domains (math, factual, commonsense). Instruction tuning generally raises both PVC-VUS and C-PVC-VUS relative to the base model, but the gap remains. And we argue it is not something a post-hoc fix removes: temperature scaling applies one global monotone rescaling, which cannot correct a model that is overconfident in one category and underconfident in another.</p>
+          <p>Across the model families we tested (Qwen, Llama, DeepSeek, Mistral and others), training paradigms (pretraining only, SFT, DPO, RL and distillation) and domains (math, factual, commonsense), we did not find a model that was best on both discrimination and calibration. That is what we observed for these eleven 7-8B models; it is not evidence that the tension is architectural or unavoidable, and our comparison of training methods is observational, not causal. In the one base/instruct pair we have, Qwen2.5-7B-Instruct scores higher than the base model on both PVC-VUS (5.61 versus 5.39) and C-PVC-VUS (4.09 versus 3.76), and its gap is smaller but still clearly positive. We did not test post-hoc recalibration such as temperature scaling, so whether it would close these gaps remains open.</p>
         </div>
 
         <h2>Domain-Specific Self-Evaluation</h2>
 
-        <p>The tradeoff is not uniform across domains. Qwen2.5-7B-Instruct peaks on factual questions and Llama-3.1-8B-Instruct on mathematics, while s1.1-7B stays strong across all three benchmarks. This suggests that <strong>self-evaluation capability is not a single axis</strong>: it is domain-dependent, shaped by training data, fine-tuning objectives and the structure of the task.</p>
+        <p>The picture is not uniform across domains. Qwen2.5-7B-Instruct scores highest on factual questions (TruthfulQA PVC-VUS 6.13) and Llama-3.1-8B-Instruct is strongest on mathematics (Math-360 PVC-VUS 4.84), while s1.1-7B has the highest scores on TruthfulQA and CommonsenseQA (6.22 and 6.52) but sits mid-pack on Math-360 (4.76). This suggests that <strong>self-evaluation capability is not a single axis</strong>: in our data it is domain-dependent, plausibly shaped by training data, fine-tuning objectives and the structure of the task, though we did not isolate those causes.</p>
 
-        <p>Calibration, interestingly, looks more portable than discrimination. JiuZhang3.0-7B keeps a small gap on every benchmark (0.75 on Math-360, 1.33 on TruthfulQA, 0.77 on CommonsenseQA), and on MATH-500 it again has the lowest gap (0.63) and the lowest ECE (0.169). The replication is not perfectly clean, which I count in its favour: Llama-3.1-8B-Instruct, comparatively well calibrated on Math-360, drops noticeably in calibration on MATH-500. MATH-500 is also more widely studied and may overlap with some models' training data, which is one reason we built Math-360 in the first place.</p>
+        <p>Calibration, interestingly, looked more portable than discrimination in our runs, although the evidence rests mainly on one model. JiuZhang3.0-7B keeps the smallest gap on every benchmark (0.75 on Math-360, 1.33 on TruthfulQA, 0.77 on CommonsenseQA), and on MATH-500 it again has the lowest gap (0.63) and the lowest ECE (0.169). The replication is not perfectly clean, which I count in its favour: Llama-3.1-8B-Instruct, comparatively well calibrated on Math-360, ranks noticeably worse on calibration on MATH-500. MATH-500 is also more widely studied and may overlap with some models' training data, which is one reason we built Math-360 in the first place.</p>
 
-        <p>Mathematical reasoning, with its clear logical structure, often allows internal consistency checks; factual and commonsense reasoning, where correctness depends on world knowledge, is a different challenge. Still, the inverse relationship between expressiveness and calibration shows up in all three domains.</p>
+        <p>Mathematical reasoning, with its clear logical structure, often allows internal consistency checks; factual and commonsense reasoning, where correctness depends on world knowledge, is a different challenge. The domain-level picture is also less tidy than a single trade-off would suggest. On TruthfulQA the lowest ECE belongs to Qwen2.5-7B-Instruct (0.247), one of the most discriminative models there, even though JiuZhang3.0-7B still has the smallest gap. With eleven models and one judge reference, we read the discrimination/calibration pattern as a recurring observation in some settings, not a property of self-evaluation in general.</p>
 
         <h2>What I Would Do With This in Practice</h2>
 
-        <p>The framework is a diagnostic, not a training method, so its value is in the decisions it supports.</p>
+        <p>The framework is a diagnostic, not a training method and not a certificate, so its value is in the decisions it supports and the questions it prompts.</p>
 
-        <p><strong>Choose by the cost of a silent failure.</strong> For safety-critical settings, where a confident wrong self-check is unacceptable, prefer the model with the smallest PVC to C-PVC gap, even if its raw discrimination is lower. For exploratory work, where coverage matters more and a human or a verifier sits downstream, a high-PVC model is reasonable.</p>
+        <p><strong>Choose by the cost of a silent failure.</strong> For safety-critical settings, where a confident wrong self-check is unacceptable, give weight to a small PVC to C-PVC gap, even if raw discrimination is lower. For exploratory work, where coverage matters more and a human or a verifier sits downstream, a high-PVC model is reasonable. In both cases, confirm on your own data with your own reference labels.</p>
 
-        <p><strong>Read the gap as two different problems.</strong> Low PVC means the model cannot tell good solutions from bad ones. A large gap means it can, but its confidence does not track that ability. The first calls for better reasoning; the second calls for calibration work.</p>
+        <p><strong>Read the gap as two different problems.</strong> Low PVC means that, against the reference, the model rarely picks the better solution in many categories. A large gap means it often does, but its confidence does not track how often. The first calls for better reasoning; the second calls for calibration work.</p>
 
-        <p><strong>Check calibration per category.</strong> An average calibration number can hide a domain where the model is badly off, as the 0.07 ECE example shows. If a self-evaluator will be trusted in a domain, measure it in that domain.</p>
+        <p><strong>Check calibration per category.</strong> An average calibration number can hide a category where the model is badly off. If a self-evaluator will be trusted in a domain, measure it in that domain, and remember that a good per-category score on the categories you measured says nothing about categories you did not.</p>
 
-        <p><strong>Budget validation data in proportion to capacity.</strong> More expressive self-evaluators need more examples before their measured reliability means anything. Since the constant is unknown, use SC-VUS to rank models by verification cost, not as a prescription.</p>
+        <p><strong>Treat sample-size numbers as relative.</strong> The theory says richer classes need more validation data, but the constant is unknown and our counts are not the true dimension. Use SC-VUS to compare models measured under the same protocol, not as a prescription for how many examples you need.</p>
 
         <h2>Limitations and Open Questions</h2>
 
-        <p>Several caveats are worth stating plainly. Ground truth comes from an ensemble of LLM judges, not from human annotation, and the judges themselves disagree: in our correlation study on Math-360, Claude 3.7 Sonnet was the strictest (average correlation with model self-assessments of &minus;0.09, agreement 0.53), while Amazon Nova Premier aligned most with the models (0.18 and 0.61). The ensemble is a hedge against any one judge's bias, not a replacement for gold labels.</p>
+        <p>Several caveats are worth stating plainly. The labels come from an ensemble of LLM judges, not from human annotation, and the judges themselves disagree: in our correlation study on Math-360, Claude 3.7 Sonnet aligned least with the models' own choices (average correlation with model self-assessments of &minus;0.09, agreement 0.53), Amazon Nova Premier aligned most (0.18 and 0.61), and DeepSeek-R1 sat in between (0.01 and 0.55). Agreement with a judge does not tell us which side is right, and every SEA, calibration error and PVC count in this essay inherits the judges' errors. The ensemble is a hedge against any one judge's bias, not a replacement for gold labels.</p>
 
-        <p>The theory has its own gaps. Finite capacity follows from standard results for bounded-weight, Lipschitz networks, but residual connections, softmax attention and normalization layers in real transformers satisfy those conditions only partially. The universal constant in the bound is unknown. And capacity is measured over a chosen category taxonomy, with an i.i.d. assumption inside each category; a different partition of the same questions could give different numbers.</p>
+        <p>The theory has its own gaps. Finite capacity follows from standard results for bounded-weight, Lipschitz networks, but residual connections, softmax attention and normalization layers in real transformers satisfy those conditions only partially, so finite capacity for actual LLMs remains a conjecture. The universal constant in the bound is unknown. And the empirical counts are taken over a chosen category taxonomy, with questions inside a category treated as exchangeable; a different partition of the same questions could give different numbers. That is why I treat the per-category results as an audit of the categories we chose and the theorem as guidance about what would be needed for a guarantee, not as one thing.</p>
 
-        <p>Finally, the study covers eleven 7-8B models with self-reported confidence. Whether the tradeoff weakens with scale, other confidence sources or calibration-targeted training, this paper does not answer.</p>
+        <p>Finally, the study covers eleven 7-8B models with self-reported confidence. Whether the patterns we observed hold, weaken or disappear with scale, other confidence sources, gold-labelled data or calibration-targeted training, this paper does not answer.</p>
 
         <h2>Why This Matters</h2>
 
-        <p>For autonomous AI systems, those that must operate without constant human oversight, self-evaluation is not optional. In iterative agent loops the overall reliability of the system is bounded by the reliability of each local check. A system that can solve problems but cannot assess when it might be wrong will sooner or later validate an incorrect intermediate step with high confidence, and nothing downstream will notice.</p>
+        <p>For autonomous AI systems, those that must operate without constant human oversight, self-evaluation is not optional. In iterative agent loops the overall reliability of the system depends on the reliability of each local check. A system that can solve problems but cannot assess when it might be wrong will sooner or later validate an incorrect intermediate step with high confidence, and nothing downstream will notice.</p>
 
-        <p>The PVC/C-PVC framework adds a capacity-based lens for <strong>measuring and comparing</strong> this capability across models, with guarantees about how far a measured score can be trusted. The expressiveness-calibration tension it exposes poses a concrete challenge: we need models that are both discriminative <em>and</em> well-calibrated in their self-assessment. Current 7-8B models have not solved this. Whether scaling, better training objectives or different architectures can ease the tension remains open, and it is one of the most important questions for building AI systems we can actually trust.</p>
+        <p>The PVC/C-PVC framework adds a capacity-based lens for <strong>measuring and comparing</strong> this capability across models. In practice its empirical side is a per-category audit against a judge reference; its theoretical side says, under stated assumptions about the hypothesis class, how much data a guarantee would require. In our experiments, the 7-8B models we tested did not combine strong discrimination with honest confidence in a single model. Whether scaling, better training objectives or different architectures change that remains open, and it is one of the most important questions for building AI systems we can actually trust.</p>
       </div>
 
       <footer class="essay-footer">
