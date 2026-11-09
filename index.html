@@ -148,12 +148,12 @@
         <div class="news-group">
           <h3 class="news-year-label">2026</h3>
           <ul class="news-list">
+            <li><time>Nov</time> <span class="news-badge news-badge--preprint">Preprint</span> <a href="https://arxiv.org/abs/2611.02253" target="_blank" rel="noopener">Calibration-Constrained Diagnostics for Evaluating LLM Self-Evaluation</a>, the extended version of our NeurIPS 2025 workshop paper, with code and data.</li>
             <li><time>Oct</time> <span class="news-badge news-badge--service">Service</span> Serving as <strong>Area Chair for ICML 2027</strong>.</li>
             <li><time>Oct</time> <span class="news-badge news-badge--award">Award</span> <strong>SAC Highlight Award</strong> at <strong>EMNLP 2026</strong> for <a href="https://aclanthology.org/2026.emnlp-main.830/" target="_blank" rel="noopener">From Debate to Decision: Conformal Social Choice for Safe Multi-Agent Deliberation</a>.</li>
             <li><time>Oct</time> <span class="news-badge news-badge--accept">Published</span> <a href="https://aclanthology.org/2026.emnlp-main.830/" target="_blank" rel="noopener">From Debate to Decision: Conformal Social Choice for Safe Multi-Agent Deliberation</a> and <a href="https://aclanthology.org/2026.emnlp-main.699/" target="_blank" rel="noopener">Structural Uncertainty from Self-Preference in Black-Box Language Models</a> at <strong>EMNLP 2026</strong> (Main).</li>
             <li><time>Sep</time> <span class="news-badge news-badge--preprint">Preprint</span> <a href="https://arxiv.org/abs/2609.23922" target="_blank" rel="noopener">Rényi Stability of <em>B<sub>h</sub></em> Sets: A Two-Order Phase Diagram and Sharp Deletion Principles</a> (single-author, math.CO / cs.IT).</li>
             <li><time>Jun</time> <span class="news-badge news-badge--accept">Accepted</span> <a href="https://openreview.net/forum?id=5g04fnFmLz" target="_blank" rel="noopener">Budgeted Act-or-Defer Multi-Agent LLM Deliberation with Local Reliability Bounds</a> at <a href="https://fagen-workshop.github.io/" target="_blank" rel="noopener">ICML 2026 Workshop on Failure Modes in Agentic AI (FAGEN)</a>.</li>
-            <li><time>May</time> <span class="news-badge news-badge--accept">Accepted</span> <a href="https://arxiv.org/abs/2606.11349" target="_blank" rel="noopener">Knowing When to Ask: Self-Gated Clarification for Hierarchical Language Agents</a> at <a href="https://ai-discovery-in-the-wild.github.io/" target="_blank" rel="noopener">ACM CAIS 2026 Workshop on AI Agents for Discovery in the Wild</a>.</li>
           </ul>
         </div>
         <details class="news-more">
@@ -161,6 +161,7 @@
           <div class="news-group">
             <h3 class="news-year-label">2026</h3>
             <ul class="news-list">
+            <li><time>May</time> <span class="news-badge news-badge--accept">Accepted</span> <a href="https://arxiv.org/abs/2606.11349" target="_blank" rel="noopener">Knowing When to Ask: Self-Gated Clarification for Hierarchical Language Agents</a> at <a href="https://ai-discovery-in-the-wild.github.io/" target="_blank" rel="noopener">ACM CAIS 2026 Workshop on AI Agents for Discovery in the Wild</a>.</li>
             <li><time>May</time> <span class="news-badge news-badge--accept">Accepted</span> <a href="https://openreview.net/forum?id=wk9pd2VaUB" target="_blank" rel="noopener">From Debate to Decision: Distribution-Free Act-or-Defer Control for Multi-Agent LLM Pipelines</a> at <a href="https://agentic-uncertainty-icml2026.github.io/" target="_blank" rel="noopener">ICML 2026 Workshop on Statistical Frameworks for Uncertainty in Agentic Systems (AgenticUQ)</a>.</li>
             <li><time>May</time> <span class="news-badge news-badge--award">Award</span> Received <a href="https://icml.cc/Conferences/2026/ProgramCommittee" target="_blank" rel="noopener"><strong>ICML 2026 Gold Reviewer</strong></a> recognition.</li>
             <li><time>Apr</time> <span class="news-badge news-badge--award">Award</span> <strong>Best Paper</strong> at <a href="https://openreview.net/forum?id=YMwow5RQgP" target="_blank" rel="noopener">ICLR 2026 Workshop on Logical Reasoning of LLMs</a>.</li>
@@ -382,11 +383,13 @@
             <span class="work-q">Q1 &middot; Self-evaluation</span>
           </div>
           <h3 class="work-title">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</h3>
-          <p class="work-finding"><span class="work-label">Key finding</span> Treats self-evaluation as a hypothesis class with a probabilistic VC capacity and sample-complexity bounds (a theoretical result under stated assumptions). In per-category audits against an LLM judge reference, no 7 to 8B model we tested was best both at picking its better solutions and at keeping its confidence honest.</p>
+          <p class="work-finding"><span class="work-label">Key finding</span> Treats self-evaluation as a hypothesis class with a probabilistic VC capacity and sample-complexity bounds (a theoretical result under stated assumptions). The <a href="https://arxiv.org/abs/2611.02253" target="_blank" rel="noopener">extended version</a> (13 models, four benchmarks) shows that the model ranked best by ECE and Brier score can still fail category-level calibration requirements, a reversal that aggregate metrics hide.</p>
           <div class="work-foot">
             <span class="work-authors"><strong>JO Woo</strong>, MF Wang, R Ghosh, B Chaudhury, MY Kim</span>
             <div class="work-links">
                 <a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener">Paper</a>
+                <a href="https://arxiv.org/abs/2611.02253" target="_blank" rel="noopener">Extended (arXiv)</a>
+                <a href="https://github.com/calibration-constrained-diagnostics/selfeval-diagnostics/" target="_blank" rel="noopener">Code</a>
                 <a href="essays/reliable-reasoning-requires-more-than-accuracy.html">Essay</a>
             </div>
           </div>
@@ -516,6 +519,18 @@
         <li class="pub">
           <span class="pub-year">2026</span>
           <div>
+            <p class="pub-title">Calibration-Constrained Diagnostics for Evaluating LLM Self-Evaluation</p>
+            <p class="pub-meta"><strong>JO Woo</strong>, MF Wang, R Ghosh, B Chaudhury, MY Kim &middot; Preprint
+              <a href="https://arxiv.org/abs/2611.02253" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+              <a href="https://github.com/calibration-constrained-diagnostics/selfeval-diagnostics/" class="pub-link" target="_blank" rel="noopener">Code &amp; Data</a>
+              <span class="pub-rel">Extended version of the NeurIPS 2025 LAW workshop paper below</span>
+            </p>
+          </div>
+        </li>
+
+        <li class="pub">
+          <span class="pub-year">2026</span>
+          <div>
             <p class="pub-title">From Debate to Decision: Conformal Social Choice for Safe Multi-Agent Deliberation</p>
             <p class="pub-meta">MF Wang, H Xie, G Wang, A Gao, G Yang, Z Li, QW Qiu, F Han, H Qiu, Y Huang, B Zhu, <strong>JO Woo</strong> &middot; <strong>EMNLP 2026</strong> &middot; SAC Highlight Award
               <a href="https://aclanthology.org/2026.emnlp-main.830/" class="pub-link" target="_blank" rel="noopener">ACL Anthology</a>
@@ -616,6 +631,8 @@
             <p class="pub-title">Can LLMs Reliably Evaluate Themselves? A Probabilistic VC Framework</p>
             <p class="pub-meta"><strong>JO Woo</strong>, MF Wang, R Ghosh, B Chaudhury, MY Kim &middot; <strong>NeurIPS 2025 Workshop</strong>
               <a href="https://openreview.net/forum?id=CdxeuFBAUD" class="pub-link" target="_blank" rel="noopener">paper</a>
+            
+              <span class="pub-rel">Workshop version; extended as Calibration-Constrained Diagnostics (arXiv 2611.02253, above)</span>
             </p>
           </div>
         </li>

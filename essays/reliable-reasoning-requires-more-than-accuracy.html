@@ -31,7 +31,7 @@
         <time class="essay-meta">First posted April 2026 &middot; Updated November 2026</time>
         <h1 class="essay-page-title">Reliable Reasoning Requires More Than Accuracy</h1>
         <p class="essay-subtitle">Can language models tell when they are wrong? In our experiments, scored against an LLM judge reference, strong self-discrimination and honest confidence did not come together in any one model.</p>
-        <p class="essay-basis">Based on <a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener">Can LLMs Reliably Evaluate Themselves? (NeurIPS 2025 Workshop)</a>. Claims clarified; see the revision note.</p>
+        <p class="essay-basis">Based on <a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener">Can LLMs Reliably Evaluate Themselves? (NeurIPS 2025 Workshop)</a>. Extended version: <a href="https://arxiv.org/abs/2611.02253" target="_blank" rel="noopener">Calibration-Constrained Diagnostics for Evaluating LLM Self-Evaluation (arXiv 2611.02253)</a>. Claims clarified; see the revision note.</p>
         <div class="essay-author">
           <img src="https://avatars.githubusercontent.com/u/1177142?v=4" alt="Jae Oh Woo" class="essay-author-img">
           <div class="essay-author-info">
@@ -43,7 +43,7 @@
       <div class="essay-body">
         <div class="essay-insight">
           <div class="essay-insight-label">Revision note</div>
-          <p>Updated in November 2026. We clarified that the labels in this study come from an LLM judge reference, not from objective ground truth; we separated the per-category diagnostics we measured from the theoretical capacity and sample-complexity result, which is a statement about a hypothesis class under assumptions; and we softened the discrimination/calibration statement to an observation from our experiments. All numbers were rechecked against the NeurIPS 2025 workshop version, and figures that appear only in later drafts were removed.</p>
+          <p>Updated in November 2026. We clarified that the labels in this study come from an LLM judge reference, not from objective ground truth; we separated the per-category diagnostics we measured from the theoretical capacity and sample-complexity result, which is a statement about a hypothesis class under assumptions; and we softened the discrimination/calibration statement to an observation from our experiments. All numbers in the main text were rechecked against the NeurIPS 2025 workshop version. The extended version is now public as <a href="https://arxiv.org/abs/2611.02253" target="_blank" rel="noopener">arXiv 2611.02253</a> (v1 is the workshop paper, v2 the extended one); its results are summarized, and attributed to it, in the section <a href="#extended">What the Extended Version Adds</a>.</p>
         </div>
 
         <p>A language model that solves a math problem correctly is useful. A language model that solves a math problem correctly <em>and knows it got it right</em> is far more useful. And a language model that can look at two of its own solutions, pick the better one, and attach a confidence that means what it says is close to the capability we need for autonomous reasoning systems.</p>
@@ -190,6 +190,20 @@
 
         <p>Finally, the study covers eleven 7-8B models with self-reported confidence. Whether the patterns we observed hold, weaken or disappear with scale, other confidence sources, gold-labelled data or calibration-targeted training, this paper does not answer.</p>
 
+        <h2 id="extended">What the Extended Version Adds</h2>
+
+        <p>The workshop paper was a first pass. The extended and substantially revised version, <a href="https://arxiv.org/abs/2611.02253" target="_blank" rel="noopener">Calibration-Constrained Diagnostics for Evaluating LLM Self-Evaluation</a> (arXiv 2611.02253, v2), turns it into a reusable evaluation artifact: a black-box protocol, prompts, judge-reference labels, model outputs, reproduction scripts, and the diagnostic metrics, released with code and data. The numbers in this section come from that version, not from the workshop paper.</p>
+
+        <p><strong>It sharpens what the metrics claim.</strong> PVC and C-PVC are now presented as category-level diagnostics over an accuracy-by-calibration surface, aggregated by Volume Under Surface and by a positive-margin restriction (the region where high self-selection accuracy and tight calibration coexist). They are VC-motivated empirical evaluation proxies, not literal VC-dimension estimates, and the artifact is meant for evaluation, not safety certification.</p>
+
+        <p><strong>It shows why aggregate calibration can mislead.</strong> Across 13 models (7B to 32B, plus Claude 3.5 Haiku) and four benchmarks, JiuZhang3.0-7B is best by ECE (0.199) and Brier score (0.049) yet has a positive-margin C-PVC-VUS of only 0.019, while Qwen2.5-32B-Instruct has worse ECE (0.260) but about 11 times higher positive-margin C-PVC-VUS (0.209). Aggregate metrics can rank a model first while it fails the category-level requirement, because high-confidence errors and near-chance predictions cancel in an average.</p>
+
+        <p><strong>It measures how little confidence separates right from wrong.</strong> Over 17,420 predictions, the mean confidence gap between correct and incorrect self-selections is 0.005, and 21 of 52 model-dataset pairs show a negative gap: in those pairs the models are, on average, more confident when they are wrong.</p>
+
+        <p><strong>It tests whether the rankings are artifacts.</strong> They stay stable under 7 alternative categorizations (Spearman correlation of at least 0.75), under 10 to 30% synthetic flips of the judge labels, and in a re-analysis that keeps only items where all judges agree.</p>
+
+        <p>What I take from the extended version is that the question got sharper rather than smaller: not "can a model evaluate itself?" in general, but whether its self-reported confidence can support an act-or-defer decision in the categories where that decision is made. I wrote about how this change in reading happened in <a href="from-calibration-to-self-improvement.html">From Calibration to Self-Improvement</a>.</p>
+
         <h2>Why This Matters</h2>
 
         <p>For autonomous AI systems, those that must operate without constant human oversight, self-evaluation is not optional. In iterative agent loops the overall reliability of the system depends on the reliability of each local check. A system that can solve problems but cannot assess when it might be wrong will sooner or later validate an incorrect intermediate step with high confidence, and nothing downstream will notice.</p>
@@ -201,6 +215,13 @@
         <div class="essay-related">
           <h3>Related Papers</h3>
           <div class="essay-papers">
+            <a href="https://arxiv.org/abs/2611.02253" target="_blank" rel="noopener" class="essay-paper-card">
+              <div class="essay-paper-icon essay-paper-icon--arxiv">arXiv</div>
+              <div class="essay-paper-body">
+                <span class="essay-paper-title">Calibration-Constrained Diagnostics for Evaluating LLM Self-Evaluation</span>
+                <span class="essay-paper-venue">arXiv 2611.02253, Nov 2026 &middot; Extended version: 13 models, four benchmarks, released artifact</span>
+              </div>
+            </a>
             <a href="https://openreview.net/forum?id=CdxeuFBAUD" target="_blank" rel="noopener" class="essay-paper-card">
               <div class="essay-paper-icon essay-paper-icon--conf">NeurIPS</div>
               <div class="essay-paper-body">
